@@ -17,7 +17,12 @@ object Gaussian {
     
   }
 
-  def em(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]], likelihood: Double, maxIter: Int):
+  def initEm(data: DenseMatrix[Double], gaussianComp: Int): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+    val toto = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
+    null
+  }
+  
+  def em(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]], likelih: Double, maxIter: Int):
         (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]], Double) = {
     /*
      * [W,M,V,L]
@@ -36,17 +41,22 @@ object Gaussian {
     var iterations = 0;
     
     // TODO def
-    var Ln = 0.0;
-    var Lo = 0.0;
+    var Ln = likelih
+    var Lo = 2 * Ln
     
+    var lEstW: DenseVector[Double] = estW
+    var lEstM: DenseMatrix[Double] = estM
+    var lEstC: Array[DenseMatrix[Double]] = estC
     
-    
-    while((abs(100*(Ln - Lo) / Lo) > likelihood) && (iterations < maxIter)) {
-      val E = expectation(data, gaussianComp, estW, estM, estC)
+    while((abs(100*(Ln - Lo) / Lo) > likelih) && (iterations < maxIter)) {
+      val E = expectation(data, gaussianComp, lEstW, lEstM, lEstC)
+      val maxRes = maximization(data, gaussianComp, E)
+      Lo = Ln
+      Ln = likelihood(data, gaussianComp, lEstW, lEstM, lEstC)
+      iterations += 1
     }
     
-    null
-    
+    (lEstW, lEstM, lEstC, Ln)
   }
   
   def expectation(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]]): DenseMatrix[Double] = {

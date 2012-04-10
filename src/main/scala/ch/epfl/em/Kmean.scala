@@ -82,7 +82,7 @@ object Kmean {
   def closestCluster(means: Map[Int, DenseVector[Double]], vect: DenseVector[Double]): Int = {
     val distances = means.map(x => {
       // TODO WHY asRow?
-      val difference = vect.asRow - x._2
+      val difference = vect.asRow - x._2.asRow
       val vectNorm = difference.norm(2)
       (x._1, vectNorm)
     })

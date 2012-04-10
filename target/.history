@@ -20,3 +20,8 @@ compile
 test-only
 eclipse
 exit
+reload
+compile
+test-only
+build
+run

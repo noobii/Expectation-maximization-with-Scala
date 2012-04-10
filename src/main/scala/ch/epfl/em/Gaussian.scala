@@ -16,6 +16,38 @@ object Gaussian {
     
     
   }
+
+  def em(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]], likelihood: Double, maxIter: Int):
+        (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]], Double) = {
+    /*
+     * [W,M,V,L]
+     * %%%% EM algorithm %%%%
+		niter = 0;
+		while (abs(100*(Ln-Lo)/Lo)>ltol) & (niter<=maxiter),
+		    E = Expectation(X,k,W,M,V); % E-step    
+		    [W,M,V] = Maximization(X,k,E);  % M-step
+		    Lo = Ln;
+		    Ln = Likelihood(X,k,W,M,V);
+		    niter = niter + 1;
+		end 
+		L = Ln;
+     */
+    
+    var iterations = 0;
+    
+    // TODO def
+    var Ln = 0.0;
+    var Lo = 0.0;
+    
+    
+    
+    while((abs(100*(Ln - Lo) / Lo) > likelihood) && (iterations < maxIter)) {
+      val E = expectation(data, gaussianComp, estW, estM, estC)
+    }
+    
+    null
+    
+  }
   
   def expectation(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]]): DenseMatrix[Double] = {
     val n = data.numRows

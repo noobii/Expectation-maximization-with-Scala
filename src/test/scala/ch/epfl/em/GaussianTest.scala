@@ -30,6 +30,10 @@ class GaussianTest extends AssertionsForJUnit {
     (X, k, W, M, V)
   }
   
+  @Test def testEM() {
+    
+  }
+  
   @Test def testExpectation() {
     val (a, b, c, d, e) = freshTestValues
     
@@ -56,8 +60,18 @@ class GaussianTest extends AssertionsForJUnit {
   @Test def testMaximization() {
     val (a, b, c, d, e) = freshTestValues
     
-    val 
+    val E = DenseMatrix.ones[Double](a.numRows, a.numCols)
+
+    val res = Gaussian.maximization(a, b, E)
     
+    val matlab1 = DenseVector(1.0, 1.0)
+    val matlab2 = DenseMatrix((1.5, 1.5), (1.5, 1.5))
+    val matlab3 = Array(DenseMatrix((0.25, 0.25), (0.25, 0.25)), DenseMatrix((0.25, 0.25), (0.25, 0.25)))
+    
+    assert(res._1 == matlab1)
+    assert(res._2 == matlab2)
+    assert(res._3(0) == matlab3(0))
+    assert(res._3(1) == matlab3(1))
   }
   
   @Test def testLoglikelihood() {

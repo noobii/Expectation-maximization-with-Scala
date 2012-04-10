@@ -16,7 +16,7 @@ class GaussianTest extends AssertionsForJUnit {
 
   def delta = 0.1
   
-  @Test def testLoglikelihood() {
+  def freshTestValues = {
     val X = DenseMatrix.ones[Double](10, 2)
     X(5 until 10, ::) := DenseMatrix.ones[Double](5, 2) :* 2
     
@@ -27,7 +27,44 @@ class GaussianTest extends AssertionsForJUnit {
     
     val V = Array(DenseMatrix.eye[Double](2, 2), DenseMatrix.eye[Double](2, 2))
     
-    val res = Gaussian.likelihood(X, k, W, M, V)
+    (X, k, W, M, V)
+  }
+  
+  @Test def testExpectation() {
+    val (a, b, c, d, e) = freshTestValues
+    
+    val exp = Gaussian.expectation(a, b, c, d, e)
+    
+    val matlabExpVal = DenseMatrix(
+      (0.7311,    0.2689),
+      (0.7311,    0.2689),
+      (0.7311,    0.2689),
+      (0.7311,    0.2689),
+      (0.7311,    0.2689),
+      (0.2689,    0.7311),
+      (0.2689,    0.7311),
+      (0.2689,    0.7311),
+      (0.2689,    0.7311),
+      (0.2689,    0.7311)
+    )
+    
+    assert((matlabExpVal(::, 0) - exp(::, 0)).norm(2) < delta)
+    assert((matlabExpVal(::, 1) - exp(::, 1)).norm(2) < delta)
+  }
+  
+  
+  @Test def testMaximization() {
+    val (a, b, c, d, e) = freshTestValues
+    
+    val 
+    
+  }
+  
+  @Test def testLoglikelihood() {
+    // Why doesnt (X, k, W, M, V) work ?!!?!
+    val (a, b, c, d, e) = freshTestValues
+    
+    val res = Gaussian.likelihood(a, b, c, d, e)
     
     // Value computed with Matlbab with the same inputs
     val matlabResult = 2 * -11.5643

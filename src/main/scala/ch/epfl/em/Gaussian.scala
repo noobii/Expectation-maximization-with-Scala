@@ -50,7 +50,10 @@ object Gaussian {
     
     E
   }
-  
+
+  /**
+   * Returns Estimated weight, mean and covariance
+   */
   def maximization(data: DenseMatrix[Double], gaussianComp: Int, E: DenseMatrix[Double]):
      (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
     

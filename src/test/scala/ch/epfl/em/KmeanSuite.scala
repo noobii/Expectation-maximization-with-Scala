@@ -128,15 +128,13 @@ class KmeanSuite extends AssertionsForJUnit {
     
     val res = Kmean.kmeans(data, k, maxIter)
     
-    val means = mean(res._2, Axis.Vertical).toList
+    val means = mean(res, Axis.Vertical).toList
 
-    val mat = res._2
+    val mat = res
     plot(mat(0, ::), mat(1, ::), '+')
 
-    saveas("titi.png")
+    saveas("plot.png")
     
-    // delete
-    val toto = for(i <- res._1) yield i._2.size
         
     println("k mean: (should be around 0, 1 and 2)")
     println(means)

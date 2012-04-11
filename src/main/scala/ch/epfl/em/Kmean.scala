@@ -16,7 +16,7 @@ object Kmean {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def kmeans(data: DenseMatrix[Double], k: Int, maxIter: Int): (Map[Int, DenseVector[Double]], DenseMatrix[Double]) = {
+  def kmeans(data: DenseMatrix[Double], k: Int, maxIter: Int): DenseMatrix[Double] = {
 
     // First assigns a cluster to each mesurement
     var clusters = initializeClusters(data, k)
@@ -37,7 +37,7 @@ object Kmean {
     val matrix = DenseMatrix.zeros[Double](data.numCols, k)
     for(i <- 0 until centroids.size) matrix(::, i) := centroids(i)
     
-    (centroids, matrix)
+    matrix
 
   } 
 

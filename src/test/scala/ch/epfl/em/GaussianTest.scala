@@ -1,16 +1,11 @@
 package ch.epfl.em
 
-import org.junit.Assert._
 import org.junit.Test
-import org.junit.Before
-import org.scalatest.FunSuite
 import org.scalatest.junit.AssertionsForJUnit
-import scalala.tensor.dense.DenseVector
+
 import scalala.tensor.dense.DenseMatrix
-import scalala.operators._
-import scalala.tensor._
-import scalala.library.Library._
-import scalala.library.LinearAlgebra._
+import scalala.tensor.dense.DenseVector
+import scalala.tensor.{:: => ::}
 
 class GaussianTest extends AssertionsForJUnit {
 

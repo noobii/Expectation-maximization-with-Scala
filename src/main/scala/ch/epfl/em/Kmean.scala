@@ -1,12 +1,8 @@
 package ch.epfl.em
 
-import scalala.tensor.dense.DenseVector
 import scalala.tensor.dense.DenseMatrix
-import scalala.operators._
-import scalala.tensor._
-import scalala.library.LinearAlgebra._
-import scalala.library.Library._
-import scala.util.Random
+import scalala.tensor.dense.DenseVector
+import scalala.tensor.{:: => ::}
 
 object Kmean {
 

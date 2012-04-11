@@ -1,18 +1,18 @@
 package ch.epfl.em
 
-import org.junit.Assert._
-import org.junit.Test
-import org.junit.Before
-import org.scalatest.FunSuite
-import org.scalatest.junit.AssertionsForJUnit
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.dense.DenseMatrix
-import scalala.operators._
-import scalala.tensor._
-import scalala.library.Library._
-import scalala.library.LinearAlgebra._
-import scalala.library.Plotting._
 import scala.util.Random
+
+import org.junit.Assert.assertFalse
+import org.junit.Test
+import org.scalatest.junit.AssertionsForJUnit
+
+import scalala.library.Library.Axis
+import scalala.library.Library.mean
+import scalala.library.Plotting.plot
+import scalala.library.Plotting.saveas
+import scalala.tensor.dense.DenseMatrix
+import scalala.tensor.dense.DenseVector
+import scalala.tensor.{:: => ::}
 
 class KmeanSuite extends AssertionsForJUnit {
   

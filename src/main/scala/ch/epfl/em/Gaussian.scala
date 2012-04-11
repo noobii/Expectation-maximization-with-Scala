@@ -1,13 +1,12 @@
 package ch.epfl.em
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.dense.DenseMatrix
-import scalala.operators._
-import scalala.tensor._
-import scalala.library.LinearAlgebra._
+
+import scala.Array.canBuildFrom
+
 import scalala.library.Library._
-import scalala.tensor.dense.DenseVectorRow
-import scala.util.Random
-import scalala.tensor.dense.DenseVectorCol
+import scalala.library.LinearAlgebra._
+import scalala.tensor.dense.DenseMatrix
+import scalala.tensor.dense.DenseVector
+import scalala.tensor.{:: => ::}
 
 object Gaussian {
 
@@ -21,36 +20,28 @@ object Gaussian {
     val toto = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
     null
   }
-  
+
+  /**
+   * The implementation of the Expecatation-maximization algorithm
+   * TODO !!! WAY to many arguments and return values !!!
+   */
   def em(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]], likelih: Double, maxIter: Int):
         (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]], Double) = {
-    /*
-     * [W,M,V,L]
-     * %%%% EM algorithm %%%%
-		niter = 0;
-		while (abs(100*(Ln-Lo)/Lo)>ltol) & (niter<=maxiter),
-		    E = Expectation(X,k,W,M,V); % E-step    
-		    [W,M,V] = Maximization(X,k,E);  % M-step
-		    Lo = Ln;
-		    Ln = Likelihood(X,k,W,M,V);
-		    niter = niter + 1;
-		end 
-		L = Ln;
-     */
-    
+
     var iterations = 0;
     
-    // TODO def
     var Ln = likelih
     var Lo = 2 * Ln
+    
+    def approxGoodEnough = !(abs(100*(Ln - Lo) / Lo) > likelih)
     
     var lEstW: DenseVector[Double] = estW
     var lEstM: DenseMatrix[Double] = estM
     var lEstC: Array[DenseMatrix[Double]] = estC
     
-    while((abs(100*(Ln - Lo) / Lo) > likelih) && (iterations < maxIter)) {
-      val E = expectation(data, gaussianComp, lEstW, lEstM, lEstC)
-      val maxRes = maximization(data, gaussianComp, E)
+    while(!approxGoodEnough && (iterations < maxIter)) {
+      val exp = expectation(data, gaussianComp, lEstW, lEstM, lEstC)
+      val maxRes = maximization(data, gaussianComp, exp)
       Lo = Ln
       Ln = likelihood(data, gaussianComp, lEstW, lEstM, lEstC)
       iterations += 1

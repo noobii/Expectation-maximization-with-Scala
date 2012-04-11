@@ -47,7 +47,7 @@ object Kmean {
 
   /**
    * Initial step of the algorithm. It "randomly" assign a cluster to each mesurement.
-   * Currently it is purely deterministic and assigns clusters sequantially from 0 to k-1
+   * Currently it is purely deterministic and assigns clusters sequentially from 0 to k-1
    * and starts over again. 
    */
   def initializeClusters(data: DenseMatrix[Double], k: Int): Seq[(Int, DenseVector[Double])] = {
@@ -62,24 +62,31 @@ object Kmean {
   def computeCentroids(data: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
     // Groups the data by the cluster index
     val groups = data.groupBy(_._1)
-    //
-    val groupedLists = groups.map(x => (x._1, x._2.unzip._2))
+    // Creates a map where each each index identifies a the sequence of mesure in the cluster
+    val clusters = groups.map(x => (x._1, x._2.unzip._2))
     
-    val means = groupedLists.map(x => (x._1, mean(x._2)))
+    // Computes the centroid (mean) of each cluster
+    val centroids = clusters.map(x => (x._1, mean(x._2)))
     
-    means
+    centroids
   }
 
+  /**
+   * Computes the mean of a sequence of vectors
+   */
   def mean(vects: Seq[DenseVector[Double]]): DenseVector[Double] = {
     val sum = vects.foldLeft(DenseVector.zeros[Double](vects.head.size))((x, y) => x + y)
     sum := sum :/ vects.size
     sum
   }
 
+  /**
+   * Assign each mesure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
+   */
   def assignClusts(clusters: Seq[(Int, DenseVector[Double])], means: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
     val newClusters = clusters.map(x => (closestCluster(means, x._2), x._2))
     
-    // To check if have convereged. If has convereged then no index has changed
+    // If has convereged then no index has changed
     val hasConverged: Boolean = clusters.zip(newClusters).forall(x => x._1._1 == x._2._1)
 
     (newClusters, hasConverged)
@@ -87,14 +94,16 @@ object Kmean {
   }
 
 
+  /**
+   * Finds the closest cluster for a given vector
+   */
   def closestCluster(means: Map[Int, DenseVector[Double]], vect: DenseVector[Double]): Int = {
     val distances = means.map(x => {
-      // TODO WHY asRow?
       val difference = vect.asRow - x._2.asRow
       val vectNorm = difference.norm(2)
       (x._1, vectNorm)
     })
 
-    distances.minBy(_._2)._1 // Order by norm, return cluster index
+    distances.minBy(_._2)._1 // Takes the smallest distance and return the index
   }
 }

@@ -125,21 +125,22 @@ object Gaussian {
     (estW, estM, estC)
   }
 
-  // CHECKED
+  /**
+   * Computes the log-likelihood that the estimated values are correct.
+   */
   def likelihood(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]]): Double = {
     val n = data.numRows
-    val d = data.numCols
     
-    val U = mean(data, Axis.Vertical).asCol // OK
-    val S = covariance(data, Axis.Vertical)._1 // OK
+    val meanVect = mean(data, Axis.Vertical).asCol // OK
+    val covarianceMat = covariance(data, Axis.Vertical)._1 // OK
     
     var L = 0.0;
     
     for(i <- 0 until gaussianComp) {
-      val iV = inv(estC(i))
+      val invEstC = inv(estC(i))
       
       val lg = log(det(estC(i) * 2 * Math.Pi))
-      val tr = (iV * S).trace + (U - estM(::, i)).t * iV * (U - estM(::, i))
+      val tr = (invEstC * covarianceMat).trace + (meanVect - estM(::, i)).t * invEstC * (meanVect - estM(::, i))
       
       L += estW(i) * (-0.5 * n * lg - 0.5 * (n-1) * tr)
     }

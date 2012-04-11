@@ -10,48 +10,59 @@ import scala.util.Random
 
 object Kmean {
 
+  /**
+   * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
+   * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access
+   * a map. This must be fixed.
+   * TODO : Fix when the algo desn't converge
+   * @param data: the data, where each row is a mesurement and each column a variable
+   * @param k: number of clusters
+   * @param maxIter: maximum number of iterations used in the algorithm
+   * @return 
+   */
   def kmeans(data: DenseMatrix[Double], k: Int, maxIter: Int): (Map[Int, DenseVector[Double]], DenseMatrix[Double]) = {
 
-    var clusts = prepareClusters(data, k)
-    var centoids = computeCentroids(clusts)
-    //println("cent: " + centoids)
+    // First assigns a cluster to each mesurement
+    var clusters = initializeClusters(data, k)
+    // Compute the centroids of the clusters
+    var centroids = computeCentroids(clusters)
     var hasConverged = false
 
+    // The core of the algo. Successively computes the new clusters and the centroids
+    // until either it converges or it reaches the maximum amount of iterations
     for(i <- 0 until maxIter if !hasConverged) {
-      val tmp = Kmean.assignClusts(clusts, centoids)
-      clusts = tmp._1
-      hasConverged = tmp._2
-      centoids = computeCentroids(clusts)
-      //print(i + "-")
+      val newClusters = assignClusts(clusters, centroids)
+      clusters = newClusters._1
+      hasConverged = newClusters._2
+      centroids = computeCentroids(clusters)
     }
-
-    // TODO delete
-    //println("--------------")
-    //val toto = for(i <- clusts.groupBy(_._1)) yield i._2.size
-    ///println(toto)
-    //println("--------------")
-    // END DELETE
     
-    // In a matrix where means in columns
+    // Create a matrix where each columns is a mean (centroid) of a cluster
     val matrix = DenseMatrix.zeros[Double](data.numCols, k)
-    for(i <- 0 until centoids.size) matrix(::, i) := centoids(i)
+    for(i <- 0 until centroids.size) matrix(::, i) := centroids(i)
     
-    (centoids, matrix)
+    (centroids, matrix)
 
   } 
 
-  // Test suite exists
-  def prepareClusters(data: DenseMatrix[Double], k: Int): Seq[(Int, DenseVector[Double])] = {
+  /**
+   * Initial step of the algorithm. It "randomly" assign a cluster to each mesurement.
+   * Currently it is purely deterministic and assigns clusters sequantially from 0 to k-1
+   * and starts over again. 
+   */
+  def initializeClusters(data: DenseMatrix[Double], k: Int): Seq[(Int, DenseVector[Double])] = {
     // Not so very random but at least we are sure that all clusters indexes are represented
-    // Why the random int? because sometimes the algo doesn't converge and with the random offset we might be lucky...
-    // but certainly not optimal...
-    val randInt = Math.abs(Random.nextInt())
     for(i <- 0 until data.numRows) yield (i % k, data(i, ::))
   }
 
-  // Test suite exists
-  def computeCentroids(clusters: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
-    val groups = clusters.groupBy(_._1)
+
+  /**
+   * Compute the centroids (mean) of the data that has been assigned to clusters
+   */
+  def computeCentroids(data: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
+    // Groups the data by the cluster index
+    val groups = data.groupBy(_._1)
+    //
     val groupedLists = groups.map(x => (x._1, x._2.unzip._2))
     
     val means = groupedLists.map(x => (x._1, mean(x._2)))
@@ -59,14 +70,12 @@ object Kmean {
     means
   }
 
-  // Test suite exists
   def mean(vects: Seq[DenseVector[Double]]): DenseVector[Double] = {
     val sum = vects.foldLeft(DenseVector.zeros[Double](vects.head.size))((x, y) => x + y)
     sum := sum :/ vects.size
     sum
   }
 
-  // Test suite exists
   def assignClusts(clusters: Seq[(Int, DenseVector[Double])], means: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
     val newClusters = clusters.map(x => (closestCluster(means, x._2), x._2))
     
@@ -78,7 +87,6 @@ object Kmean {
   }
 
 
-  // Test suite exists
   def closestCluster(means: Map[Int, DenseVector[Double]], vect: DenseVector[Double]): Int = {
     val distances = means.map(x => {
       // TODO WHY asRow?

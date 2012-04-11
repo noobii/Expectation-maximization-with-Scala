@@ -41,11 +41,11 @@ class KmeanSuite extends AssertionsForJUnit {
     assert(Kmean.closestCluster(means, vect2) == 1)
   }
   
-  @Test def testPrepareClusters() {
+  @Test def testInitializeClusters() {
     val matrix = DenseMatrix.ones[Double](10, 10)
     val k = 5
     
-    val randClusters = Kmean.prepareClusters(matrix, k)
+    val randClusters = Kmean.initializeClusters(matrix, k)
         
     // Check that there are as many rows as objects
     assert(randClusters.length == matrix.numRows)

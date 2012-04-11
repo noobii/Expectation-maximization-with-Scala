@@ -1,6 +1,6 @@
-[0m[[0mdebug[0m] [0mRunning Test ch.epfl.em.GaussianTest : annotation(false, org.junit.Test) with arguments -q, -v[0m
 [0m[[0mdebug[0m] [0mRunning Test ch.epfl.em.KmeanSuite : annotation(false, org.junit.Test) with arguments -q, -v[0m
+[0m[[0mdebug[0m] [0mRunning Test ch.epfl.em.GaussianTest : annotation(false, org.junit.Test) with arguments -q, -v[0m
 [0m[[0minfo[0m] [0mPassed: : Total 10, Failed 0, Errors 0, Passed 10, Skipped 0[0m
 [0m[[0mdebug[0m] [0mPassed tests:[0m
-[0m[[0mdebug[0m] [0m	ch.epfl.em.GaussianTest[0m
 [0m[[0mdebug[0m] [0m	ch.epfl.em.KmeanSuite[0m
+[0m[[0mdebug[0m] [0m	ch.epfl.em.GaussianTest[0m

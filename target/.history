@@ -25,3 +25,6 @@ compile
 test-only
 build
 run
+sbt test
+test
+test-only

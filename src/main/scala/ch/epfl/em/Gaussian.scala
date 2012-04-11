@@ -131,6 +131,7 @@ object Gaussian {
       }
       estM(::, i) := estM(::, i) / estW(i)
     }
+
     for(i <- 0 until gaussianComp) {
       for(j <- 0 until n) {
         val dXM = data(j, ::).t - estM(::, i)

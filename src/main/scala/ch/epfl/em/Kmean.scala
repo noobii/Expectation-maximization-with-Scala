@@ -10,7 +10,7 @@ object Kmean {
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
    * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access
    * a map. This must be fixed.
-   * TODO : Fix when the algo desn't converge
+   * TODO : Fix when the algo doesn't converge it should do something more gracefull than throw exceptions...
    * @param data: the data, where each row is a mesurement and each column a variable
    * @param k: number of clusters
    * @param maxIter: maximum number of iterations used in the algorithm

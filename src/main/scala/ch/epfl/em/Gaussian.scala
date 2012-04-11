@@ -16,17 +16,31 @@ object Gaussian {
     
   }
 
-  def initEm(data: DenseMatrix[Double], gaussianComp: Int): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+  // TODO write test suite
+  def initEm(
+      data: DenseMatrix[Double], 
+      gaussianComp: Int
+      ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+
     val toto = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
+    // TODO must rewrite kmeans 
     null
   }
 
   /**
    * The implementation of the Expecatation-maximization algorithm
    * TODO !!! WAY to many arguments and return values !!!
+   * TODO Write test suite
    */
-  def em(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]], likelih: Double, maxIter: Int):
-        (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]], Double) = {
+  def em(
+      data: DenseMatrix[Double], 
+      gaussianComp: Int, 
+      estW: DenseVector[Double], 
+      estM: DenseMatrix[Double], 
+      estC: Array[DenseMatrix[Double]], 
+      likelih: Double, 
+      maxIter: Int
+      ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]], Double) = {
 
     var iterations = 0;
     
@@ -54,7 +68,14 @@ object Gaussian {
    * Expectation part of the algorithm.
    * Return the expectation of the value
    */
-  def expectation(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]]): DenseMatrix[Double] = {
+  def expectation(
+      data: DenseMatrix[Double], 
+      gaussianComp: Int, 
+      estW: DenseVector[Double], 
+      estM: DenseMatrix[Double], 
+      estC: Array[DenseMatrix[Double]]
+      ): DenseMatrix[Double] = {
+
     val n = data.numRows
     val d = data.numCols
     val a = pow(2 * Math.Pi, d / 2);
@@ -127,7 +148,14 @@ object Gaussian {
   /**
    * Computes the log-likelihood that the estimated values are correct.
    */
-  def likelihood(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]]): Double = {
+  def likelihood(
+      data: DenseMatrix[Double], 
+      gaussianComp: Int, 
+      estW: DenseVector[Double], 
+      estM: DenseMatrix[Double], 
+      estC: Array[DenseMatrix[Double]]
+      ): Double = {
+
     val n = data.numRows
     
     val meanVect = mean(data, Axis.Vertical).asCol // OK

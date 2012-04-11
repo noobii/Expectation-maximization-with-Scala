@@ -94,34 +94,38 @@ object Gaussian {
   }
 
   /**
+   * Maximization part of the algorithm.
    * Returns Estimated weight, mean and covariance
    */
-  def maximization(data: DenseMatrix[Double], gaussianComp: Int, E: DenseMatrix[Double]):
+  def maximization(data: DenseMatrix[Double], gaussianComp: Int, estimate: DenseMatrix[Double]):
      (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
     
     val n = data.numRows
     val d = data.numCols
+
+    // Sets all the estimate to zero
     val estW = DenseVector.zeros[Double](gaussianComp)
     val estM = DenseMatrix.zeros[Double](d, gaussianComp)
     val estC = (1 to gaussianComp).toArray.map(_ => DenseMatrix.zeros[Double](d, d))
     
     for(i <- 0 until gaussianComp) {
       for(j <- 0 until n) {
-        estW(i) = estW(i) + E(j, i)
-        estM(::, i) := estM(::, i) + (data(j, ::).t * E(j, i))
+        estW(i) = estW(i) + estimate(j, i)
+        estM(::, i) := estM(::, i) + (data(j, ::).t * estimate(j, i))
       }
       estM(::, i) := estM(::, i) / estW(i)
     }
     for(i <- 0 until gaussianComp) {
       for(j <- 0 until n) {
         val dXM = data(j, ::).t - estM(::, i)
-        estC(i) = estC(i) + ((dXM * dXM.t) :* E(j, i))
+        estC(i) = estC(i) + ((dXM * dXM.t) :* estimate(j, i))
       }
       estC(i) = estC(i) / estW(i)
     }
     
     estW := estW / n
     
+    // Returns the estimate weigth, mean and covariance
     (estW, estM, estC)
   }
 

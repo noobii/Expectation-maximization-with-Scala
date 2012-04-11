@@ -58,7 +58,11 @@ object Gaussian {
     
     (lEstW, lEstM, lEstC, Ln)
   }
-  
+
+  /**
+   * Expectation part of the algorithm.
+   * Return the expectation of the value
+   */
   def expectation(data: DenseMatrix[Double], gaussianComp: Int, estW: DenseVector[Double], estM: DenseMatrix[Double], estC: Array[DenseMatrix[Double]]): DenseMatrix[Double] = {
     val n = data.numRows
     val d = data.numCols
@@ -81,8 +85,8 @@ object Gaussian {
      for(i <- 0 until n) {
        for(j <- 0 until gaussianComp) {
          val dXM = data(i, ::).t - estM(::, j)
-         val toto = dXM.t * invEstC(j) * dXM
-         val pl = exp(-0.5 * toto) / (a * S(j))
+         val coef = dXM.t * invEstC(j) * dXM
+         val pl = exp(-0.5 * coef) / (a * S(j))
          
          E(i, j) = estW(j) * pl
        }

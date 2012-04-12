@@ -28,3 +28,4 @@ run
 sbt test
 test
 test-only
+exit

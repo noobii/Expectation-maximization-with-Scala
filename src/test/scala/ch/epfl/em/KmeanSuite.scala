@@ -99,17 +99,17 @@ class KmeanSuite extends AssertionsForJUnit {
     assert(iter2._2)
   }
   
-  /*
+  
   @Test def testHugeKmean() {
     
     println("Start huge: " + new java.util.Date())
-    val data = DenseMatrix.rand(1000000, 10)
+    val data = DenseMatrix.rand(10000000, 10)
     
     val kmeans = Kmean.kmeans(data, 2, 1000)
     
     println("End huge: " + new java.util.Date())
     assert(true)
-  }*/
+  }
   
   @Test def testKmean() {
     
@@ -146,21 +146,7 @@ class KmeanSuite extends AssertionsForJUnit {
   }
 
   def randomVect(size: Int, from: Double, to: Double): DenseVector[Double] = {
-    Random.setSeed(Random.nextLong())
-    def randomDouble: Double = {
-      val interval = to - from
-      val middle = (from + to) / 2
-    
-      val normalized = interval * Random.nextDouble()
-      val range = normalized - interval / 2
-    
-      middle + range      
-    }
-    
-    val vect = DenseVector.zeros[Double](size)
-    
-    for(i <- 0 until size) vect(i) = randomDouble
-    
-    vect
+    val interval = to - from
+    DenseVector.tabulate(size)(x => from + (interval * Random.nextDouble))
   }
 }

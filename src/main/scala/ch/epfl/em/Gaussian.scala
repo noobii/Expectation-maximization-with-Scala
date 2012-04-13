@@ -89,8 +89,8 @@ object Gaussian {
     val a = pow(2 * Math.Pi, dimensions / 2.0)
 
     val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComp)((i, j) => {
-        val dXM = data(i, ::).t - estM(::, j)
-        val coef = dXM.t * invEstC(j) * dXM
+        val delta = data(i, ::).asCol - estM(::, j)
+        val coef = delta.t * invEstC(j) * delta
         val pl = exp(-0.5 * coef) / (a * S(j))
       
         estW(j) * pl
@@ -115,7 +115,7 @@ object Gaussian {
     val d = data.numCols
 
     // Sets all the estimate to zero
-    val estW = DenseVector.zeros[Double](gaussianComp)
+    /*val estW = DenseVector.zeros[Double](gaussianComp)
     val estM = DenseMatrix.zeros[Double](d, gaussianComp)
     val estC = (1 to gaussianComp).toArray.map(_ => DenseMatrix.zeros[Double](d, d))
     
@@ -125,7 +125,20 @@ object Gaussian {
         estM(::, i) := estM(::, i) + (data(j, ::).t * estimate(j, i))
       }
       estM(::, i) := estM(::, i) / estW(i)
-    }
+    }*/
+    
+    val estW = DenseVector.tabulate(gaussianComp)(estimate(::, _).sum)
+    
+    val estM = DenseMatrix.tabulate[Double](d, gaussianComp)((dim, comp) => {
+      val col: DenseVector[Double] = data(::, dim)
+      
+      val weightCol = col.mapPairs((index: Int, value: Double) => value * estimate(index, comp))
+      
+      val weightSum = weightCol.sum / estW(comp)
+      weightSum
+    })
+    
+    val estC = (1 to gaussianComp).toArray.map(_ => DenseMatrix.zeros[Double](d, d))
 
     for(i <- 0 until gaussianComp) {
       for(j <- 0 until n) {

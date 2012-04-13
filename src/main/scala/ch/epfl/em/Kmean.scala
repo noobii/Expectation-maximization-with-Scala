@@ -27,9 +27,7 @@ object Kmean {
     // The core of the algo. Successively computes the new clusters and the centroids
     // until either it converges or it reaches the maximum amount of iterations
     for(i <- 0 until maxIter if !hasConverged) {
-      val newClusters = assignNewClusters(clusters, centroids)
-      clusters = newClusters._1
-      hasConverged = newClusters._2
+      val (clusers, hasConverged) = assignNewClusters(clusters, centroids)
       centroids = computeCentroids(clusters)
     }
     
@@ -82,9 +80,9 @@ object Kmean {
   /**
    * Assign each mesure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
    */
-  def assignNewClusters(data: Seq[(Int, DenseVector[Double])], means: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
+  def assignNewClusters(data: Seq[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
     val newClusters = data map {
-      case(_, vector) => (closestClusterIndex(means, vector), vector)
+      case(_, vector) => (closestClusterIndex(centroids, vector), vector)
     }
     
     // If has convereged then no index has changed
@@ -99,12 +97,14 @@ object Kmean {
    * Finds the closest cluster for a given vector
    */
   def closestClusterIndex(means: Map[Int, DenseVector[Double]], vect: DenseVector[Double]): Int = {
-    val distances = means.map(x => {
-      val difference = vect.asRow - x._2.asRow
-      val vectNorm = difference.norm(2)
-      (x._1, vectNorm)
-    })
+    val distances = means map{
+      case(clusterIndex, mean) => {
+        val difference = vect.asRow - mean.asRow
+        val vectNorm = difference.norm(2)
+        (clusterIndex, vectNorm)
+      }
+    }
 
-    distances.minBy(_._2)._1 // Takes the smallest distance and return the index
+    distances.minBy{case(_, norm) => norm}._1 // Takes the smallest distance and return the index
   }
 }

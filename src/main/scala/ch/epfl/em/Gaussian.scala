@@ -114,19 +114,6 @@ object Gaussian {
     val n = data.numRows
     val d = data.numCols
 
-    // Sets all the estimate to zero
-    /*val estW = DenseVector.zeros[Double](gaussianComp)
-    val estM = DenseMatrix.zeros[Double](d, gaussianComp)
-    val estC = (1 to gaussianComp).toArray.map(_ => DenseMatrix.zeros[Double](d, d))
-    
-    for(i <- 0 until gaussianComp) {
-      for(j <- 0 until n) {
-        estW(i) = estW(i) + estimate(j, i)
-        estM(::, i) := estM(::, i) + (data(j, ::).t * estimate(j, i))
-      }
-      estM(::, i) := estM(::, i) / estW(i)
-    }*/
-    
     val estW = DenseVector.tabulate(gaussianComp)(estimate(::, _).sum)
     
     val estM = DenseMatrix.tabulate[Double](d, gaussianComp)((dim, comp) => {

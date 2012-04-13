@@ -23,7 +23,7 @@ object Gaussian {
       ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
 
     val toto = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
-    // TODO must rewrite kmeans 
+    // TODO must rewrite kmeans to finish the function
     null
   }
 
@@ -91,20 +91,20 @@ object Gaussian {
         
       S(j) = sqrt(det(estC(j)))
       invEstC(j) = inv(estC(j))
-   }
+    }
 
-     val E = DenseMatrix.zeros[Double](n, gaussianComp)
-     for(i <- 0 until n) {
-       for(j <- 0 until gaussianComp) {
-         val dXM = data(i, ::).t - estM(::, j)
-         val coef = dXM.t * invEstC(j) * dXM
-         val pl = exp(-0.5 * coef) / (a * S(j))
-         
-         E(i, j) = estW(j) * pl
-       }
+    val E = DenseMatrix.zeros[Double](n, gaussianComp)
+    for(i <- 0 until n) {
+      for(j <- 0 until gaussianComp) {
+        val dXM = data(i, ::).t - estM(::, j)
+        val coef = dXM.t * invEstC(j) * dXM
+        val pl = exp(-0.5 * coef) / (a * S(j))
+ 
+        E(i, j) = estW(j) * pl
+      }
        
-       E(i, ::) := E(i, ::) :/ E(i, ::).sum
-     }
+      E(i, ::) := E(i, ::) :/ E(i, ::).sum
+    }
     
     E
   }

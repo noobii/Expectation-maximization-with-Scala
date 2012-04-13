@@ -83,7 +83,7 @@ object Kmean {
     val newClusters = clusters.map(x => (closestCluster(means, x._2), x._2))
     
     // If has convereged then no index has changed
-    val hasConverged: Boolean = clusters.zip(newClusters).forall(x => x._1._1 == x._2._1)
+    val hasConverged = clusters.zip(newClusters).forall(x => x._1._1 == x._2._1)
 
     (newClusters, hasConverged)
 

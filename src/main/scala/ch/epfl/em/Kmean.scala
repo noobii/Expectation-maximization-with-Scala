@@ -63,11 +63,12 @@ object Kmean {
     // Creates a map where each each index identifies a the sequence of mesure in the cluster
     val centroids = groups map {
       case(clusterIndex, tuppleList) => {
-        (clusterIndex, mean(tuppleList.unzip._2))
+        (clusterIndex, mean(tuppleList map(_._2)))
       }
     }
     
     centroids
+
   }
 
   /**

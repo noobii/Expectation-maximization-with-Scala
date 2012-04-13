@@ -27,8 +27,11 @@ object Kmean {
     // The core of the algo. Successively computes the new clusters and the centroids
     // until either it converges or it reaches the maximum amount of iterations
     for(i <- 0 until maxIter if !hasConverged) {
-      val (clusers, hasConverged) = assignNewClusters(clusters, centroids)
-      centroids = computeCentroids(clusters)
+      val (clusts, hasConv) = assignNewClusters(clusters, centroids)
+      centroids = computeCentroids(clusts)
+      
+      clusters = clusts
+      hasConverged = hasConv
     }
     
     // Create a matrix where each columns is a mean (centroid) of a cluster
@@ -65,8 +68,7 @@ object Kmean {
       }
     }
     
-    centroids
-
+    centroids.seq
   }
 
   /**
@@ -97,7 +99,7 @@ object Kmean {
    * Finds the closest cluster for a given vector
    */
   def closestClusterIndex(means: Map[Int, DenseVector[Double]], vect: DenseVector[Double]): Int = {
-    val distances = means map{
+    val distances = means map {
       case(clusterIndex, mean) => {
         val difference = vect.asRow - mean.asRow
         val vectNorm = difference.norm(2)

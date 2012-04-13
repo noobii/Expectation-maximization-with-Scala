@@ -105,7 +105,7 @@ class KmeanSuite extends AssertionsForJUnit {
   @Test def testHugeKmean() {
     
     println("Start huge: " + new java.util.Date())
-    val data = DenseMatrix.rand(1000000, 10)
+    val data = DenseMatrix.rand(200000, 10)
     println("Created matrix: " + new java.util.Date())
     
     val kmeans = Kmean.kmeans(data, 2, 1000)

@@ -96,10 +96,12 @@ object Gaussian {
         estW(j) * pl
       }
     )
+
+    def normalize(v: DenseVector[Double]) = v :/ v.sum
     
     // Make all row have 1 as element sum
     // Don't know yet how to make this any more functionnal... scalala doesn't provide a map per line
-    for(i <- 0 until E.numRows) E(i, ::) := E(i, ::) :/ E(i, ::).sum
+    for(i <- 0 until E.numRows) E(i, ::) := normalize(E(i, ::))
     
     E
   }
@@ -157,15 +159,16 @@ object Gaussian {
 
     val estCWithIndex = estC zipWithIndex
 
-    val L = estCWithIndex.map(x => {
-      val (mat, i) = x
-      val invEstC = inv(mat)
+    val L = estCWithIndex.map {
+      case (matrix, index) => {
+        val invEstC = inv(matrix)
       
-      val lg = log(det(mat * 2 * Math.Pi))
-      val tr = (invEstC * covarianceMat).trace + (meanVect - estM(::, i)).t * invEstC * (meanVect - estM(::, i))
+        val lg = log(det(matrix * 2 * Math.Pi))
+        val tr = (invEstC * covarianceMat).trace + (meanVect - estM(::, index)).t * invEstC * (meanVect - estM(::, index))
       
-      estW(i) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
-    }).sum
+        estW(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
+      }
+    }.sum
     
     L
   } 

@@ -38,9 +38,9 @@ class KmeanSuite extends AssertionsForJUnit {
     val vect1 = DenseVector(1.0, 1.0, 1.0, 1.0, 1.0)
     val vect2 = DenseVector(2.0, 2.0, 2.0, 2.0, 2.0)
     
-    assert(Kmean.closestCluster(means, vect0) == 0)
-    assert(Kmean.closestCluster(means, vect1) == 1)
-    assert(Kmean.closestCluster(means, vect2) == 1)
+    assert(Kmean.closestClusterIndex(means, vect0) == 0)
+    assert(Kmean.closestClusterIndex(means, vect1) == 1)
+    assert(Kmean.closestClusterIndex(means, vect2) == 1)
   }
   
   @Test def testInitializeClusters() {
@@ -92,12 +92,12 @@ class KmeanSuite extends AssertionsForJUnit {
         1 -> DenseVector.ones[Double](5)
     )
     
-    val iter1 = Kmean.assignClusts(clusts, means)
+    val iter1 = Kmean.assignNewClusters(clusts, means)
     assert(iter1._1.exists(x => x._1 == 0 && x._2 == DenseVector.zeros[Double](5)))
     assert(iter1._1.exists(x => x._1 == 1 && x._2 == DenseVector.ones[Double](5)))
     assertFalse(iter1._2)
     
-    val iter2 = Kmean.assignClusts(iter1._1, means)
+    val iter2 = Kmean.assignNewClusters(iter1._1, means)
     assert(iter2._2)
   }
   

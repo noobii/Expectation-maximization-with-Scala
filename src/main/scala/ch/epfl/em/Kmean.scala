@@ -71,7 +71,7 @@ object Kmean {
    * Computes the mean of a sequence of vectors
    */
   def mean(vects: Seq[DenseVector[Double]]): DenseVector[Double] = {
-    val sum = vects.foldLeft(DenseVector.zeros[Double](vects.head.size))((x, y) => x + y)
+    val sum = vects.foldLeft(DenseVector.zeros[Double](vects.head.size))(_ + _)
     sum := sum :/ vects.size
     sum
   }

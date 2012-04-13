@@ -101,7 +101,7 @@ class KmeanSuite extends AssertionsForJUnit {
     assert(iter2._2)
   }
   
-  
+  /*
   @Test def testHugeKmean() {
     
     println("Start huge: " + new java.util.Date())
@@ -112,7 +112,8 @@ class KmeanSuite extends AssertionsForJUnit {
     println("End huge: " + new java.util.Date())
     assert(true)
   }
-  
+  */
+
   @Test def testKmean() {
     
     for(k <- 0 until 3) {

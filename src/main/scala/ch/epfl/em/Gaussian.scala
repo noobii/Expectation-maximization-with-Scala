@@ -111,12 +111,12 @@ object Gaussian {
   def maximization(data: DenseMatrix[Double], gaussianComp: Int, estimate: DenseMatrix[Double]):
      (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
     
-    val n = data.numRows
-    val d = data.numCols
+    val measurements = data.numRows
+    val dimensions = data.numCols
 
-    val estW = DenseVector.tabulate(gaussianComp)(estimate(::, _).sum)
+    val estW = DenseVector.tabulate(gaussianComp)(i => estimate(::, i).sum)
     
-    val estM = DenseMatrix.tabulate[Double](d, gaussianComp)((dim, comp) => {
+    val estM = DenseMatrix.tabulate[Double](dimensions, gaussianComp)((dim, comp) => {
       val col: DenseVector[Double] = data(::, dim)
       
       val weightCol = col.mapPairs((index: Int, value: Double) => value * estimate(index, comp))
@@ -126,15 +126,15 @@ object Gaussian {
     })
 
     val estC = (0 until gaussianComp) map(index => {
-      val matrix = DenseMatrix.zeros[Double](d, d)
-      for(j <- 0 until n) {
+      val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)
+      for(j <- 0 until measurements) {
         val dXM = data(j, ::).asCol - estM(::, index)
         matrix += (dXM * dXM.t) :* estimate(j, index)
       }
       matrix := matrix / estW(index)
     }) toArray
     
-    estW := estW / n
+    estW := estW / measurements
     
     // Returns the estimate weigth, mean and covariance
     (estW, estM, estC)
@@ -151,21 +151,22 @@ object Gaussian {
       estC: Array[DenseMatrix[Double]]
       ): Double = {
 
-    val n = data.numRows
+    val measurements = data.numRows
     
     val meanVect = mean(data, Axis.Vertical).asCol // OK
     val covarianceMat = covariance(data, Axis.Vertical)._1 // OK
-    
-    var L = 0.0;
-    
-    for(i <- 0 until gaussianComp) {
-      val invEstC = inv(estC(i))
+
+    val estCWithIndex = estC zipWithIndex
+
+    val L = estCWithIndex.map(x => {
+      val (mat, i) = x
+      val invEstC = inv(mat)
       
-      val lg = log(det(estC(i) * 2 * Math.Pi))
+      val lg = log(det(mat * 2 * Math.Pi))
       val tr = (invEstC * covarianceMat).trace + (meanVect - estM(::, i)).t * invEstC * (meanVect - estM(::, i))
       
-      L += estW(i) * (-0.5 * n * lg - 0.5 * (n-1) * tr)
-    }
+      estW(i) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
+    }).sum
     
     L
   } 

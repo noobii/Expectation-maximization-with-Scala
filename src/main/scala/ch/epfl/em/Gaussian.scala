@@ -78,13 +78,13 @@ object Gaussian {
 
     val dimensions = data.numCols
 
-    val nEstC = estC map{matrix => 
+    val nEstC = estC map {matrix => 
       if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
       else matrix
     }
     
-    val S = nEstC.map(matrix => sqrt(det(matrix)))
-    val invEstC = nEstC.map(matrix => inv(matrix))
+    val S = nEstC map (matrix => sqrt(det(matrix)))
+    val invEstC = nEstC map (matrix => inv(matrix))
 
     val a = pow(2 * Math.Pi, dimensions / 2.0)
 
@@ -109,35 +109,34 @@ object Gaussian {
    * Returns Estimated weight, mean and covariance
    */
   def maximization(data: DenseMatrix[Double], gaussianComp: Int, estimate: DenseMatrix[Double]):
-     (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+     (DenseVector[Double], DenseMatrix[Double], Seq[DenseMatrix[Double]]) = {
     
     val measurements = data.numRows
     val dimensions = data.numCols
 
-    val estW = DenseVector.tabulate(gaussianComp)(i => estimate(::, i).sum)
+    val estWeight = DenseVector.tabulate(gaussianComp)(i => estimate(::, i).sum)
     
-    val estM = DenseMatrix.tabulate[Double](dimensions, gaussianComp)((dim, comp) => {
+    val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComp)((dim, comp) => {
       val col: DenseVector[Double] = data(::, dim)
       
       val weightCol = col.mapPairs((index: Int, value: Double) => value * estimate(index, comp))
       
-      val weightSum = weightCol.sum / estW(comp)
+      val weightSum = weightCol.sum / estWeight(comp)
       weightSum
     })
 
-    val estC = (0 until gaussianComp) map(index => {
+    val estCovariance = (0 until gaussianComp) map(index => {
       val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)
       for(j <- 0 until measurements) {
-        val dXM = data(j, ::).asCol - estM(::, index)
+        val dXM = data(j, ::).asCol - estMean(::, index)
         matrix += (dXM * dXM.t) :* estimate(j, index)
       }
-      matrix := matrix / estW(index)
+      matrix := matrix / estWeight(index)
     }) toArray
     
-    estW := estW / measurements
+    estWeight := estWeight / measurements
     
-    // Returns the estimate weigth, mean and covariance
-    (estW, estM, estC)
+    (estWeight, estMean, estCovariance)
   }
 
   /**

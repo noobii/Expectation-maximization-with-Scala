@@ -82,11 +82,13 @@ object Kmean {
   /**
    * Assign each mesure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
    */
-  def assignClusts(clusters: Seq[(Int, DenseVector[Double])], means: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
-    val newClusters = clusters.map(x => (closestCluster(means, x._2), x._2))
+  def assignClusts(data: Seq[(Int, DenseVector[Double])], means: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
+    val newClusters = data map {
+      case(_, vector) => (closestCluster(means, vector), vector)
+    }
     
     // If has convereged then no index has changed
-    val hasConverged = clusters.zip(newClusters).forall(x => x._1._1 == x._2._1)
+    val hasConverged = data zip(newClusters) forall { case((oldIndex, _), (newIndex, _)) => oldIndex == newIndex}
 
     (newClusters, hasConverged)
 

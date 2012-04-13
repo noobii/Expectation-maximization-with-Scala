@@ -80,18 +80,15 @@ object Gaussian {
     val d = data.numCols
     val a = pow(2 * Math.Pi, d / 2);
     
-    val S = DenseVector.zeros[Double](gaussianComp)
+    val matrixOfZeros = DenseMatrix.zeros[Double](d, d)
     
-    val invEstC = (1 to gaussianComp).toArray.map(_ => DenseMatrix.zeros[Double](d, d))
-    
-    for(j <- 0 until gaussianComp) {
-      if(estC(j) == DenseMatrix.zeros[Double](d, d)) {
-        estC(j) = DenseMatrix.ones[Double](d, d) * Double.MinValue
-      }
-        
-      S(j) = sqrt(det(estC(j)))
-      invEstC(j) = inv(estC(j))
+    val nEstC = estC map{matrix => 
+      if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](d, d)(Double.MinValue)
+      else matrix
     }
+    
+    val S = nEstC.map(matrix => sqrt(det(matrix)))
+    val invEstC = nEstC.map(matrix => inv(matrix))
 
     val E = DenseMatrix.zeros[Double](n, gaussianComp)
     for(i <- 0 until n) {

@@ -57,12 +57,16 @@ object Kmean {
    */
   def computeCentroids(data: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
     // Groups the data by the cluster index
-    val groups = data groupBy (_._1)
+    val groups = data groupBy { case(clusterIndex, _) => clusterIndex }
     // Creates a map where each each index identifies a the sequence of mesure in the cluster
-    val clusters = groups.map(x => (x._1, x._2.unzip._2))
+    val clusters = groups map {
+      case(clusterIndex, tuppleList) => {
+        (clusterIndex, tuppleList.unzip._2)
+      }
+    }
     
     // Computes the centroid (mean) of each cluster
-    val centroids = clusters.map(x => (x._1, mean(x._2)))
+    val centroids = clusters map {case(clusterIndex, vectors) => (clusterIndex, mean(vectors))}
     
     centroids
   }

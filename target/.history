@@ -29,3 +29,4 @@ sbt test
 test
 test-only
 exit
+test-only

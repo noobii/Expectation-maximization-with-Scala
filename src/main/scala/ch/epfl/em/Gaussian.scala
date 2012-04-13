@@ -138,8 +138,20 @@ object Gaussian {
       weightSum
     })
     
+/*
+ * there is a bug here somewhere :
+    val estC = 0 until gaussianComp map(index => {
+      val tmp = DenseMatrix.zeros[Double](d, d)
+      for(j <- 0 until n) {
+        val delta = data(j, ::).asCol - estM(::, index)
+        tmp += (delta * delta.t) * estimate(j, index)
+      }
+      tmp
+    }) toArray
+*/
+    
     val estC = (1 to gaussianComp).toArray.map(_ => DenseMatrix.zeros[Double](d, d))
-
+    
     for(i <- 0 until gaussianComp) {
       for(j <- 0 until n) {
         val dXM = data(j, ::).t - estM(::, i)

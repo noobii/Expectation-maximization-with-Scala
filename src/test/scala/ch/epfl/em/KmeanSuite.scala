@@ -20,20 +20,22 @@ class KmeanSuite extends AssertionsForJUnit {
     val x = DenseVector(1.0, 2.0, 3.0, 4.0, 5.0)
     val y = DenseVector(5.0, 4.0, 3.0, 2.0, 1.0)
 
+    val realMean = DenseVector(3.0, 3.0, 3.0, 3.0, 3.0)
+    
     val seq = Seq(x, y)
-    val mean = Kmean.mean(seq)
+    val compMean = Kmean.mean(seq)
 
-    assert(mean == DenseVector(3.0, 3.0, 3.0, 3.0, 3.0))
+    assert(compMean == realMean)
   }
   
   @Test def testClosestCluster() {
     val means = Map(
-        0 -> DenseVector.zeros[Double](5),
-        1 -> DenseVector.ones[Double](5)
+        0 -> DenseVector(0.0, 0.0, 0.0, 0.0, 0.0),
+        1 -> DenseVector(1.0, 1.0, 1.0, 1.0, 1.0)
     )
     
-    val vect0 = DenseVector.zeros[Double](5)
-    val vect1 = DenseVector.ones[Double](5)
+    val vect0 = DenseVector(0.0, 0.0, 0.0, 0.0, 0.0)
+    val vect1 = DenseVector(1.0, 1.0, 1.0, 1.0, 1.0)
     val vect2 = DenseVector(2.0, 2.0, 2.0, 2.0, 2.0)
     
     assert(Kmean.closestCluster(means, vect0) == 0)

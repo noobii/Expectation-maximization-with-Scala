@@ -76,22 +76,19 @@ object Gaussian {
       estC: Array[DenseMatrix[Double]]
       ): DenseMatrix[Double] = {
 
-    val n = data.numRows
-    val d = data.numCols
-    val a = pow(2 * Math.Pi, d / 2);
-    
-    val matrixOfZeros = DenseMatrix.zeros[Double](d, d)
-    
+    val dimensions = data.numCols
+
     val nEstC = estC map{matrix => 
-      if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](d, d)(Double.MinValue)
+      if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
       else matrix
     }
     
     val S = nEstC.map(matrix => sqrt(det(matrix)))
     val invEstC = nEstC.map(matrix => inv(matrix))
 
+    val a = pow(2 * Math.Pi, dimensions / 2.0)
 
-    val E = DenseMatrix.tabulate[Double](n, gaussianComp)((i, j) => {
+    val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComp)((i, j) => {
         val dXM = data(i, ::).t - estM(::, j)
         val coef = dXM.t * invEstC(j) * dXM
         val pl = exp(-0.5 * coef) / (a * S(j))
@@ -100,22 +97,9 @@ object Gaussian {
       }
     )
     
+    // Make all row have 1 as element sum
     // Don't know yet how to make this any more functionnal... scalala doesn't provide a map per line
     for(i <- 0 until E.numRows) E(i, ::) := E(i, ::) :/ E(i, ::).sum
-    
-    //val E = DenseMatrix.zeros[Double](n, gaussianComp)
-    /*
-    for(i <- 0 until n) {
-      for(j <- 0 until gaussianComp) {
-        val dXM = data(i, ::).t - estM(::, j)
-        val coef = dXM.t * invEstC(j) * dXM
-        val pl = exp(-0.5 * coef) / (a * S(j))
- 
-        E(i, j) = estW(j) * pl
-      }
-       
-      E(i, ::) := E(i, ::) :/ E(i, ::).sum
-    }*/
     
     E
   }

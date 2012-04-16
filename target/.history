@@ -36,3 +36,5 @@ test-onl
 test-only
 version
 test-only
+compile
+compile --force

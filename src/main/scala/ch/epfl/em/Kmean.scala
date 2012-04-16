@@ -68,7 +68,7 @@ object Kmean {
       }
     }
     
-    centroids.seq
+    centroids
   }
 
   /**
@@ -88,7 +88,7 @@ object Kmean {
     }
     
     // If has convereged then no index has changed
-    val hasConverged = data zip(newClusters) forall { case((oldIndex, _), (newIndex, _)) => oldIndex == newIndex}
+    val hasConverged = data zip(newClusters) forall {case((oldIndex, _), (newIndex, _)) => oldIndex == newIndex}
 
     (newClusters, hasConverged)
 

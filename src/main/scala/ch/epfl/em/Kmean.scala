@@ -3,6 +3,8 @@ package ch.epfl.em
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
+import scalala.tensor.dense.DenseMatrix$
+import scalala.library.Library._
 
 object Kmean {
 
@@ -16,7 +18,7 @@ object Kmean {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def kmeans(data: DenseMatrix[Double], k: Int, maxIter: Int): DenseMatrix[Double] = {
+  def kmeans(data: DenseMatrix[Double], k: Int, maxIter: Int): (DenseMatrix[Double], Seq[(Int, DenseVector[Double])]) = {
 
     // First assigns a cluster to each mesurement
     var clusters = initializeClusters(data, k)
@@ -38,9 +40,26 @@ object Kmean {
     val matrix = DenseMatrix.zeros[Double](data.numCols, k)
     for(i <- 0 until centroids.size) matrix(::, i) := centroids(i)
     
-    matrix
-
-  } 
+    (matrix, clusters)
+  }
+  
+  def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Seq[DenseMatrix[Double]] = {
+    val groupedClusters = clusters groupBy(_._1) 
+    
+    val matrixClusters = groupedClusters map (x => agregatedMatrix(x._2))
+    
+    val covariances = matrixClusters map (covariance(_, Axis.Vertical)._1)
+    
+    def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
+      val matrix = DenseMatrix.zeros[Double](vects.length, vects(0)._2.size) // not verry pretty
+      
+      for(i <- 0 until vects.length) matrix(i, ::) := vects(i)._2
+      
+      matrix
+    }
+    
+    covariances.toSeq
+  }
 
   /**
    * Initial step of the algorithm. It "randomly" assign a cluster to each mesurement.

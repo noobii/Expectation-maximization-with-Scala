@@ -44,12 +44,6 @@ object Kmean {
   }
   
   def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Seq[DenseMatrix[Double]] = {
-    val groupedClusters = clusters groupBy(_._1) 
-    
-    val matrixClusters = groupedClusters map (x => agregatedMatrix(x._2))
-    
-    val covariances = matrixClusters map (covariance(_, Axis.Vertical)._1)
-    
     def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
       val matrix = DenseMatrix.zeros[Double](vects.length, vects(0)._2.size) // not verry pretty
       
@@ -57,6 +51,12 @@ object Kmean {
       
       matrix
     }
+    
+    val groupedClusters = clusters groupBy(_._1) 
+    
+    val matrixClusters = groupedClusters map (x => agregatedMatrix(x._2))
+    
+    val covariances = matrixClusters map (covariance(_, Axis.Vertical)._1)
     
     covariances.toSeq
   }

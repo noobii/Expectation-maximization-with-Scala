@@ -132,9 +132,9 @@ class KmeanSuite extends AssertionsForJUnit {
     
     val res = Kmean.kmeans(data, k, maxIter)
     
-    val means = mean(res, Axis.Vertical).toList
+    val means = mean(res._1, Axis.Vertical).toList
 
-    val mat = res
+    val mat = res._1
     plot(mat(0, ::), mat(1, ::), '+')
 
     saveas("plot.png")

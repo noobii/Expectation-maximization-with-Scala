@@ -6,4 +6,4 @@
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestClosestCluster[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestInitializeClusters[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestKmean[0m started[0m
-[0m[[0minfo[0m] [0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 7 total, 68.765s[0m[0m
+[0m[[0minfo[0m] [0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 7 total, 53.294s[0m[0m

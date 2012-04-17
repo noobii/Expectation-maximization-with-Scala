@@ -42,7 +42,10 @@ object Kmean {
     
     (matrix, clusters)
   }
-  
+
+  /**
+   * WARNING ! crapy code ahead, will rewrite it but must test if it works first
+   */
   def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Seq[DenseMatrix[Double]] = {
     def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
       val matrix = DenseMatrix.zeros[Double](vects.length, vects(0)._2.size) // not verry pretty

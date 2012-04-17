@@ -101,7 +101,29 @@ class KmeanSuite extends AssertionsForJUnit {
     assert(iter2._2)
   }
   
+  @Test def testCovarianceOfClusters() {
+    
+    val vects = Seq(
+      (1, DenseVector(1.0, 2.0, 3.0)),
+      (2, DenseVector(3.0, 2.0, 1.0)),
+      (1, DenseVector(3.0, 2.0, 1.0)),
+      (2, DenseVector(3.0, 2.0, 1.0)),
+      (2, DenseVector(6.0, 4.0, 2.0))
+    )
+    
+    val cov = Kmean.covarianceOfClusters(vects)
+    
+    val matlabVal1 = DenseMatrix((2.0, 0.0, -2.0), (0.0, 0.0, 0.0), (-2.0, 0.0, 2.0))
+    val matlabVal2 = DenseMatrix((3.0, 2.0, 1.0), (2.0, 4.0/3.0, 2.0/3.0), (1.0, 2.0/3.0, 1.0/3.0))
 
+    val deltaMatrix = DenseMatrix.fill(3, 3)(0.01)
+    
+    assert(cov.exists(areEqual(_, matlabVal1)))
+    assert(cov.exists(areEqual(_, matlabVal2)))
+    
+  }
+
+  /*
   @Test def testHugeKmean() {
     
     println("Start huge: " + new java.util.Date())
@@ -113,7 +135,7 @@ class KmeanSuite extends AssertionsForJUnit {
     println("End huge: " + new java.util.Date())
     assert(true)
   }
-
+*/
 
   @Test def testKmean() {
     
@@ -152,5 +174,18 @@ class KmeanSuite extends AssertionsForJUnit {
   def randomVect(size: Int, from: Double, to: Double): DenseVector[Double] = {
     val interval = to - from
     DenseVector.tabulate(size)(x => from + (interval * Random.nextDouble))
+  }
+  
+  def areEqual(matA: DenseMatrix[Double], matB: DenseMatrix[Double]): Boolean = {
+    val delta = 0.001
+    
+    if(matA.numCols != matB.numCols || matA.numRows != matB.numRows) return false
+    
+    for(i <- 0 until matA.numRows) {
+      val dif = matA(i, ::) - matB(i, ::)
+      if(dif.norm(2) > delta) return false
+    }
+    
+    return true
   }
 }

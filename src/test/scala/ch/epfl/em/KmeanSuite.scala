@@ -113,16 +113,33 @@ class KmeanSuite extends AssertionsForJUnit {
     
     val cov = Kmean.covarianceOfClusters(vects)
     
-    val matlabVal1 = DenseMatrix((2.0, 0.0, -2.0), (0.0, 0.0, 0.0), (-2.0, 0.0, 2.0))
     val matlabVal0 = DenseMatrix((3.0, 2.0, 1.0), (2.0, 4.0/3.0, 2.0/3.0), (1.0, 2.0/3.0, 1.0/3.0))
-
-    val deltaMatrix = DenseMatrix.fill(3, 3)(0.01)
+    val matlabVal1 = DenseMatrix((2.0, 0.0, -2.0), (0.0, 0.0, 0.0), (-2.0, 0.0, 2.0))
     
     assert(areEqual(cov(1), matlabVal1))
     assert(areEqual(cov(0), matlabVal0))
     
   }
 
+  @Test def testWeightOfClusters() {
+  
+    val vects = Seq(
+      (1, DenseVector(1.0, 2.0, 3.0)),
+      (0, DenseVector(3.0, 2.0, 1.0)),
+      (1, DenseVector(3.0, 2.0, 1.0)),
+      (0, DenseVector(3.0, 2.0, 1.0)),
+      (0, DenseVector(6.0, 4.0, 2.0)),
+      (2, DenseVector(1.0, 1.0, 1.0))
+    )
+    
+    val output = Kmean.weightOfClusters(vects)
+    
+    val matlabVal = DenseVector(3.0/6.0, 2.0/6.0, 1.0/6.0)
+    println(output)
+    println(matlabVal)
+    
+    assert(output == matlabVal)
+  }
   /*
   @Test def testHugeKmean() {
     

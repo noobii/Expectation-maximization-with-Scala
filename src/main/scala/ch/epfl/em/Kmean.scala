@@ -67,6 +67,21 @@ object Kmean {
     covariances.toSeq
     
   }
+  
+  /**
+   * Warning, crappy code ahead, but must test if it works first
+   */
+  def weightOfClusters(clusters: Seq[(Int, DenseVector[Double])]): DenseVector[Double] =  {
+    val groupedClusters = clusters groupBy(_._1) toSeq
+    val orderedClusters = groupedClusters sortBy(_._1)
+    
+    val n = clusters.size.toDouble
+    val k = orderedClusters.size
+    
+    val vector = DenseVector.tabulate[Double](k)(x => orderedClusters(x)._2.size / n)
+    
+    vector
+  }
 
   /**
    * Initial step of the algorithm. It "randomly" assign a cluster to each mesurement.

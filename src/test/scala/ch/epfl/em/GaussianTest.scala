@@ -25,6 +25,10 @@ class GaussianTest extends AssertionsForJUnit {
     (X, k, W, M, V)
   }
   
+  @Test def testInitEm() {
+    
+  }
+  
   @Test def testEM() {
     
   }

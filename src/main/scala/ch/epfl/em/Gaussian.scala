@@ -20,11 +20,13 @@ object Gaussian {
   def initEm(
       data: DenseMatrix[Double], 
       gaussianComp: Int
-      ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+      ): (DenseVector[Double], DenseMatrix[Double], Seq[DenseMatrix[Double]]) = {
 
-    val toto = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
-    // TODO must rewrite kmeans to finish the function
-    null
+    val (initialMeans, clusters) = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
+    val initialCovariances = Kmean.covarianceOfClusters(clusters)
+    val initialWeights = Kmean.weightOfClusters(clusters)
+    
+    (initialWeights, initialMeans, initialCovariances)
   }
 
   /**
@@ -159,7 +161,7 @@ object Gaussian {
 
     val estCWithIndex = estC zipWithIndex
 
-    val L = estCWithIndex.map {
+    val elements = estCWithIndex.map {
       case (matrix, index) => {
         val invEstC = inv(matrix)
       
@@ -168,9 +170,9 @@ object Gaussian {
       
         estW(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
       }
-    }.sum
+    }
     
-    L
+    elements.sum
   } 
 
 }

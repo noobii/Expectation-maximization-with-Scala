@@ -39,3 +39,4 @@ test-only
 compile
 compile --force
 test-only
+exit

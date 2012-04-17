@@ -105,21 +105,21 @@ class KmeanSuite extends AssertionsForJUnit {
     
     val vects = Seq(
       (1, DenseVector(1.0, 2.0, 3.0)),
-      (2, DenseVector(3.0, 2.0, 1.0)),
+      (0, DenseVector(3.0, 2.0, 1.0)),
       (1, DenseVector(3.0, 2.0, 1.0)),
-      (2, DenseVector(3.0, 2.0, 1.0)),
-      (2, DenseVector(6.0, 4.0, 2.0))
+      (0, DenseVector(3.0, 2.0, 1.0)),
+      (0, DenseVector(6.0, 4.0, 2.0))
     )
     
     val cov = Kmean.covarianceOfClusters(vects)
     
     val matlabVal1 = DenseMatrix((2.0, 0.0, -2.0), (0.0, 0.0, 0.0), (-2.0, 0.0, 2.0))
-    val matlabVal2 = DenseMatrix((3.0, 2.0, 1.0), (2.0, 4.0/3.0, 2.0/3.0), (1.0, 2.0/3.0, 1.0/3.0))
+    val matlabVal0 = DenseMatrix((3.0, 2.0, 1.0), (2.0, 4.0/3.0, 2.0/3.0), (1.0, 2.0/3.0, 1.0/3.0))
 
     val deltaMatrix = DenseMatrix.fill(3, 3)(0.01)
     
-    assert(cov.exists(areEqual(_, matlabVal1)))
-    assert(cov.exists(areEqual(_, matlabVal2)))
+    assert(areEqual(cov(1), matlabVal1))
+    assert(areEqual(cov(0), matlabVal0))
     
   }
 
@@ -177,7 +177,7 @@ class KmeanSuite extends AssertionsForJUnit {
   }
   
   def areEqual(matA: DenseMatrix[Double], matB: DenseMatrix[Double]): Boolean = {
-    val delta = 0.001
+    val delta = 0.00001
     
     if(matA.numCols != matB.numCols || matA.numRows != matB.numRows) return false
     

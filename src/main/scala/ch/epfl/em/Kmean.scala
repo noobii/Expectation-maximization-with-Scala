@@ -59,6 +59,7 @@ object Kmean {
     val covariances = matrixClusters map (covariance(_, Axis.Vertical)._1)
     
     covariances.toSeq
+    
   }
 
   /**

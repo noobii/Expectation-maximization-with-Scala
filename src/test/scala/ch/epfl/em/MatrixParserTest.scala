@@ -9,22 +9,24 @@ import scalala.tensor.{:: => ::}
 
 class MatrixParserTest extends AssertionsForJUnit {
   
+  //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\"
   val path = "src\\test\\ressources\\matrices\\"
 
   @Test def parseFileTest() {
     val fileName = path + "parseTest.csv"
       
-    val parsedMatrix = MatrixParser.parseFile(fileName)
+    val parsedMatrix = FileParser.toMatrix(fileName)
     
     val rightMatrix = DenseMatrix((1.0, 2.0, 3.0), (4.0, 5.0, 6.0))
     
     assert(parsedMatrix == rightMatrix)
   }
   
+  /*
   @Test def parseForFun() {
     val fileName = path + "X.csv"
     
-    println(MatrixParser.parseFile(fileName))
-  }
+    println(FileParser.toMatrix(fileName))
+  }*/
   
 }

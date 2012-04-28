@@ -161,6 +161,7 @@ object Gaussian {
 
     val estCWithIndex = estC zipWithIndex
 
+    // Thought it could be an elegant solution to use a map with indices
     val elements = estCWithIndex.map {
       case (matrix, index) => {
         val invEstC = inv(matrix)
@@ -174,5 +175,7 @@ object Gaussian {
     
     elements.sum
   } 
+  
+  val myList = 1 to 10
 
 }

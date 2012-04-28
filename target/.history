@@ -40,3 +40,4 @@ compile
 compile --force
 test-only
 exit
+test-only

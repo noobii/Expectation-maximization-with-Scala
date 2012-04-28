@@ -1,5 +1,7 @@
 package ch.epfl.em
 
+import scala.collection.GenSeq
+import scala.collection.GenMap
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
@@ -29,7 +31,7 @@ object Kmean {
     // The core of the algo. Successively computes the new clusters and the centroids
     // until either it converges or it reaches the maximum amount of iterations
     for(i <- 0 until maxIter if !hasConverged) {
-      val (clusts, hasConv) = assignNewClusters(clusters, centroids)
+      val (clusts, hasConv) = updateClusters(clusters, centroids)
       centroids = computeCentroids(clusts)
       
       clusters = clusts
@@ -46,7 +48,7 @@ object Kmean {
   /**
    * WARNING ! crapy code ahead, will rewrite it but must test if it works first
    */
-  def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Seq[DenseMatrix[Double]] = {
+  def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Array[DenseMatrix[Double]] = {
     
     def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
       val matrix = DenseMatrix.zeros[Double](vects.length, vects(0)._2.size) // not very pretty
@@ -64,7 +66,7 @@ object Kmean {
     
     val covariances = matrixClusters map (covariance(_, Axis.Vertical)._1)
     
-    covariances.toSeq
+    covariances.toArray
     
   }
   
@@ -94,10 +96,11 @@ object Kmean {
   }
 
 
+  // !!!!
   /**
    * Compute the centroids (mean) of the data that has been assigned to clusters
    */
-  def computeCentroids(data: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
+  def computeCentroids(data: GenSeq[(Int, DenseVector[Double])]): GenMap[Int, DenseVector[Double]] = {
 
     // Groups the data by the cluster index
     val groups = data groupBy { case(clusterIndex, _) => clusterIndex }
@@ -105,7 +108,7 @@ object Kmean {
     // Creates a map where each each index identifies a the sequence of mesure in the cluster
     val centroids = groups map {
       case(clusterIndex, tuppleList) => {
-        (clusterIndex, mean(tuppleList map(_._2)))
+        (clusterIndex, mean((tuppleList map(_._2)).seq))
       }
     }
     
@@ -123,13 +126,13 @@ object Kmean {
   /**
    * Assign each mesure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
    */
-  def assignNewClusters(data: Seq[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
+  def updateClusters(data: Seq[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
     val newClusters = data map {
       case(_, vector) => (closestClusterIndex(centroids, vector), vector)
     }
     
     // If has convereged then no index has changed
-    val hasConverged = data zip(newClusters) forall {case((oldIndex, _), (newIndex, _)) => oldIndex == newIndex}
+    val hasConverged = data zip newClusters forall {case((oldIndex, _), (newIndex, _)) => oldIndex == newIndex}
 
     (newClusters, hasConverged)
 

@@ -92,12 +92,13 @@ class KmeanSuite extends AssertionsForJUnit {
         1 -> DenseVector.ones[Double](5)
     )
     
-    val iter1 = Kmean.assignNewClusters(clusts, means)
+    val iter1 = Kmean.updateClusters(clusts, means)
     assert(iter1._1.exists(x => x._1 == 0 && x._2 == DenseVector.zeros[Double](5)))
     assert(iter1._1.exists(x => x._1 == 1 && x._2 == DenseVector.ones[Double](5)))
     assertFalse(iter1._2)
     
-    val iter2 = Kmean.assignNewClusters(iter1._1, means)
+    // It should not change if updated again with the same data
+    val iter2 = Kmean.updateClusters(iter1._1, means)
     assert(iter2._2)
   }
   
@@ -156,35 +157,35 @@ class KmeanSuite extends AssertionsForJUnit {
 
   @Test def testKmean() {
     
-    for(k <- 0 until 3) {
-    val data = DenseMatrix.zeros[Double](90, 2)
-    
-    for(i <- 0 until 30) data(i, ::) := randomVect(2, -0.1, 0.1)
-    for(i <- 30 until 60) data(i, ::) := randomVect(2, 0.9, 1.1)
-    for(i <- 60 until 90) data(i, ::) := randomVect(2, 1.9, 2.1)
-    
-    plot.hold = true
-    plot(data(::, 0), data(::, 1), '.')
-    
-    val k = 3
-    val maxIter = 1000
-    
-    val res = Kmean.kmeans(data, k, maxIter)
-    
-    val means = mean(res._1, Axis.Vertical).toList
-
-    val mat = res._1
-    plot(mat(0, ::), mat(1, ::), '+')
-
-    saveas("plot.png")
-    
-        
-    println("k mean: (should be around 0, 1 and 2)")
-    println(means)
-    
-    assert(means.exists(x => -0.1 < x && x < 0.1))
-    assert(means.exists(x => 0.9 < x && x < 1.1))
-    assert(means.exists(x => 1.9 < x && x < 2.1))
+    for(k <- 0 until 1) {
+	    val data = DenseMatrix.zeros[Double](90, 2)
+	    
+	    for(i <- 0 until 30) data(i, ::) := randomVect(2, -0.1, 0.1)
+	    for(i <- 30 until 60) data(i, ::) := randomVect(2, 0.9, 1.1)
+	    for(i <- 60 until 90) data(i, ::) := randomVect(2, 1.9, 2.1)
+	    
+	    plot.hold = true
+	    plot(data(::, 0), data(::, 1), '.')
+	    
+	    val k = 3
+	    val maxIter = 1000
+	    
+	    val res = Kmean.kmeans(data, k, maxIter)
+	    
+	    val means = mean(res._1, Axis.Vertical).toList
+	
+	    val mat = res._1
+	    plot(mat(0, ::), mat(1, ::), '+')
+	
+	    saveas("plot.png")
+	    
+	        
+	    println("k mean: (should be around 0, 1 and 2)")
+	    println(means)
+	    
+	    assert(means.exists(x => -0.1 < x && x < 0.1))
+	    assert(means.exists(x => 0.9 < x && x < 1.1))
+	    assert(means.exists(x => 1.9 < x && x < 2.1))
     }
   }
 

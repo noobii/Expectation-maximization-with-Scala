@@ -19,7 +19,7 @@ class KmeanSuite extends AssertionsForJUnit {
   //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\kmeans\\"
   val path = "src\\test\\ressources\\matrices\\kmeans\\"
   
-  @Test def testCovarianceOfClustersRealData() {
+  @Test def testBiggerData() {
     val ci = FileParser.toVector(path + "Ci.csv") toArray
     val X = FileParser.toVectorSeq(path + "X.csv")
     
@@ -34,6 +34,9 @@ class KmeanSuite extends AssertionsForJUnit {
     println(covariance(0))
     println("---")
     println(covariance(1))
+    
+    // Check if weights are correct
+    assert(Kmean.weightOfClusters(clusters) == FileParser.toMatrix(path + "W.csv")(0, ::))
   }
   
   @Test def testComputeMean() {

@@ -100,7 +100,7 @@ object Kmean {
   /**
    * Compute the centroids (mean) of the data that has been assigned to clusters
    */
-  def computeCentroids(data: GenSeq[(Int, DenseVector[Double])]): GenMap[Int, DenseVector[Double]] = {
+  def computeCentroids(data: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
 
     // Groups the data by the cluster index
     val groups = data groupBy { case(clusterIndex, _) => clusterIndex }

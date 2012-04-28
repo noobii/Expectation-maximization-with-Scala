@@ -46,3 +46,6 @@ test-only
 exit
 test-only
 exit
+test-only
+reload
+test-only

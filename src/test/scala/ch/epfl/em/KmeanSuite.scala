@@ -16,6 +16,26 @@ import scalala.tensor.{:: => ::}
 
 class KmeanSuite extends AssertionsForJUnit {
   
+  //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\kmeans\\"
+  val path = "src\\test\\ressources\\matrices\\kmeans\\"
+  
+  @Test def testCovarianceOfClustersRealData() {
+    val ci = FileParser.toVector(path + "Ci.csv") toArray
+    val X = FileParser.toVectorSeq(path + "X.csv")
+    
+    val clusters = ci zip X
+    
+    val covariance = Kmean.covarianceOfClusters(clusters)
+    
+    println("Theory: ")
+    println(FileParser.toMatrix(path + "V.csv"))
+    
+    println("Practice: ")
+    println(covariance(0))
+    println("---")
+    println(covariance(1))
+  }
+  
   @Test def testComputeMean() {
     val x = DenseVector(1.0, 2.0, 3.0, 4.0, 5.0)
     val y = DenseVector(5.0, 4.0, 3.0, 2.0, 1.0)

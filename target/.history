@@ -41,3 +41,8 @@ compile --force
 test-only
 exit
 test-only
+reload
+test-only
+exit
+test-only
+exit

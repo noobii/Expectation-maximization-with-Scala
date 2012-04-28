@@ -1,0 +1,559 @@
+[0m[[0minfo[0m] [0mUpdating {file:/C:/Users/a-pigryd/workspace/em/}default-6df232...[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m:: resolving dependencies :: default#em_2.9.1;0.1-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0m	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom][0m
+[0m[[0mdebug[0m] [0m	validate = true[0m
+[0m[[0mdebug[0m] [0m	refresh = false[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-lang#scala-library;2.9.1 {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0msbt-chain: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\org.scala-lang\scala-library\ivy-2.9.1.xml[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-library;2.9.1 (resolved by Scala-Tools Maven2 Repository): C:\Users\a-pigryd\.ivy2\cache\org.scala-lang\scala-library\ivy-2.9.1.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0msbt-chain: no latest strategy defined: using default[0m
+[0m[[0mdebug[0m] [0mlocal: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\org.scala-lang\scala-library\ivy-2.9.1.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-lang#scala-library;2.9.1 (resolved by Scala-Tools Maven2 Repository): C:\Users\a-pigryd\.ivy2\cache\org.scala-lang\scala-library\ivy-2.9.1.xml[0m
+[0m[[0mdebug[0m] [0m	local: revision in cache: org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0m	checking org.scala-lang#scala-library;2.9.1 from Scala-Tools Maven2 Repository against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-lang#scala-library;2.9.1 from Scala-Tools Maven2 Repository[0m
+[0m[[0mdebug[0m] [0m	found org.scala-lang#scala-library;2.9.1 in Scala-Tools Maven2 Repository[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT of rootConf=compile[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT {compile=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0mdon't use cache for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: changing=true[0m
+[0m[[0mdebug[0m] [0mdon't use cache for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: changing=true[0m
+[0m[[0mdebug[0m] [0m	 trying C:\Users\a-pigryd\.ivy2/local/org.scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m		tried C:\Users\a-pigryd\.ivy2/local/org.scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/ivys/ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: resource not reachable for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: res=C:\Users\a-pigryd\.ivy2\local\org.scalala\scalala_2.9.1\1.0.0.RC3-SNAPSHOT\ivys\ivy.xml[0m
+[0m[[0mdebug[0m] [0m	local: no ivy file found for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0mScala Tools Snapshots: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0mdon't use cache for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: changing=true[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: The server has not found anything matching the request URI url=http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	maven-metadata not available: http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	 trying http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m		tried http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: The server has not found anything matching the request URI url=http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	Scala Tools Snapshots: resource not reachable for org/scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: res=http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	Scala Tools Snapshots: no ivy file found for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0mScalaNLP Maven2: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0mdon't use cache for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: changing=true[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	maven-metadata not available: http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	 trying http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m		tried http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	ScalaNLP Maven2: resource not reachable for org/scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: res=http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	ScalaNLP Maven2: no ivy file found for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0mpublic: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0mdon't use cache for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: changing=true[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	maven-metadata not available: http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	 trying http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m		tried http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	public: resource not reachable for org/scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: res=http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	public: no ivy file found for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[0mdebug[0m] [0mScala-Tools Maven2 Repository: no namespace defined: using system[0m
+[0m[[0mdebug[0m] [0mdon't use cache for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: changing=true[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: The server has not found anything matching the request URI url=http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	maven-metadata not available: http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/maven-metadata.xml[0m
+[0m[[0mdebug[0m] [0m	 trying http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m		tried http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mHTTP response status: 404 url=http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mCLIENT ERROR: The server has not found anything matching the request URI url=http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	Scala-Tools Maven2 Repository: resource not reachable for org/scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: res=http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0m	Scala-Tools Maven2 Repository: no ivy file found for org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[33mwarn[0m] [0m	module not found: org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT[0m
+[0m[[33mwarn[0m] [0m==== local: tried[0m
+[0m[[33mwarn[0m] [0m  C:\Users\a-pigryd\.ivy2/local/org.scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/ivys/ivy.xml[0m
+[0m[[33mwarn[0m] [0m==== Scala Tools Snapshots: tried[0m
+[0m[[33mwarn[0m] [0m  http://scala-tools.org/repo-snapshots/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[33mwarn[0m] [0m==== ScalaNLP Maven2: tried[0m
+[0m[[33mwarn[0m] [0m  http://repo.scalanlp.org/repo/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[33mwarn[0m] [0m==== public: tried[0m
+[0m[[33mwarn[0m] [0m  http://repo1.maven.org/maven2/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[33mwarn[0m] [0m==== Scala-Tools Maven2 Repository: tried[0m
+[0m[[33mwarn[0m] [0m  http://scala-tools.org/repo-releases/org/scalala/scalala_2.9.1/1.0.0.RC3-SNAPSHOT/scalala_2.9.1-1.0.0.RC3-SNAPSHOT.pom[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0mruntime is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0mruntime is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0mruntime is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0mruntime is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT of rootConf=runtime[0m
+[0m[[0mdebug[0m] [0mNode has problem.  Skip loading[0m
+[0m[[0mdebug[0m] [0mproblem : not found[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [test][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT of rootConf=test[0m
+[0m[[0mdebug[0m] [0mNode has problem.  Skip loading[0m
+[0m[[0mdebug[0m] [0mproblem : not found[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scalatest#scalatest_2.9.1;1.7.1[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scalatest#scalatest_2.9.1;1.7.1 {test=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\org.scalatest\scalatest_2.9.1\ivy-1.7.1.xml[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scalatest#scalatest_2.9.1;1.7.1 (resolved by public): C:\Users\a-pigryd\.ivy2\cache\org.scalatest\scalatest_2.9.1\ivy-1.7.1.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scalatest#scalatest_2.9.1;1.7.1[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\org.scalatest\scalatest_2.9.1\ivy-1.7.1.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scalatest#scalatest_2.9.1;1.7.1 (resolved by public): C:\Users\a-pigryd\.ivy2\cache\org.scalatest\scalatest_2.9.1\ivy-1.7.1.xml[0m
+[0m[[0mdebug[0m] [0m	local: revision in cache: org.scalatest#scalatest_2.9.1;1.7.1[0m
+[0m[[0mdebug[0m] [0m	checking org.scalatest#scalatest_2.9.1;1.7.1 from public against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: org.scalatest#scalatest_2.9.1;1.7.1 from public[0m
+[0m[[0mdebug[0m] [0m	found org.scalatest#scalatest_2.9.1;1.7.1 in public[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0mtest is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve com.novocode#junit-interface;0.8[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.novocode#junit-interface;0.8 {test=[default(compile)]}[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\com.novocode\junit-interface\ivy-0.8.xml[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for com.novocode#junit-interface;0.8 (resolved by public): C:\Users\a-pigryd\.ivy2\cache\com.novocode\junit-interface\ivy-0.8.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: com.novocode#junit-interface;0.8[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\com.novocode\junit-interface\ivy-0.8.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for com.novocode#junit-interface;0.8 (resolved by public): C:\Users\a-pigryd\.ivy2\cache\com.novocode\junit-interface\ivy-0.8.xml[0m
+[0m[[0mdebug[0m] [0m	local: revision in cache: com.novocode#junit-interface;0.8[0m
+[0m[[0mdebug[0m] [0m	checking com.novocode#junit-interface;0.8 from public against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: com.novocode#junit-interface;0.8 from public[0m
+[0m[[0mdebug[0m] [0m	found com.novocode#junit-interface;0.8 in public[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->compile][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: junit#junit;4.8.2 {compile=[compile(*), master(*)], runtime=[runtime(*)]}[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\junit\junit\ivy-4.8.2.xml[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for junit#junit;4.8.2 (resolved by public): C:\Users\a-pigryd\.ivy2\cache\junit\junit\ivy-4.8.2.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\junit\junit\ivy-4.8.2.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for junit#junit;4.8.2 (resolved by public): C:\Users\a-pigryd\.ivy2\cache\junit\junit\ivy-4.8.2.xml[0m
+[0m[[0mdebug[0m] [0m	local: revision in cache: junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0m	checking junit#junit;4.8.2 from public against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: junit#junit;4.8.2 from public[0m
+[0m[[0mdebug[0m] [0m	found junit#junit;4.8.2 in public[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m	using sbt-chain to resolve org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: org.scala-tools.testing#test-interface;0.5 {compile=[compile(*), master(*)], runtime=[runtime(*)]}[0m
+[0m[[0mdebug[0m] [0mNo entry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\org.scala-tools.testing\test-interface\ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0mpost 1.3 ivy file: using exact as default matcher[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.testing#test-interface;0.5 (resolved by sbt-chain): C:\Users\a-pigryd\.ivy2\cache\org.scala-tools.testing\test-interface\ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mEntry is found in the ModuleDescriptorCache : C:\Users\a-pigryd\.ivy2\cache\org.scala-tools.testing\test-interface\ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0m	found ivy file in cache for org.scala-tools.testing#test-interface;0.5 (resolved by sbt-chain): C:\Users\a-pigryd\.ivy2\cache\org.scala-tools.testing\test-interface\ivy-0.5.xml[0m
+[0m[[0mdebug[0m] [0m	local: revision in cache: org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0m	checking org.scala-tools.testing#test-interface;0.5 from sbt-chain against [none][0m
+[0m[[0mdebug[0m] [0m	module revision kept as first found: org.scala-tools.testing#test-interface;0.5 from sbt-chain[0m
+[0m[[0mdebug[0m] [0m	found org.scala-tools.testing#test-interface;0.5 in sbt-chain[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [runtime->compile][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [runtime->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->master][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'provided'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=provided[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'optional'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=optional[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'compile-internal'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile-internal][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mNode has problem.  Skip loading[0m
+[0m[[0mdebug[0m] [0mproblem : not found[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=compile-internal[0m
+[0m[[0mdebug[0m] [0mcompile-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime-internal'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [runtime-internal][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mNode has problem.  Skip loading[0m
+[0m[[0mdebug[0m] [0mproblem : not found[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=runtime-internal[0m
+[0m[[0mdebug[0m] [0mruntime-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'test-internal'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [test-internal][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [test][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [runtime][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [compile][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scala-lang#scala-library;2.9.1 [compile->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT [compile->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mNode has problem.  Skip loading[0m
+[0m[[0mdebug[0m] [0mproblem : not found[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies org.scalatest#scalatest_2.9.1;1.7.1->org.scala-lang#scala-library;2.9.1 [runtime->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-lang#scala-library;2.9.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->org.scalatest#scalatest_2.9.1;1.7.1 [test->master][0m
+[0m[[0mdebug[0m] [0mloadData of org.scalatest#scalatest_2.9.1;1.7.1 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->default(compile)][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->runtime][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->compile][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [compile->master(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [compile->compile(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->junit#junit;4.8.2 [runtime->compile][0m
+[0m[[0mdebug[0m] [0mloadData of junit#junit;4.8.2 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [runtime->runtime(*)][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies com.novocode#junit-interface;0.8->org.scala-tools.testing#test-interface;0.5 [runtime->compile][0m
+[0m[[0mdebug[0m] [0mloadData of org.scala-tools.testing#test-interface;0.5 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies default#em_2.9.1;0.1-SNAPSHOT->com.novocode#junit-interface;0.8 [test->master][0m
+[0m[[0mdebug[0m] [0mloadData of com.novocode#junit-interface;0.8 of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [optional][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [provided][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=test-internal[0m
+[0m[[0mdebug[0m] [0mtest-internal is loaded and no conf to load.  Skip loading[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'plugin'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [plugin][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=plugin[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'sources'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [sources][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=sources[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'docs'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [docs][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=docs[0m
+[0m[[0mdebug[0m] [0mresolving dependencies for configuration 'pom'[0m
+[0m[[0mdebug[0m] [0m== resolving dependencies for default#em_2.9.1;0.1-SNAPSHOT [pom][0m
+[0m[[0mdebug[0m] [0mloadData of default#em_2.9.1;0.1-SNAPSHOT of rootConf=pom[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 5[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scalatest#scalatest_2.9.1;1.7.1 / Number of dependencies = 13[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-tools.testing#test-interface;0.5 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  org.scalatest#scalatest_2.9.1 depends on junit#junit;4.10, doesn't match junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scalatest#scalatest_2.9.1;1.7.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.novocode#junit-interface;0.8 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : junit#junit;4.8.2 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mSort done for : com.novocode#junit-interface;0.8[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in test-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in test: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in compile: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in runtime: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in runtime-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in compile-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	resolved ivy file produced in C:\Users\a-pigryd\.ivy2\cache\resolved-default-em_2.9.1-0.1-SNAPSHOT.xml[0m
+[0m[[0mdebug[0m] [0m:: downloading artifacts ::[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in test-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in test: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in compile: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in runtime: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in runtime-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in compile-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in test-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in test: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in compile: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in runtime: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in runtime-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0morg.scala-lang#scala-library;2.9.1 in compile-internal: excluding org.scala-lang#scala-library;2.9.1!scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scalatest#scalatest_2.9.1;1.7.1!scalatest_2.9.1.jar[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.novocode#junit-interface;0.8!junit-interface.jar[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] junit#junit;4.8.2!junit.jar[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-tools.testing#test-interface;0.5!test-interface.jar[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3526ms :: artifacts dl 16ms[0m
+[0m[[33mwarn[0m] [0m	::::::::::::::::::::::::::::::::::::::::::::::[0m
+[0m[[33mwarn[0m] [0m	::          UNRESOLVED DEPENDENCIES         ::[0m
+[0m[[33mwarn[0m] [0m	::::::::::::::::::::::::::::::::::::::::::::::[0m
+[0m[[33mwarn[0m] [0m	:: org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: not found[0m
+[0m[[33mwarn[0m] [0m	::::::::::::::::::::::::::::::::::::::::::::::[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT compile produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-compile.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT runtime produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-runtime.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 5[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scalatest#scalatest_2.9.1;1.7.1 / Number of dependencies = 13[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-tools.testing#test-interface;0.5 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  org.scalatest#scalatest_2.9.1 depends on junit#junit;4.10, doesn't match junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scalatest#scalatest_2.9.1;1.7.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.novocode#junit-interface;0.8 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : junit#junit;4.8.2 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mSort done for : com.novocode#junit-interface;0.8[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT test produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-test.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT provided produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-provided.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT optional produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-optional.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT compile-internal produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-compile-internal.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT runtime-internal produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-runtime-internal.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 5[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-lang#scala-library;2.9.1 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scalatest#scalatest_2.9.1;1.7.1 / Number of dependencies = 13[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-lang#scala-library;2.9.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : org.scala-tools.testing#test-interface;0.5 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mNon matching revision detected when sorting.  org.scalatest#scalatest_2.9.1 depends on junit#junit;4.10, doesn't match junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mSort done for : org.scalatest#scalatest_2.9.1;1.7.1[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : com.novocode#junit-interface;0.8 / Number of dependencies = 2[0m
+[0m[[0mdebug[0m] [0mSort dependencies of : junit#junit;4.8.2 / Number of dependencies = 0[0m
+[0m[[0mdebug[0m] [0mSort done for : junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0mSort done for : com.novocode#junit-interface;0.8[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : junit#junit;4.8.2[0m
+[0m[[0mdebug[0m] [0mModule descriptor is processed : org.scala-tools.testing#test-interface;0.5[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT test-internal produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-test-internal.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT plugin produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-plugin.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT sources produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-sources.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT docs produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-docs.xml[0m
+[0m[[0mdebug[0m] [0mNbr of module to sort : 0[0m
+[0m[[0mdebug[0m] [0m	report for default#em_2.9.1;0.1-SNAPSHOT pom produced in C:\Users\a-pigryd\.ivy2\cache\default-em_2.9.1-pom.xml[0m
+[0m[[0mdebug[0m] [0m	resolve done (3526ms resolve - 16ms download)[0m
+sbt.ResolveException: unresolved dependency: org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: not found
+	at sbt.IvyActions$.sbt$IvyActions$$resolve(IvyActions.scala:213)
+	at sbt.IvyActions$$anonfun$update$1.apply(IvyActions.scala:124)
+	at sbt.IvyActions$$anonfun$update$1.apply(IvyActions.scala:123)
+	at sbt.IvySbt$Module$$anonfun$withModule$1.apply(Ivy.scala:110)
+	at sbt.IvySbt$Module$$anonfun$withModule$1.apply(Ivy.scala:110)
+	at sbt.IvySbt$$anonfun$withIvy$1.apply(Ivy.scala:98)
+	at sbt.IvySbt.liftedTree1$1(Ivy.scala:47)
+	at sbt.IvySbt.action$1(Ivy.scala:47)
+	at sbt.IvySbt$$anon$3.call(Ivy.scala:56)
+	at xsbt.boot.Locks$GlobalLock.withChannel$1(Locks.scala:75)
+	at xsbt.boot.Locks$GlobalLock.withChannelRetries$1(Locks.scala:58)
+	at xsbt.boot.Locks$GlobalLock$$anonfun$withFileLock$1.apply(Locks.scala:79)
+	at xsbt.boot.Using$.withResource(Using.scala:11)
+	at xsbt.boot.Using$.apply(Using.scala:10)
+	at xsbt.boot.Locks$GlobalLock.liftedTree1$1(Locks.scala:51)
+	at xsbt.boot.Locks$GlobalLock.withLock(Locks.scala:51)
+	at xsbt.boot.Locks$.apply0(Locks.scala:30)
+	at xsbt.boot.Locks$.apply(Locks.scala:27)
+	at sbt.IvySbt.withDefaultLogger(Ivy.scala:56)
+	at sbt.IvySbt.withIvy(Ivy.scala:95)
+	at sbt.IvySbt.withIvy(Ivy.scala:91)
+	at sbt.IvySbt$Module.withModule(Ivy.scala:110)
+	at sbt.IvyActions$.update(IvyActions.scala:123)
+	at sbt.Classpaths$$anonfun$work$1$1.apply(Defaults.scala:816)
+	at sbt.Classpaths$$anonfun$work$1$1.apply(Defaults.scala:814)
+	at sbt.Classpaths$$anonfun$44$$anonfun$45.apply(Defaults.scala:830)
+	at sbt.Classpaths$$anonfun$44$$anonfun$45.apply(Defaults.scala:828)
+	at sbt.Tracked$$anonfun$lastOutput$1.apply(Tracked.scala:35)
+	at sbt.Classpaths$$anonfun$44.apply(Defaults.scala:832)
+	at sbt.Classpaths$$anonfun$44.apply(Defaults.scala:827)
+	at sbt.Tracked$$anonfun$inputChanged$1.apply(Tracked.scala:45)
+	at sbt.Classpaths$.cachedUpdate(Defaults.scala:834)
+	at sbt.Classpaths$$anonfun$36.apply(Defaults.scala:734)
+	at sbt.Classpaths$$anonfun$36.apply(Defaults.scala:732)
+	at sbt.Scoped$$anonfun$hf7$1.apply(Structure.scala:478)
+	at sbt.Scoped$$anonfun$hf7$1.apply(Structure.scala:478)
+	at scala.Function1$$anonfun$compose$1.apply(Function1.scala:41)
+	at sbt.Scoped$Reduced$$anonfun$combine$1$$anonfun$apply$11.apply(Structure.scala:295)
+	at sbt.Scoped$Reduced$$anonfun$combine$1$$anonfun$apply$11.apply(Structure.scala:295)
+	at sbt.$tilde$greater$$anonfun$$u2219$1.apply(TypeFunctions.scala:40)
+	at sbt.std.Transform$$anon$5.work(System.scala:67)
+	at sbt.Execute$$anonfun$submit$1$$anonfun$apply$1.apply(Execute.scala:221)
+	at sbt.Execute$$anonfun$submit$1$$anonfun$apply$1.apply(Execute.scala:221)
+	at sbt.ErrorHandling$.wideConvert(ErrorHandling.scala:18)
+	at sbt.Execute.work(Execute.scala:227)
+	at sbt.Execute$$anonfun$submit$1.apply(Execute.scala:221)
+	at sbt.Execute$$anonfun$submit$1.apply(Execute.scala:221)
+	at sbt.CompletionService$$anon$1$$anon$2.call(CompletionService.scala:26)
+	at java.util.concurrent.FutureTask$Sync.innerRun(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask$Sync.innerRun(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+[0m[[31merror[0m] [0m{file:/C:/Users/a-pigryd/workspace/em/}default-6df232/*:[31mupdate[0m: sbt.ResolveException: unresolved dependency: org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT: not found[0m

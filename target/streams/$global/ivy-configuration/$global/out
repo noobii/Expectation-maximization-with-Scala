@@ -1,0 +1,15 @@
+[0m[[0mdebug[0m] [0mOther repositories:[0m
+[0m[[0mdebug[0m] [0mDefault repositories:[0m
+[0m[[0mdebug[0m] [0m	Raw(ProjectResolver(inter-project, mapped: ))[0m
+[0m[[0mdebug[0m] [0m	FileRepository(local,FileConfiguration(true,None),sbt.Patterns@2aec7bcd)[0m
+[0m[[0mdebug[0m] [0m	Scala Tools Snapshots: http://scala-tools.org/repo-snapshots/[0m
+[0m[[0mdebug[0m] [0m	ScalaNLP Maven2: http://repo.scalanlp.org/repo[0m
+[0m[[0mdebug[0m] [0m	public: http://repo1.maven.org/maven2/[0m
+[0m[[0mdebug[0m] [0m	Scala-Tools Maven2 Repository: http://scala-tools.org/repo-releases[0m
+[0m[[0mdebug[0m] [0mUsing inline dependencies specified in Scala.[0m
+[0m[[0minfo[0m] [0mResolving org.scala-lang#scala-library;2.9.1 ...[0m
+[0m[[0minfo[0m] [0mResolving org.scalala#scalala_2.9.1;1.0.0.RC3-SNAPSHOT ...[0m
+[0m[[0minfo[0m] [0mResolving org.scalatest#scalatest_2.9.1;1.7.1 ...[0m
+[0m[[0minfo[0m] [0mResolving com.novocode#junit-interface;0.8 ...[0m
+[0m[[0minfo[0m] [0mResolving junit#junit;4.8.2 ...[0m
+[0m[[0minfo[0m] [0mResolving org.scala-tools.testing#test-interface;0.5 ...[0m

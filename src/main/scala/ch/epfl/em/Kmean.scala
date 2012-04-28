@@ -46,13 +46,19 @@ object Kmean {
   }
 
   /**
-   * WARNING ! crapy code ahead, will rewrite it but must test if it works first
+   * Computes the covariance of each cluster. 
+   * TODO Make the code better :)
    */
   def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Array[DenseMatrix[Double]] = {
     
+    /**
+     * Creates a matrix with the given vectors as row
+     */
     def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
+      // Create a matrix that will hold all the vectors
       val matrix = DenseMatrix.zeros[Double](vects.length, vects(0)._2.size) // not very pretty
       
+      // Fills the matrix row  by row
       for(i <- 0 until vects.length) matrix(i, ::) := vects(i)._2
       
       matrix
@@ -71,18 +77,23 @@ object Kmean {
   }
   
   /**
-   * Warning, crappy code ahead, but must test if it works first
+   * Computes the weight of each cluster.
    */
   def weightOfClusters(clusters: Seq[(Int, DenseVector[Double])]): DenseVector[Double] =  {
-    val groupedClusters = clusters groupBy(_._1) toSeq
-    val orderedClusters = groupedClusters sortBy(_._1)
+    def index(x: Tuple2[Int, _]) = x._1
     
-    val n = clusters.size.toDouble
-    val k = orderedClusters.size
+    val groupedClusters = clusters groupBy(index(_)) toSeq
+    val orderedClusters = groupedClusters sortBy(index(_))
     
-    val vector = DenseVector.tabulate[Double](k)(x => orderedClusters(x)._2.size / n)
+    val numberOfMeasures = clusters.size.toDouble
+    val numberOfClusters = orderedClusters.size
     
-    vector
+    val weightVector = DenseVector.tabulate[Double](numberOfClusters)(index => {
+      val vectorsInCluster = orderedClusters(index)._2
+      vectorsInCluster.size / numberOfMeasures
+    })
+    
+    weightVector
   }
 
   /**
@@ -124,7 +135,7 @@ object Kmean {
   }
 
   /**
-   * Assign each mesure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
+   * Assign each measure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
    */
   def updateClusters(data: Seq[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
     val newClusters = data map {

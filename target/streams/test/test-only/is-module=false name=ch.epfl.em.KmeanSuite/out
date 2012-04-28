@@ -1,10 +1,10 @@
 [0m[[0minfo[0m] [0m[34mTest run started[0m[0m
-[0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestKmean[0m started[0m
-[0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestInitializeClusters[0m started[0m
-[0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestClosestCluster[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestComputeMean[0m started[0m
+[0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestClosestCluster[0m started[0m
+[0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestInitializeClusters[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestComputeCentroids[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestAssignClust[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestCovarianceOfClusters[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestWeightOfClusters[0m started[0m
-[0m[[0minfo[0m] [0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 8 total, 0.593s[0m[0m
+[0m[[0minfo[0m] [0mTest ch.epfl.em.[33mKmeanSuite[0m.[36mtestKmean[0m started[0m
+[0m[[0minfo[0m] [0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 8 total, 0.762s[0m[0m

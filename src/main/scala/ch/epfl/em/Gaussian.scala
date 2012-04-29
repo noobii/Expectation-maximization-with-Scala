@@ -217,7 +217,5 @@ object Gaussian {
     
     elements.sum
   } 
-  
-  val myList = 1 to 10
 
 }

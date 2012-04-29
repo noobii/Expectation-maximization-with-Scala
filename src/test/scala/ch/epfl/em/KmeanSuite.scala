@@ -14,6 +14,8 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
+import ch.epfl.em.NumericalChecks._
+
 class KmeanSuite extends AssertionsForJUnit {
   
   //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\kmeans\\"
@@ -25,18 +27,21 @@ class KmeanSuite extends AssertionsForJUnit {
     
     val clusters = ci zip X
     
+    
     val covariance = Kmean.covarianceOfClusters(clusters)
+    // They are next to each other in the file
+    val computedCovarianceMatrix = DenseMatrix.horzcat(covariance(0), covariance(1))
+    val matlabCovarianceMatrix = FileParser.toMatrix(path + "V.csv")
+
+    assert(closeEnough(computedCovarianceMatrix, matlabCovarianceMatrix))
     
-    println("Theory: ")
-    println(FileParser.toMatrix(path + "V.csv"))
+    val computedWeightVector = Kmean.weightOfClusters(clusters) asCol
+    val matlabCovarianceVector = FileParser.toMatrix(path + "W.csv")(0, ::)
+
+    println(computedWeightVector)
+    println(matlabCovarianceVector)
     
-    println("Practice: ")
-    println(covariance(0))
-    println("---")
-    println(covariance(1))
-    
-    // Check if weights are correct
-    assert(Kmean.weightOfClusters(clusters) == FileParser.toMatrix(path + "W.csv")(0, ::))
+    assert(closeEnough(computedWeightVector, matlabCovarianceVector))
   }
   
   @Test def testComputeMean() {
@@ -159,8 +164,6 @@ class KmeanSuite extends AssertionsForJUnit {
     val output = Kmean.weightOfClusters(vects)
     
     val matlabVal = DenseVector(3.0/6.0, 2.0/6.0, 1.0/6.0)
-    println(output)
-    println(matlabVal)
     
     assert(output == matlabVal)
   }
@@ -200,11 +203,11 @@ class KmeanSuite extends AssertionsForJUnit {
 	    val mat = res._1
 	    plot(mat(0, ::), mat(1, ::), '+')
 	
-	    saveas("plot.png")
+	    //saveas("plot.png")
 	    
 	        
-	    println("k mean: (should be around 0, 1 and 2)")
-	    println(means)
+	    //println("k mean: (should be around 0, 1 and 2)")
+	    //println(means)
 	    
 	    assert(means.exists(x => -0.1 < x && x < 0.1))
 	    assert(means.exists(x => 0.9 < x && x < 1.1))

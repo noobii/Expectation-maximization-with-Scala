@@ -4,4 +4,4 @@
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mGaussianTest[0m.[36mtestExpectation[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mGaussianTest[0m.[36mtestMaximization[0m started[0m
 [0m[[0minfo[0m] [0mTest ch.epfl.em.[33mGaussianTest[0m.[36mtestLoglikelihood[0m started[0m
-[0m[[0minfo[0m] [0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 5 total, 0.492s[0m[0m
+[0m[[0minfo[0m] [0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 5 total, 0.519s[0m[0m

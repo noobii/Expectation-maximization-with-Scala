@@ -7,6 +7,8 @@ import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 import scalala.tensor.dense.DenseMatrix$
 import scalala.library.Library._
+import scalala.operators._
+import scalala.operators.Implicits._
 
 object Kmean {
 
@@ -56,10 +58,9 @@ object Kmean {
      */
     def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
       // Create a matrix that will hold all the vectors
-      val matrix = DenseMatrix.zeros[Double](vects.length, vects(0)._2.size) // not very pretty
+      val matLines = vects map {case(_, vector) => DenseMatrix(vector.asRow)}
       
-      // Fills the matrix row  by row
-      for(i <- 0 until vects.length) matrix(i, ::) := vects(i)._2
+      val matrix = matLines reduce(DenseMatrix.vertcat(_, _))
       
       matrix
     }

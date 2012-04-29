@@ -7,7 +7,7 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
-class MatrixParserTest extends AssertionsForJUnit {
+class FileParserTest extends AssertionsForJUnit {
   
   //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\"
   val path = "src\\test\\ressources\\matrices\\"

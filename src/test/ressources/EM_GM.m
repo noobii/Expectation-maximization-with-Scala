@@ -72,9 +72,6 @@ end
 t = cputime;
 if isempty(Init),  
     [W,M,V] = Init_EM(X,k); L = 0;
-    dlmwrite('matrices/initEM/W.csv', W);
-    dlmwrite('matrices/initEM/M.csv', M);
-    dlmwrite('matrices/initEM/V.csv', V);
 
 else
     W = Init.W;

@@ -1,7 +1,6 @@
 package ch.epfl.em
 
 import scala.Array.canBuildFrom
-
 import scalala.library.Library.Axis
 import scalala.library.Library.abs
 import scalala.library.Library.covariance
@@ -19,16 +18,45 @@ import scalala.tensor.{:: => ::}
 object Gaussian {
 
   def main(args: Array[String]): Unit = {
-        
     
+    val fileName = "src\\test\\ressources\\matrices\\em\\X.csv"
+    
+    println("read file" + System.currentTimeMillis())
+    val data = FileParser.toMatrix(fileName)
+    println("File Read" + System.currentTimeMillis())
+    runAlgo(data, 3)
     
   }
+  
+  def runAlgo(data: DenseMatrix[Double], gaussianComponents: Int) = {
+    
+    println("Init data")
+    val (initialWeights, initialMeans, initialCovariances) = initEm(data, gaussianComponents)
+    val log = likelihood(data, gaussianComponents, initialWeights, initialMeans, initialCovariances)
+    println("Data init")
+    
+    val start = System.currentTimeMillis()
+    
+    val (estW, estM, estC, lg) = em(data, gaussianComponents, initialWeights, initialMeans, initialCovariances, log, 1000)
+    
+    val end = System.currentTimeMillis()
+    
+    val diff = end - start
+    
+    println("Weight: \n" + estW)
+    println("Means: \n" + estM)
+    
+    println("Time: " + diff)
+    
+    diff
+  }
+  
 
   // TODO write test suite
   def initEm(
       data: DenseMatrix[Double], 
       gaussianComp: Int
-      ): (DenseVector[Double], DenseMatrix[Double], Seq[DenseMatrix[Double]]) = {
+      ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
 
     val (initialMeans, clusters) = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
     val initialCovariances = Kmean.covarianceOfClusters(clusters)

@@ -21,24 +21,30 @@ object Gaussian {
     
     val fileName = "src\\test\\ressources\\matrices\\em\\X.csv"
     
-    println("read file" + System.currentTimeMillis())
+    printStatus("Read file")
     val data = FileParser.toMatrix(fileName)
-    println("File Read" + System.currentTimeMillis())
+    printStatus("File Read")
     runAlgo(data, 3)
     
   }
   
+  private def printStatus(text: String) {
+    val now = new java.util.Date
+    
+    println(now + ": " + text)
+  }
+  
   def runAlgo(data: DenseMatrix[Double], gaussianComponents: Int) = {
     
-    println("Init data")
+    printStatus("Init data")
     val (initialWeights, initialMeans, initialCovariances) = initEm(data, gaussianComponents)
     val log = likelihood(data, gaussianComponents, initialWeights, initialMeans, initialCovariances)
-    println("Data init")
+    printStatus("Data init")
     
+    printStatus("Run algo")
     val start = System.currentTimeMillis()
-    
     val (estW, estM, estC, lg) = em(data, gaussianComponents, initialWeights, initialMeans, initialCovariances, log, 1000)
-    
+    printStatus("End algo")
     val end = System.currentTimeMillis()
     
     val diff = end - start
@@ -46,7 +52,7 @@ object Gaussian {
     println("Weight: \n" + estW)
     println("Means: \n" + estM)
     
-    println("Time: " + diff)
+    println("Time: " + diff/1000.0)
     
     diff
   }

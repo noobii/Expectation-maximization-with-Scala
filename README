@@ -1,3 +1,11 @@
-Build with sbt.
+ ________  ___           _____            _       
+|  ___|  \/  |          /  ___|          | |      
+| |__ | .  . |  ______  \ `--.  ___  __ _| | __ _ 
+|  __|| |\/| | |______|  `--. \/ __|/ _` | |/ _` |
+| |___| |  | |          /\__/ / (__| (_| | | (_| |
+\____/\_|  |_/          \____/ \___|\__,_|_|\__,_|
 
-So for you can rund test by running: test-only
+
+Uses sbt
+
+For now only test-only does something you can look at...

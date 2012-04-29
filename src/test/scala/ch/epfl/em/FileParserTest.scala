@@ -4,8 +4,6 @@ import org.junit.Test
 import org.scalatest.junit.AssertionsForJUnit
 
 import scalala.tensor.dense.DenseMatrix
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.{:: => ::}
 
 class FileParserTest extends AssertionsForJUnit {
   

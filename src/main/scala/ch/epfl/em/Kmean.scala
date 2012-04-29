@@ -1,14 +1,10 @@
 package ch.epfl.em
 
-import scala.collection.GenSeq
-import scala.collection.GenMap
+import scalala.library.Library.Axis
+import scalala.library.Library.covariance
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
-import scalala.tensor.dense.DenseMatrix$
-import scalala.library.Library._
-import scalala.operators._
-import scalala.operators.Implicits._
 
 object Kmean {
 
@@ -16,7 +12,6 @@ object Kmean {
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
    * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access
    * a map. This must be fixed.
-   * TODO : Fix when the algo doesn't converge it should do something more gracefull than throw exceptions...
    * @param data: the data, where each row is a mesurement and each column a variable
    * @param k: number of clusters
    * @param maxIter: maximum number of iterations used in the algorithm

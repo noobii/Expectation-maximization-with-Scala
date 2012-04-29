@@ -1,20 +1,19 @@
 package ch.epfl.em
 
+import scala.Array.canBuildFrom
 import scala.util.Random
 
 import org.junit.Assert.assertFalse
 import org.junit.Test
 import org.scalatest.junit.AssertionsForJUnit
 
+import ch.epfl.em.NumericalChecks.closeEnough
 import scalala.library.Library.Axis
 import scalala.library.Library.mean
 import scalala.library.Plotting.plot
-import scalala.library.Plotting.saveas
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
-
-import ch.epfl.em.NumericalChecks._
 
 class KmeanSuite extends AssertionsForJUnit {
   

@@ -1,9 +1,11 @@
 package ch.epfl.em
+
+import scala.Array.canBuildFrom
+import scala.io.Source.fromFile
+
+import scalala.operators.Implicits.richArray
 import scalala.tensor.dense.DenseMatrix
-import scala.io.Source._
 import scalala.tensor.dense.DenseVector
-import scalala.operators._
-import scalala.operators.Implicits._
 
 /**
  * WARING COPY / PASTE CODE !
@@ -52,6 +54,11 @@ object FileParser {
     source.close()
     
     vector
+  }
+  
+  private def processFile[V](fileName: String, applyToRow: Array[_] => V): Array[V] = {
+    
+    null
   }
   
 }

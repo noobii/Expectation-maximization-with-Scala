@@ -16,7 +16,7 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
-object Gaussian {
+class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
 
   def main(args: Array[String]): Unit = {
     
@@ -27,7 +27,7 @@ object Gaussian {
     printStatus("Read file")
     val data = FileParser(fileName).toMatrix
     printStatus("File Read")
-    runAlgo(data, 3)
+    runAlgo
     
   }
   
@@ -38,16 +38,16 @@ object Gaussian {
   }
   
   
-  def runAlgo(data: DenseMatrix[Double], gaussianComponents: Int) = {
+  def runAlgo = {
     
     printStatus("Init data")
-    val (initialWeights, initialMeans, initialCovariances) = initEm(data, gaussianComponents)
-    val log = likelihood(data, gaussianComponents, initialWeights, initialMeans, initialCovariances)
+    val (initialWeights, initialMeans, initialCovariances) = initEm
+    val log = likelihood(initialWeights, initialMeans, initialCovariances)
     printStatus("Data init")
     
     printStatus("Run algo")
     val start = System.currentTimeMillis()
-    val (estW, estM, estC, lg) = em(data, gaussianComponents, initialWeights, initialMeans, initialCovariances, log, 1000)
+    val (estW, estM, estC, lg) = em(initialWeights, initialMeans, initialCovariances, log, 1000)
     printStatus("End algo")
     val end = System.currentTimeMillis()
     
@@ -63,12 +63,9 @@ object Gaussian {
   
 
   // TODO write test suite
-  def initEm(
-      data: DenseMatrix[Double], 
-      gaussianComp: Int
-      ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+  def initEm: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
 
-    val (initialMeans, clusters) = Kmean.kmeans(data, gaussianComp, Int.MaxValue)
+    val (initialMeans, clusters) = Kmean.kmeans(data, gaussianComponents, Int.MaxValue)
     val initialCovariances = Kmean.covarianceOfClusters(clusters)
     val initialWeights = Kmean.weightOfClusters(clusters)
     
@@ -81,8 +78,6 @@ object Gaussian {
    * TODO Write test suite
    */
   def em(
-      data: DenseMatrix[Double], 
-      gaussianComp: Int, 
       estW: DenseVector[Double], 
       estM: DenseMatrix[Double], 
       estC: Array[DenseMatrix[Double]], 
@@ -102,11 +97,11 @@ object Gaussian {
     var lEstC: Array[DenseMatrix[Double]] = estC
     
     while(!approxGoodEnough && (iterations < maxIter)) {
-      val exp = expectation(data, gaussianComp, lEstW, lEstM, lEstC)
-      val maxRes = maximization(data, gaussianComp, exp)
+      val exp = expectation(lEstW, lEstM, lEstC)
+      val maxRes = maximization(exp)
       Lo = Ln
       // SLOW
-      Ln = likelihood(data, gaussianComp, lEstW, lEstM, lEstC)
+      Ln = likelihood(lEstW, lEstM, lEstC)
       iterations += 1
     }
     
@@ -118,8 +113,6 @@ object Gaussian {
    * Return the expectation of the value
    */
   def expectation(
-      data: DenseMatrix[Double], 
-      gaussianComp: Int, 
       estW: DenseVector[Double], 
       estM: DenseMatrix[Double], 
       estC: Array[DenseMatrix[Double]]
@@ -137,7 +130,7 @@ object Gaussian {
 
     val a = pow(2 * Pi, dimensions / 2.0)
 
-    val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComp)((i, j) => {
+    val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComponents)((i, j) => {
         val delta = data(i, ::).asCol - estM(::, j)
         val coef = delta.t * invEstC(j) * delta
         val pl = exp(-0.5 * coef) / (a * S(j))
@@ -159,15 +152,15 @@ object Gaussian {
    * Maximization part of the algorithm.
    * Returns Estimated weight, mean and covariance
    */
-  def maximization(data: DenseMatrix[Double], gaussianComp: Int, estimate: DenseMatrix[Double]):
+  def maximization(estimate: DenseMatrix[Double]):
      (DenseVector[Double], DenseMatrix[Double], Seq[DenseMatrix[Double]]) = {
     
     val measurements = data.numRows
     val dimensions = data.numCols
 
-    val estWeight = DenseVector.tabulate(gaussianComp)(i => estimate(::, i).sum)
+    val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
     
-    val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComp)((dim, comp) => {
+    val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComponents)((dim, comp) => {
       val col: DenseVector[Double] = data(::, dim)
       
       val weightCol = col.mapPairs((index: Int, value: Double) => value * estimate(index, comp))
@@ -176,7 +169,7 @@ object Gaussian {
       weightSum
     })
 
-    val estCovariance = (0 until gaussianComp) map(index => {
+    val estCovariance = (0 until gaussianComponents) map(index => {
       val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)
       for(j <- 0 until measurements) {
         val dXM = data(j, ::).asCol - estMean(::, index)
@@ -197,8 +190,6 @@ object Gaussian {
    * Computes the log-likelihood that the estimated values are correct.
    */
   def likelihood(
-      data: DenseMatrix[Double], 
-      gaussianComp: Int, 
       estW: DenseVector[Double], 
       estM: DenseMatrix[Double], 
       estC: Array[DenseMatrix[Double]]

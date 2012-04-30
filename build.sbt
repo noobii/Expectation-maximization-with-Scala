@@ -17,4 +17,4 @@ resolvers ++= Seq(
 
 scalaVersion := "2.9.0"
 
-scalaOptions ++= Seq("-unchecked", "-deprecation", "-optimise")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-optimise")

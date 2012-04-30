@@ -1,6 +1,7 @@
 package ch.epfl.em
 
 import scala.Array.canBuildFrom
+import scala.math.Pi
 import scalala.library.Library.Axis
 import scalala.library.Library.abs
 import scalala.library.Library.covariance
@@ -101,6 +102,7 @@ object Gaussian {
       val exp = expectation(data, gaussianComp, lEstW, lEstM, lEstC)
       val maxRes = maximization(data, gaussianComp, exp)
       Lo = Ln
+      // SLOW
       Ln = likelihood(data, gaussianComp, lEstW, lEstM, lEstC)
       iterations += 1
     }
@@ -130,7 +132,7 @@ object Gaussian {
     val S = nEstC map (matrix => sqrt(det(matrix)))
     val invEstC = nEstC map (matrix => inv(matrix))
 
-    val a = pow(2 * Math.Pi, dimensions / 2.0)
+    val a = pow(2 * Pi, dimensions / 2.0)
 
     val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComp)((i, j) => {
         val delta = data(i, ::).asCol - estM(::, j)
@@ -208,7 +210,7 @@ object Gaussian {
       case (matrix, index) => {
         val invEstC = inv(matrix)
       
-        val lg = log(det(matrix * 2 * Math.Pi))
+        val lg = log(det(matrix * 2 * Pi))
         val tr = (invEstC * covarianceMat).trace + (meanVect - estM(::, index)).t * invEstC * (meanVect - estM(::, index))
       
         estW(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)

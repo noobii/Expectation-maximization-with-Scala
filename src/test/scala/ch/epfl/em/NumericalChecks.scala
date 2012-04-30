@@ -1,6 +1,7 @@
 package ch.epfl.em
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
+import scala.math.abs
 
 object NumericalChecks {
 
@@ -14,7 +15,7 @@ object NumericalChecks {
       
       val diff = mat1 - mat2
             
-      return diff.forallValues(Math.abs(_) < delta)
+      return diff.forallValues(abs(_) < delta)
       
     }
     
@@ -25,7 +26,7 @@ object NumericalChecks {
     if(vect1.size == vect2.size) {
       val diff = vect1 - vect2
       
-      return diff.forallValues(Math.abs(_) < delta)
+      return diff.forallValues(abs(_) < delta)
     }
     
     false

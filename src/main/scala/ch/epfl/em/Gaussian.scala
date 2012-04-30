@@ -37,6 +37,7 @@ object Gaussian {
     println(now + ": " + text)
   }
   
+  
   def runAlgo(data: DenseMatrix[Double], gaussianComponents: Int) = {
     
     printStatus("Init data")

@@ -20,7 +20,9 @@ object Gaussian {
 
   def main(args: Array[String]): Unit = {
     
-    val fileName = "src\\test\\ressources\\matrices\\em\\X.csv"
+    val s = System.getProperty("file.separator")
+    
+    val fileName = "src/test/ressources/matrices/em/X.csv"
     
     printStatus("Read file")
     val data = FileParser(fileName).toMatrix
@@ -186,7 +188,10 @@ object Gaussian {
     
     (estWeight, estMean, estCovariance)
   }
-
+  
+  var meanVect: Option[DenseVector[Double]] = None
+  var covMat:Option[DenseMatrix[Double]] = None
+  
   /**
    * Computes the log-likelihood that the estimated values are correct.
    */
@@ -201,7 +206,10 @@ object Gaussian {
     val measurements = data.numRows
     
     val meanVect = mean(data, Axis.Vertical).asCol // OK
-    val covarianceMat = covariance(data, Axis.Vertical)._1 // OK
+    
+    if(!covMat.isDefined) covMat = Some(covariance(data, Axis.Vertical)._1)
+    
+    val covarianceMat = covMat.get
 
     val estCWithIndex = estC zipWithIndex
 

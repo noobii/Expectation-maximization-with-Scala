@@ -7,8 +7,7 @@ import scalala.tensor.dense.DenseVector
 
 class FileParserTest extends AssertionsForJUnit {
   
-  //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\"
-  val path = "src\\test\\ressources\\matrices\\parsing\\"
+  val path = "src/test/ressources/matrices/parsing/"
 
   @Test def toVectorSeq() {
     val fileName = path + "vectSeq.csv"

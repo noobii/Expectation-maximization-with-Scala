@@ -17,8 +17,7 @@ import scalala.tensor.{:: => ::}
 
 class KmeanSuite extends AssertionsForJUnit {
   
-  //val path = "C:\\Users\\a-pigryd\\workspace\\em\\src\\test\\ressources\\matrices\\kmeans\\"
-  val path = "src\\test\\ressources\\matrices\\kmeans\\"
+  val path = "src/test/ressources/matrices/kmeans/"
   
   @Test def testBiggerData() {
     val ci = FileParser(path + "Ci.csv").toVector toArray

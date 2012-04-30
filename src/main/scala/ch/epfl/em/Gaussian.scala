@@ -16,27 +16,35 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
-class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
-
+object Gaussian {
   def main(args: Array[String]): Unit = {
-    
-    val s = System.getProperty("file.separator")
-    
+        
     val fileName = "src/test/ressources/matrices/em/X.csv"
     
     printStatus("Read file")
     val data = FileParser(fileName).toMatrix
     printStatus("File Read")
-    runAlgo
     
+    val g = new Gaussian(data, 3)
+    
+    g.runAlgo
+    
+    
+    println("Weights should be: (0.6, 0.2, 0.2)")
+    println("Means should be:")
+    println("0.5\t3\t3")
+    println("0\t-2\t3")
   }
   
-  private def printStatus(text: String) {
+  protected def printStatus(text: String) {
     val now = new java.util.Date
     
     println(now + ": " + text)
   }
-  
+}
+
+class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
+  import Gaussian.printStatus // is this really the best way to do it?
   
   def runAlgo = {
     
@@ -183,6 +191,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     (estWeight, estMean, estCovariance)
   }
   
+  // This data will be used several times and do not need to be recomputed
   var meanVect = mean(data, Axis.Vertical).asCol
   var covarianceMat = covariance(data, Axis.Vertical)._1
   

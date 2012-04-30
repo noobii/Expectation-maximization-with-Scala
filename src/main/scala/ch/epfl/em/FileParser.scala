@@ -8,8 +8,12 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 
 
-case class FileParser(fileName: String) {
+case class FileParser(var fileName: String) {
 
+  val separator = System.getProperty("file.separator")
+  if(fileName.contains("\\") && separator == "/") fileName = fileName.replace("\\", "/")
+  if(fileName.contains("/") && separator == "\\") fileName = fileName.replace("/", "\\")
+  
   def toVectorSeq: Array[DenseVector[Double]] = {
     def lineToVector(line: String): DenseVector[Double] = line.split(',').map(_.toDouble).asVector.asRow 
 

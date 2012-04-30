@@ -8,28 +8,28 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 
 
-object FileParser {
+case class FileParser(fileName: String) {
 
-  def toVectorSeq(fileName: String): Array[DenseVector[Double]] = {
+  def toVectorSeq: Array[DenseVector[Double]] = {
     def lineToVector(line: String): DenseVector[Double] = line.split(',').map(_.toDouble).asVector.asRow 
 
-    processFile(fileName, lineToVector(_)) toArray
+    processFile(lineToVector(_)) toArray
 
   }  
   
-  def toMatrix(fileName: String): DenseMatrix[Double] = {
+  def toMatrix: DenseMatrix[Double] = {
     def lineToMatrix(line: String): DenseMatrix[Double] = line.split(',').map(_.toDouble).asMatrix(1)
 
-    val lineMatrices = processFile(fileName, lineToMatrix(_))
+    val lineMatrices = processFile(lineToMatrix(_))
     
     val matrix = lineMatrices reduce (DenseMatrix.vertcat(_, _))
     
     matrix
   }
 
-  def toVector(fileName: String): DenseVector[Int] = processFile(fileName, _.toInt).toArray.asVector
+  def toVector: DenseVector[Int] = processFile(_.toInt).toArray.asVector
   
-  private def processFile[V](fileName: String, applyToLine: String => V) = {
+  private def processFile[V](applyToLine: String => V) = {
     val source = fromFile(fileName)
     
     val lines = source getLines() toArray

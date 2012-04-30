@@ -21,8 +21,8 @@ class KmeanSuite extends AssertionsForJUnit {
   val path = "src\\test\\ressources\\matrices\\kmeans\\"
   
   @Test def testBiggerData() {
-    val ci = FileParser.toVector(path + "Ci.csv") toArray
-    val X = FileParser.toVectorSeq(path + "X.csv")
+    val ci = FileParser(path + "Ci.csv").toVector toArray
+    val X = FileParser(path + "X.csv").toVectorSeq
     
     val clusters = ci zip X
     
@@ -30,12 +30,12 @@ class KmeanSuite extends AssertionsForJUnit {
     val covariance = Kmean.covarianceOfClusters(clusters)
     // They are next to each other in the file
     val computedCovarianceMatrix = DenseMatrix.horzcat(covariance(0), covariance(1))
-    val matlabCovarianceMatrix = FileParser.toMatrix(path + "V.csv")
+    val matlabCovarianceMatrix = FileParser(path + "V.csv").toMatrix
 
     assert(closeEnough(computedCovarianceMatrix, matlabCovarianceMatrix))
     
     val computedWeightVector = Kmean.weightOfClusters(clusters) asCol
-    val matlabCovarianceVector = FileParser.toMatrix(path + "W.csv")(0, ::)
+    val matlabCovarianceVector = FileParser(path + "W.csv").toMatrix(0, ::)
 
     println(computedWeightVector)
     println(matlabCovarianceVector)

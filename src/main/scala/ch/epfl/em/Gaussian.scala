@@ -23,7 +23,7 @@ object Gaussian {
     val fileName = "src\\test\\ressources\\matrices\\em\\X.csv"
     
     printStatus("Read file")
-    val data = FileParser.toMatrix(fileName)
+    val data = FileParser(fileName).toMatrix
     printStatus("File Read")
     runAlgo(data, 3)
     

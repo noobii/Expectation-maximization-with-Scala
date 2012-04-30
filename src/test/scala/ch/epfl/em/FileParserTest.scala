@@ -13,7 +13,7 @@ class FileParserTest extends AssertionsForJUnit {
   @Test def toVectorSeq() {
     val fileName = path + "vectSeq.csv"
     
-    val parsedSeq = FileParser.toVectorSeq(fileName)
+    val parsedSeq = FileParser(fileName).toVectorSeq
     
     val rightSeq = Array(DenseVector(1.0, 2.0, 3.0) asRow, DenseVector(4.0, 5.0, 6.0) asRow)
     
@@ -24,7 +24,7 @@ class FileParserTest extends AssertionsForJUnit {
   @Test def toVectorTest() {
     val fileName = path + "intVector.csv"
     
-    val parsedVector = FileParser.toVector(fileName)
+    val parsedVector = FileParser(fileName).toVector
     
     val rightVector = DenseVector(1, 2, 3, 4, 5, 4, 3, 2, 1)
     
@@ -34,7 +34,7 @@ class FileParserTest extends AssertionsForJUnit {
   @Test def toMatrixTest() {
     val fileName = path + "doubleMatrix.csv"
       
-    val parsedMatrix = FileParser.toMatrix(fileName)
+    val parsedMatrix = FileParser(fileName).toMatrix
     
     val rightMatrix = DenseMatrix((1.0, 2.0, 3.0), (4.0, 5.0, 6.0))
     

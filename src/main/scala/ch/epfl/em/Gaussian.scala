@@ -183,8 +183,8 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     (estWeight, estMean, estCovariance)
   }
   
-  var meanVect: Option[DenseVector[Double]] = None
-  var covMat:Option[DenseMatrix[Double]] = None
+  var meanVect = mean(data, Axis.Vertical).asCol
+  var covarianceMat = covariance(data, Axis.Vertical)._1
   
   /**
    * Computes the log-likelihood that the estimated values are correct.
@@ -196,12 +196,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
       ): Double = {
 
     val measurements = data.numRows
-    
-    val meanVect = mean(data, Axis.Vertical).asCol // OK
-    
-    if(!covMat.isDefined) covMat = Some(covariance(data, Axis.Vertical)._1)
-    
-    val covarianceMat = covMat.get
 
     val estCWithIndex = estC zipWithIndex
 

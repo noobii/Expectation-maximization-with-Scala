@@ -19,13 +19,14 @@ import scalala.tensor.{:: => ::}
 object Gaussian {
   def main(args: Array[String]): Unit = {
         
-    val fileName = "src/test/ressources/matrices/em/X.csv"
-    
+    val fileName = "src/test/ressources/em/10k/X.csv"
+    val k = 3
+      
     printStatus("Read file")
     val data = FileParser(fileName).toMatrix
     printStatus("File Read")
     
-    val g = new Gaussian(data, 3)
+    val g = new Gaussian(data, k)
     
     g.runAlgo
     

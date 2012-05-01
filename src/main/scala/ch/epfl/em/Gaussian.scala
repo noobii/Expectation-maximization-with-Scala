@@ -35,6 +35,18 @@ object Gaussian {
     println("Means should be:")
     println("0.5\t3\t3")
     println("0\t-2\t3")
+    
+    
+    val fileName2 = "src/test/ressources/em/50k/X.csv"
+    val k2 = 6
+    
+    printStatus("Read file")
+    val data2 = FileParser(fileName2).toMatrix
+    printStatus("File read")
+    
+    val g2 = new Gaussian(data2, k2)
+    
+    g2.runAlgo
   }
   
   protected def printStatus(text: String) {

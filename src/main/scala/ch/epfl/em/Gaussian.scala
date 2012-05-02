@@ -18,15 +18,8 @@ import scalala.tensor.{:: => ::}
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
-        
-    val fileName = "src/test/ressources/em/10k/X.csv"
-    val k = 3
-      
-    printStatus("Read file")
-    val data = FileParser(fileName).toMatrix
-    printStatus("File Read")
-    
-    val g = new Gaussian(data, k)
+  
+    val g = dataFromFile("src/test/ressources/em/10k/X.csv", 3)
     
     g.runAlgo
     
@@ -53,6 +46,21 @@ object Gaussian {
     val now = new java.util.Date
     
     println(now + ": " + text)
+  }
+  
+  /*
+  protected def printStatusAround(toSay: String)(toRun: Unit): Unit = {
+    printStatus(toSay + ": start!")
+    toRun
+    printStatus(toSay + ": done!")
+  }*/
+  
+  def dataFromFile(dataSource: String, gaussianComp: Int): Gaussian = {
+    printStatus("Reading file: " + dataSource)
+    val data = FileParser(dataSource).toMatrix
+    printStatus("File read")
+    
+    new Gaussian(data, gaussianComp)
   }
 }
 

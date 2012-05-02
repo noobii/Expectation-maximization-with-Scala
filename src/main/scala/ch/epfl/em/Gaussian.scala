@@ -86,7 +86,8 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   // TODO write test suite
   def initEm: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
 
-    val (initialMeans, clusters) = Kmean.kmeans(data, gaussianComponents, Int.MaxValue)
+    val kmean = new Kmean(data, gaussianComponents)
+    val (initialMeans, clusters) = kmean.compute(Int.MaxValue)
     val initialCovariances = Kmean.covarianceOfClusters(clusters)
     val initialWeights = Kmean.weightOfClusters(clusters)
     

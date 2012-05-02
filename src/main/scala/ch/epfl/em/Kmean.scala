@@ -18,7 +18,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def kmeans(maxIter: Int): (DenseMatrix[Double], Seq[(Int, DenseVector[Double])]) = {
+  def compute(maxIter: Int = Int.MaxValue): (DenseMatrix[Double], Seq[(Int, DenseVector[Double])]) = {
 
     // First assigns a cluster to each mesurement
     var clusters = initializeClusters

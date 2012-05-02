@@ -196,7 +196,7 @@ class KmeanSuite extends AssertionsForJUnit {
 	    val maxIter = 1000
 	    
 	    val kmean = new Kmean(data, k)
-	    val res = kmean.kmeans(maxIter)
+	    val res = kmean.compute(maxIter)
 	    
 	    val means = mean(res._1, Axis.Vertical).toList
 	

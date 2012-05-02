@@ -6,8 +6,9 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
-object Kmean {
-
+class Kmean(data: DenseMatrix[Double], k: Int) {
+  import ch.epfl.em.Kmean._
+  
   /**
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
    * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access
@@ -17,10 +18,10 @@ object Kmean {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def kmeans(data: DenseMatrix[Double], k: Int, maxIter: Int): (DenseMatrix[Double], Seq[(Int, DenseVector[Double])]) = {
+  def kmeans(maxIter: Int): (DenseMatrix[Double], Seq[(Int, DenseVector[Double])]) = {
 
     // First assigns a cluster to each mesurement
-    var clusters = initializeClusters(data, k)
+    var clusters = initializeClusters
     // Compute the centroids of the clusters
     var centroids = computeCentroids(clusters)
     var hasConverged = false
@@ -41,6 +42,19 @@ object Kmean {
     
     (matrix, clusters)
   }
+  
+  /**
+   * Initial step of the algorithm. It "randomly" assign a cluster to each mesurement.
+   * Currently it is purely deterministic and assigns clusters sequentially from 0 to k-1
+   * and starts over again. 
+   */
+  def initializeClusters: Seq[(Int, DenseVector[Double])] = {
+    // Not so very random but at least we are sure that all clusters indexes are represented
+    for(i <- 0 until data.numRows) yield (i % k, data(i, ::))
+  }
+}
+
+object Kmean {
 
   /**
    * Computes the covariance of each cluster. 
@@ -90,17 +104,6 @@ object Kmean {
     
     weightVector
   }
-
-  /**
-   * Initial step of the algorithm. It "randomly" assign a cluster to each mesurement.
-   * Currently it is purely deterministic and assigns clusters sequentially from 0 to k-1
-   * and starts over again. 
-   */
-  def initializeClusters(data: DenseMatrix[Double], k: Int): Seq[(Int, DenseVector[Double])] = {
-    // Not so very random but at least we are sure that all clusters indexes are represented
-    for(i <- 0 until data.numRows) yield (i % k, data(i, ::))
-  }
-
 
   // !!!!
   /**

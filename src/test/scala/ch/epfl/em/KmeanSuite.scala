@@ -73,7 +73,8 @@ class KmeanSuite extends AssertionsForJUnit {
     val matrix = DenseMatrix.ones[Double](10, 10)
     val k = 5
     
-    val randClusters = Kmean.initializeClusters(matrix, k)
+    val kmean = new Kmean(matrix, k)
+    val randClusters = kmean.initializeClusters
         
     // Check that there are as many rows as objects
     assert(randClusters.length == matrix.numRows)
@@ -194,7 +195,8 @@ class KmeanSuite extends AssertionsForJUnit {
 	    val k = 3
 	    val maxIter = 1000
 	    
-	    val res = Kmean.kmeans(data, k, maxIter)
+	    val kmean = new Kmean(data, k)
+	    val res = kmean.kmeans(maxIter)
 	    
 	    val means = mean(res._1, Axis.Vertical).toList
 	

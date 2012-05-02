@@ -16,6 +16,23 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
+class Chrono {
+  
+  private var currentCount = 0l
+  
+  private var lastStart = 0l
+  
+  def start { lastStart = System.currentTimeMillis() }
+  def stop { currentCount += (System.currentTimeMillis() - lastStart)}
+  
+  def reset {currentCount = 0l}
+  
+  def count = currentCount
+}
+
+object EChrono extends Chrono
+object MChrono extends Chrono
+
 object Gaussian {
   def main(args: Array[String]): Unit = {
   
@@ -130,7 +147,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
       val exp = expectation(lEstW, lEstM, lEstC)
       val maxRes = maximization(exp)
       Lo = Ln
-      // SLOW
       Ln = likelihood(lEstW, lEstM, lEstC)
       iterations += 1
     }
@@ -199,7 +215,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
       weightSum
     })
 
-    val estCovariance = (0 until gaussianComponents).par map(index => {
+    val estCovariance = (0 until gaussianComponents) map(index => {
       val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)
       for(j <- 0 until measurements) {
         val dXM = data(j, ::).asCol - estMean(::, index)

@@ -34,6 +34,8 @@ object EChrono extends Chrono
 object MChrono extends Chrono
 object GChrono extends Chrono
 
+case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
+
 object Gaussian {
   def main(args: Array[String]): Unit = {
   
@@ -88,28 +90,29 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   def runAlgo = {
     
     printStatus("Init data")
-    val (initialWeights, initialMeans, initialCovariances) = initEmKmean
-    val log = likelihood(initialWeights, initialMeans, initialCovariances)
+    //val (initialWeights, initialMeans, initialCovariances) = initEmKmean
+    val initial = initEmKmean
+    val log = likelihood(initial)
     printStatus("Data init")
     
     printStatus("Run algo"); GChrono.start
-    val (estW, estM, estC, lg) = em(initialWeights, initialMeans, initialCovariances, log, 1000)
+    val (est, lg) = em(initial, log, 1000)
     printStatus("End algo"); GChrono.stop
         
-    println("Weight: \n" + estW)
-    println("Means: \n" + estM)
+    println("Weight: \n" + est.weights)
+    println("Means: \n" + est.means)
     
     println("Time: " + GChrono.count/1000.0)
   }
   
-  def initEmKmean: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+  def initEmKmean: MatricesTupple = {
 
     val kmean = new Kmean(data, gaussianComponents)
     val (initialMeans, clusters) = kmean.compute(Int.MaxValue)
     val initialCovariances = Kmean.covarianceOfClusters(clusters)
     val initialWeights = Kmean.weightOfClusters(clusters)
     
-    (initialWeights, initialMeans, initialCovariances)
+    MatricesTupple(initialWeights, initialMeans, initialCovariances)
   }
   
   /*
@@ -121,12 +124,10 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
    * The implementation of the Expecatation-maximization algorithm
    */
   def em(
-      estW: DenseVector[Double], 
-      estM: DenseMatrix[Double], 
-      estC: Array[DenseMatrix[Double]], 
+      estimates: MatricesTupple, 
       likelih: Double, 
       maxIter: Int
-      ): (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]], Double) = {
+      ): (MatricesTupple, Double) = {
 
     var iterations = 0;
     
@@ -135,34 +136,30 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     
     def approxGoodEnough = !(abs(100*(Ln - Lo) / Lo) > likelih)
     
-    var lEstW: DenseVector[Double] = estW
-    var lEstM: DenseMatrix[Double] = estM
-    var lEstC: Array[DenseMatrix[Double]] = estC
+    var lEstW: DenseVector[Double] = estimates.weights
+    var lEstM: DenseMatrix[Double] = estimates.means
+    var lEstC: Array[DenseMatrix[Double]] = estimates.covariances
     
     while(!approxGoodEnough && (iterations < maxIter)) {
-      val exp = expectation(lEstW, lEstM, lEstC)
+      val exp = expectation(MatricesTupple(lEstW, lEstM, lEstC))
       val maxRes = maximization(exp)
       Lo = Ln
-      Ln = likelihood(lEstW, lEstM, lEstC)
+      Ln = likelihood(MatricesTupple(lEstW, lEstM, lEstC))
       iterations += 1
     }
     
-    (lEstW, lEstM, lEstC, Ln)
+    (MatricesTupple(lEstW, lEstM, lEstC), Ln)
   }
 
   /**
    * Expectation part of the algorithm.
    * Return the expectation of the value
    */
-  def expectation(
-      estW: DenseVector[Double], 
-      estM: DenseMatrix[Double], 
-      estC: Array[DenseMatrix[Double]]
-      ): DenseMatrix[Double] = {
+  def expectation(estimates: MatricesTupple): DenseMatrix[Double] = {
 
     val dimensions = data.numCols
 
-    val nEstC = estC map {matrix => 
+    val nEstC = estimates.covariances map {matrix => 
       if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
       else matrix
     }
@@ -173,11 +170,11 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     val a = pow(2 * Pi, dimensions / 2.0)
 
     val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComponents)((i, j) => {
-        val delta = data(i, ::).asCol - estM(::, j)
+        val delta = data(i, ::).asCol - estimates.means(::, j)
         val coef = delta.t * invEstC(j) * delta
         val pl = exp(-0.5 * coef) / (a * S(j))
       
-        estW(j) * pl
+        estimates.weights(j) * pl
       }
     )
 
@@ -194,8 +191,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
    * Maximization part of the algorithm.
    * Returns Estimated weight, mean and covariance
    */
-  def maximization(estimate: DenseMatrix[Double]):
-     (DenseVector[Double], DenseMatrix[Double], Seq[DenseMatrix[Double]]) = {
+  def maximization(estimate: DenseMatrix[Double]): MatricesTupple = {
     
     val measurements = data.numRows
     val dimensions = data.numCols
@@ -222,7 +218,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     
     estWeight := estWeight / measurements
     
-    (estWeight, estMean, estCovariance)
+    MatricesTupple(estWeight, estMean, estCovariance)
   }
   
   // This data will be used several times and do not need to be recomputed
@@ -232,15 +228,11 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   /**
    * Computes the log-likelihood that the estimated values are correct.
    */
-  def likelihood(
-      estW: DenseVector[Double], 
-      estM: DenseMatrix[Double], 
-      estC: Array[DenseMatrix[Double]]
-      ): Double = {
+  def likelihood(estimate: MatricesTupple): Double = {
 
     val measurements = data.numRows
 
-    val estCWithIndex = estC zipWithIndex
+    val estCWithIndex = estimate.covariances zipWithIndex
 
     // Thought it could be an elegant solution to use a map with indices
     val elements = estCWithIndex.map {
@@ -248,9 +240,9 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
         val invEstC = inv(matrix)
       
         val lg = log(det(matrix * 2 * Pi))
-        val tr = (invEstC * covarianceMat).trace + (meanVect - estM(::, index)).t * invEstC * (meanVect - estM(::, index))
+        val tr = (invEstC * covarianceMat).trace + (meanVect - estimate.means(::, index)).t * invEstC * (meanVect - estimate.means(::, index))
       
-        estW(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
+        estimate.weights(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
       }
     }
     

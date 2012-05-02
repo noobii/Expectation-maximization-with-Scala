@@ -24,7 +24,7 @@ class GaussianTest extends AssertionsForJUnit {
     
     val gaussian = new Gaussian(X, k)
     
-    (gaussian, X, k, W, M, V)
+    (gaussian, X, k, MatricesTupple(W, M, V))
   }
   
   @Test def testInitEm() {
@@ -36,9 +36,9 @@ class GaussianTest extends AssertionsForJUnit {
   }
   
   @Test def testExpectation() {
-    val (gaus, a, b, c, d, e) = freshTestValues
+    val (gaus, a, b, mat) = freshTestValues
     
-    val exp = gaus.expectation(c, d, e)
+    val exp = gaus.expectation(mat)
     
     val matlabExpVal = DenseMatrix(
       (0.7311,    0.2689),
@@ -59,7 +59,7 @@ class GaussianTest extends AssertionsForJUnit {
   
   
   @Test def testMaximization() {
-    val (gaus, a, b, c, d, e) = freshTestValues
+    val (gaus, a, b, mat) = freshTestValues
     
     val E = DenseMatrix.ones[Double](a.numRows, a.numCols)
 
@@ -69,17 +69,17 @@ class GaussianTest extends AssertionsForJUnit {
     val matlab2 = DenseMatrix((1.5, 1.5), (1.5, 1.5))
     val matlab3 = Array(DenseMatrix((0.25, 0.25), (0.25, 0.25)), DenseMatrix((0.25, 0.25), (0.25, 0.25)))
     
-    assert(res._1 == matlab1)
-    assert(res._2 == matlab2)
-    assert(res._3(0) == matlab3(0))
-    assert(res._3(1) == matlab3(1))
+    assert(res.weights == matlab1)
+    assert(res.means == matlab2)
+    assert(res.covariances(0) == matlab3(0))
+    assert(res.covariances(1) == matlab3(1))
   }
   
   @Test def testLoglikelihood() {
     // Why doesnt (X, k, W, M, V) work ?!!?!
-    val (gaus, a, b, c, d, e) = freshTestValues
+    val (gaus, a, b, mat) = freshTestValues
     
-    val res = gaus.likelihood(c, d, e)
+    val res = gaus.likelihood(mat)
     
     // Value computed with Matlbab with the same inputs
     val matlabResult = 2 * -11.5643

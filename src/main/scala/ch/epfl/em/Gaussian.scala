@@ -111,6 +111,11 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     
     (initialWeights, initialMeans, initialCovariances)
   }
+  
+  /*
+  def initEmMatlab: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+    
+  }*/
 
   /**
    * The implementation of the Expecatation-maximization algorithm

@@ -32,13 +32,14 @@ class Chrono {
 
 object EChrono extends Chrono
 object MChrono extends Chrono
+object GChrono extends Chrono
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
   
-    val g = dataFromFile("src/test/ressources/em/10k/X.csv", 3)
+    val gaussian = fromFile("src/test/ressources/em/10k/X.csv", 3)
     
-    g.runAlgo
+    gaussian.runAlgo
     
     
     println("Weights should be: (0.6, 0.2, 0.2)")
@@ -72,7 +73,7 @@ object Gaussian {
     printStatus(toSay + ": done!")
   }*/
   
-  def dataFromFile(dataSource: String, gaussianComp: Int): Gaussian = {
+  def fromFile(dataSource: String, gaussianComp: Int): Gaussian = {
     printStatus("Reading file: " + dataSource)
     val data = FileParser(dataSource).toMatrix
     printStatus("File read")
@@ -87,29 +88,21 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   def runAlgo = {
     
     printStatus("Init data")
-    val (initialWeights, initialMeans, initialCovariances) = initEm
+    val (initialWeights, initialMeans, initialCovariances) = initEmKmean
     val log = likelihood(initialWeights, initialMeans, initialCovariances)
     printStatus("Data init")
     
-    printStatus("Run algo")
-    val start = System.currentTimeMillis()
+    printStatus("Run algo"); GChrono.start
     val (estW, estM, estC, lg) = em(initialWeights, initialMeans, initialCovariances, log, 1000)
-    printStatus("End algo")
-    val end = System.currentTimeMillis()
-    
-    val diff = end - start
-    
+    printStatus("End algo"); GChrono.stop
+        
     println("Weight: \n" + estW)
     println("Means: \n" + estM)
     
-    println("Time: " + diff/1000.0)
-    
-    diff
+    println("Time: " + GChrono.count/1000.0)
   }
   
-
-  // TODO write test suite
-  def initEm: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
+  def initEmKmean: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
 
     val kmean = new Kmean(data, gaussianComponents)
     val (initialMeans, clusters) = kmean.compute(Int.MaxValue)
@@ -121,8 +114,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
 
   /**
    * The implementation of the Expecatation-maximization algorithm
-   * TODO !!! WAY to many arguments and return values !!!
-   * TODO Write test suite
    */
   def em(
       estW: DenseVector[Double], 

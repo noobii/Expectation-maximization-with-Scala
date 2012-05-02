@@ -9,6 +9,9 @@ import scalala.tensor.{:: => ::}
 class Kmean(data: DenseMatrix[Double], k: Int) {
   import ch.epfl.em.Kmean._
   
+  var covariances: Option[Array[DenseMatrix[Double]]] = None
+  var weights: Option[DenseVector[Double]] = None
+  
   /**
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
    * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access
@@ -18,7 +21,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def compute(maxIter: Int = Int.MaxValue): (DenseMatrix[Double], Seq[(Int, DenseVector[Double])]) = {
+  def compute(maxIter: Int = Int.MaxValue): (DenseMatrix[Double], Array[(Int, DenseVector[Double])]) = {
 
     // First assigns a cluster to each mesurement
     var clusters = initializeClusters
@@ -48,9 +51,9 @@ class Kmean(data: DenseMatrix[Double], k: Int) {
    * Currently it is purely deterministic and assigns clusters sequentially from 0 to k-1
    * and starts over again. 
    */
-  def initializeClusters: Seq[(Int, DenseVector[Double])] = {
+  def initializeClusters: Array[(Int, DenseVector[Double])] = {
     // Not so very random but at least we are sure that all clusters indexes are represented
-    for(i <- 0 until data.numRows) yield (i % k, data(i, ::))
+    (for(i <- 0 until data.numRows) yield (i % k, data(i, ::))).toArray
   }
 }
 
@@ -135,7 +138,7 @@ object Kmean {
   /**
    * Assign each measure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
    */
-  def updateClusters(data: Seq[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Seq[(Int, DenseVector[Double])], Boolean) = {
+  def updateClusters(data: Array[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Array[(Int, DenseVector[Double])], Boolean) = {
     val newClusters = data map {
       case(_, vector) => (closestClusterIndex(centroids, vector), vector)
     }

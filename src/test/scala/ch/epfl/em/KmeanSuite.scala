@@ -109,8 +109,8 @@ class KmeanSuite extends AssertionsForJUnit {
   }
   
   @Test def testAssignClust() {
-    val clusts = Seq(
-        (0, DenseVector.ones[Double](5)),
+    val clusts = Array(
+        (0, DenseVector.ones[Double](5).asRow), // strange bug...?
         (1, DenseVector.zeros[Double](5))
     )
     

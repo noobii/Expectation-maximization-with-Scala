@@ -191,7 +191,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
       weightSum
     })
 
-    val estCovariance = (0 until gaussianComponents) map(index => {
+    val estCovariance = (0 until gaussianComponents).par map(index => {
       val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)
       for(j <- 0 until measurements) {
         val dXM = data(j, ::).asCol - estMean(::, index)

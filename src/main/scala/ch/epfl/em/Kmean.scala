@@ -11,10 +11,10 @@ class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
   
   //var covariances: Option[Array[DenseMatrix[Double]]] = None
   //var weights: Option[DenseVector[Double]] = None
-  
+  println("Titi")
   lazy val clusters = run()
   
-  def means = {
+  lazy val means = {
     val centroids = computeCentroids(clusters)
     // Create a matrix where each columns is a mean (centroid) of a cluster
     val matrix = DenseMatrix.zeros[Double](data.numCols, k)
@@ -23,14 +23,14 @@ class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
     matrix
   }
   
-  def weights = {
+  lazy val weights = {
     weightOfClusters(clusters)
   }
   
-  def covariances = {
+  lazy val covariances = {
     covarianceOfClusters(clusters)
   }
-  
+  println("Toto")
   /**
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
    * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access

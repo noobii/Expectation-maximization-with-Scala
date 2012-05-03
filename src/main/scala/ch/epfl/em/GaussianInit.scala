@@ -18,7 +18,8 @@ trait GaussianInit {
 }
 
 /**
- * 
+ * Can be used to initialize the EM algo with the data that matlab typically outputs.
+ * The files must have name "kmeanW.csv", "kMeanM.csv" and "kMeanV_.csv" where _ is the index of the covariance matrix 
  */
 class InitFromMatlab(folderPath: String) extends GaussianInit {
   

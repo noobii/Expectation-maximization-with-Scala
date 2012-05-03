@@ -52,6 +52,10 @@ object Gaussian {
     println("0.5\t3\t3")
     println("0\t-2\t3")
     
+    printStatus("Runing algo 50k")
+    
+    val k50k = 0
+    
     /*
     val fileName2 = "src/test/ressources/em/50k/X.csv"
     val k2 = 6

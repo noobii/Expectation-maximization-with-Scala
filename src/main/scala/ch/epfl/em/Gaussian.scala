@@ -131,16 +131,16 @@ class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianCo
    */
   def em(
       estimates: MatricesTupple, 
-      likelih: Double, 
+      minLikelihoodVar: Double, 
       maxIter: Int
       ): (MatricesTupple, Double) = {
 
     var iterations = 0;
     
-    var Ln = likelih
+    var Ln = minLikelihoodVar
     var Lo = 2 * Ln
     
-    def approxGoodEnough = !(abs(100*(Ln - Lo) / Lo) > likelih)
+    def approxGoodEnough = (abs(100*(Ln - Lo) / Lo) <= minLikelihoodVar)
     
     var lEstW: DenseVector[Double] = estimates.weights
     var lEstM: DenseMatrix[Double] = estimates.means

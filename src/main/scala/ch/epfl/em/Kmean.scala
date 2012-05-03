@@ -6,11 +6,30 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
-class Kmean(data: DenseMatrix[Double], k: Int) {
+class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
   import ch.epfl.em.Kmean._
   
-  var covariances: Option[Array[DenseMatrix[Double]]] = None
-  var weights: Option[DenseVector[Double]] = None
+  //var covariances: Option[Array[DenseMatrix[Double]]] = None
+  //var weights: Option[DenseVector[Double]] = None
+  
+  lazy val clusters = run()
+  
+  def means = {
+    val centroids = computeCentroids(clusters)
+    // Create a matrix where each columns is a mean (centroid) of a cluster
+    val matrix = DenseMatrix.zeros[Double](data.numCols, k)
+    for(i <- 0 until centroids.size) matrix(::, i) := centroids(i)
+    
+    matrix
+  }
+  
+  def weights = {
+    weightOfClusters(clusters)
+  }
+  
+  def covariances = {
+    covarianceOfClusters(clusters)
+  }
   
   /**
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
@@ -21,7 +40,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def compute(maxIter: Int = Int.MaxValue): (DenseMatrix[Double], Array[(Int, DenseVector[Double])]) = {
+  def run(maxIter: Int = Int.MaxValue): Array[(Int, DenseVector[Double])] = {
 
     // First assigns a cluster to each mesurement
     var clusters = initializeClusters
@@ -39,11 +58,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) {
       hasConverged = hasConv
     }
     
-    // Create a matrix where each columns is a mean (centroid) of a cluster
-    val matrix = DenseMatrix.zeros[Double](data.numCols, k)
-    for(i <- 0 until centroids.size) matrix(::, i) := centroids(i)
-    
-    (matrix, clusters)
+    clusters
   }
   
   /**

@@ -109,9 +109,10 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   def initEmKmean: MatricesTupple = {
 
     val kmean = new Kmean(data, gaussianComponents)
-    val (initialMeans, clusters) = kmean.compute(Int.MaxValue)
-    val initialCovariances = Kmean.covarianceOfClusters(clusters)
-    val initialWeights = Kmean.weightOfClusters(clusters)
+    //val (initialMeans, clusters) = kmean.compute(Int.MaxValue)
+    val initialMeans = kmean.means
+    val initialCovariances = kmean.covariances
+    val initialWeights = kmean.weights
     
     MatricesTupple(initialWeights, initialMeans, initialCovariances)
   }

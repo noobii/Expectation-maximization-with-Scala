@@ -32,6 +32,7 @@ case class FileParser(var fileName: String) {
   }
 
   def toVector: DenseVector[Int] = processFile(_.toInt).toArray.asVector
+  def toVectorDouble: DenseVector[Double] = processFile(_.toDouble).toArray.asVector
   
   private def processFile[V](applyToLine: String => V) = {
     val source = fromFile(fileName)

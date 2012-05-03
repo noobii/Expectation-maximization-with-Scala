@@ -92,11 +92,11 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     printStatus("Init data")
     //val (initialWeights, initialMeans, initialCovariances) = initEmKmean
     val initial = initEmKmean
-    val log = likelihood(initial)
+    //val log = likelihood(initial)
     printStatus("Data init")
     
     printStatus("Run algo"); GChrono.start
-    val (est, lg) = em(initial, log, 1000)
+    val (est, lg) = em(initial, 0.1, 1000)
     printStatus("End algo"); GChrono.stop
         
     println("Weight: \n" + est.weights)
@@ -140,9 +140,16 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     var lEstM: DenseMatrix[Double] = estimates.means
     var lEstC: Array[DenseMatrix[Double]] = estimates.covariances
     
+    
     while(!approxGoodEnough && (iterations < maxIter)) {
       val exp = expectation(MatricesTupple(lEstW, lEstM, lEstC))
       val maxRes = maximization(exp)
+      
+      lEstW = maxRes.weights
+      lEstM = maxRes.means
+      lEstC = maxRes.covariances
+      println(iterations)
+      println(maxRes.weights)
       Lo = Ln
       Ln = likelihood(MatricesTupple(lEstW, lEstM, lEstC))
       iterations += 1

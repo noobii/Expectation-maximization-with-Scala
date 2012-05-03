@@ -195,15 +195,11 @@ class KmeanSuite extends AssertionsForJUnit {
 	    val k = 3
 	    val maxIter = 1000
 	    
-	    println("Tik")
 	    val kmean = new Kmean(data, k)
 	    //val res = kmean.compute(maxIter)
-	    println("Tak")
 	    val means = mean(kmean.means, Axis.Vertical).toList
-	    println("Tok")
 	    val mat = kmean.means
 	    plot(mat(0, ::), mat(1, ::), '+')
-	    println("Tuk")
 	    //saveas("plot.png")
 	    
 	        

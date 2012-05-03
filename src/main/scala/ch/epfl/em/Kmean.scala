@@ -9,9 +9,6 @@ import scalala.tensor.{:: => ::}
 class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
   import ch.epfl.em.Kmean._
   
-  //var covariances: Option[Array[DenseMatrix[Double]]] = None
-  //var weights: Option[DenseVector[Double]] = None
-  println("Titi")
   lazy val clusters = run()
   
   lazy val means = {
@@ -30,7 +27,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
   lazy val covariances = {
     covarianceOfClusters(clusters)
   }
-  println("Toto")
+
   /**
    * Computes the k mean of a given dataset. It uses the standard algorithm. Source wikipedia.
    * The algorithm isn't guaranteed to converge. When it doesn't it throws an exception while trying to access

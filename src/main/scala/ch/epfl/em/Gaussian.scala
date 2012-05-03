@@ -39,7 +39,10 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 object Gaussian {
   def main(args: Array[String]): Unit = {
   
-    val gaussian = fromFile("src/test/ressources/em/10k/X.csv", 3)
+    val k10k = 3
+    val X10k = FileParser("src/test/ressources/em/10k/X.csv").toMatrix
+    val strategy10k = new Kmean(X10k, k10k)
+    val gaussian = new Gaussian(strategy10k)(X10k, k10k)
     
     gaussian.runAlgo
     
@@ -74,17 +77,17 @@ object Gaussian {
     toRun
     printStatus(toSay + ": done!")
   }*/
-  
-  def fromFile(dataSource: String, gaussianComp: Int): Gaussian = {
+  /*
+  def fromFile(dataSource: String, gaussianComp: Int, initStrategy: GaussianInit): Gaussian = {
     printStatus("Reading file: " + dataSource)
     val data = FileParser(dataSource).toMatrix
     printStatus("File read")
     
-    new Gaussian(data, gaussianComp)
-  }
+    new Gaussian(data, gaussianComp, initStrategy)
+  }*/
 }
 
-class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
+class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
   
   private val measurements = data.numRows
@@ -93,7 +96,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   def runAlgo = {
     
     printStatus("Init data")
-    val initial = initEmKmean
+    val initial = initStrategy.init
     printStatus("Data init")
     
     printStatus("Run algo"); GChrono.start
@@ -106,6 +109,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     println("Time: " + GChrono.count/1000.0)
   }
   
+  /*
   def initEmKmean: MatricesTupple = {
 
     val kmean = new Kmean(data, gaussianComponents)
@@ -116,7 +120,7 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
     
     MatricesTupple(initialWeights, initialMeans, initialCovariances)
   }
-  
+  */
   /*
   def initEmMatlab: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
     

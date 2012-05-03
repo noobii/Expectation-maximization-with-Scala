@@ -64,7 +64,7 @@ object Gaussian {
     
     plot.hold = true
     plot(X50k(::, 0), X50k(::, 1), '.')
-    plot(out.means(0, ::), out.means(1, ::), '+')
+    plot(out.means(0, ::), out.means(1, ::), '+', "b")
     
     /*
     val fileName2 = "src/test/ressources/em/50k/X.csv"

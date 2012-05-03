@@ -10,6 +10,7 @@ import scalala.library.Library.log
 import scalala.library.Library.mean
 import scalala.library.Library.pow
 import scalala.library.Library.sqrt
+import scalala.library.Plotting._
 import scalala.library.LinearAlgebra.det
 import scalala.library.LinearAlgebra.inv
 import scalala.tensor.dense.DenseMatrix
@@ -59,7 +60,11 @@ object Gaussian {
     val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
     val gaussian50k = new Gaussian(strategy50k)(X50k, k50k)
     
-    gaussian50k.runAlgo
+    val out = gaussian50k.runAlgo
+    
+    plot.hold = true
+    plot(X50k(::, 0), X50k(::, 1), '.')
+    plot(out.means(0, ::), out.means(1, ::), '+')
     
     /*
     val fileName2 = "src/test/ressources/em/50k/X.csv"
@@ -116,6 +121,8 @@ class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianCo
     println("Means: \n" + est.means)
     
     println("Time: " + GChrono.count/1000.0)
+    
+    est
   }
   
   /*

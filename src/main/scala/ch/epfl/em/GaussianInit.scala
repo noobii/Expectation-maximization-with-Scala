@@ -10,11 +10,6 @@ import scalala.tensor.{:: => ::}
 trait GaussianInit {
 
   def init: MatricesTupple = {
-    println("toto")
-    println(weights)
-    println("tata")
-    println(means)
-    println("titi")
     MatricesTupple(weights, means, covariances)
   }
   
@@ -30,13 +25,8 @@ trait GaussianInit {
  */
 class InitFromMatlab(folderPath: String) extends GaussianInit {
   
-  def weights = {
-    val mat = new FileParser(folderPath + "kmeanW.csv").toMatrix
-    println("mat")
-    println(mat)
-    
-    mat(0, ::).asCol
-  }
+  def weights = new FileParser(folderPath + "kmeanW.csv").toMatrix(0, ::).asCol
+
   def means = new FileParser(folderPath + "kmeanM.csv").toMatrix
   
   def covariances = {

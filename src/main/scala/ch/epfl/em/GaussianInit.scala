@@ -1,4 +1,5 @@
 package ch.epfl.em
+
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 

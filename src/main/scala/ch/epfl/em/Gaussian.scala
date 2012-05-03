@@ -87,12 +87,13 @@ object Gaussian {
 class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
   
+  private val measurements = data.numRows
+  private val dimensions = data.numCols
+  
   def runAlgo = {
     
     printStatus("Init data")
-    //val (initialWeights, initialMeans, initialCovariances) = initEmKmean
     val initial = initEmKmean
-    //val log = likelihood(initial)
     printStatus("Data init")
     
     printStatus("Run algo"); GChrono.start
@@ -148,8 +149,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
       lEstW = maxRes.weights
       lEstM = maxRes.means
       lEstC = maxRes.covariances
-      println(iterations)
-      println(maxRes.weights)
       Lo = Ln
       Ln = likelihood(MatricesTupple(lEstW, lEstM, lEstC))
       iterations += 1
@@ -163,8 +162,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
    * Return the expectation of the value
    */
   def expectation(estimates: MatricesTupple): DenseMatrix[Double] = {
-
-    val dimensions = data.numCols
 
     val nEstC = estimates.covariances map {matrix => 
       if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
@@ -199,9 +196,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
    * Returns Estimated weight, mean and covariance
    */
   def maximization(estimate: DenseMatrix[Double]): MatricesTupple = {
-    
-    val measurements = data.numRows
-    val dimensions = data.numCols
 
     val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
     
@@ -236,8 +230,6 @@ class Gaussian(data: DenseMatrix[Double], gaussianComponents: Int) {
    * Computes the log-likelihood that the estimated values are correct.
    */
   def likelihood(estimate: MatricesTupple): Double = {
-
-    val measurements = data.numRows
 
     val estCWithIndex = estimate.covariances zipWithIndex
 

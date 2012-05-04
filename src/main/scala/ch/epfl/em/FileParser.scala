@@ -3,9 +3,10 @@ package ch.epfl.em
 import scala.Array.canBuildFrom
 import scala.io.Source.fromFile
 
-import scalala.operators.Implicits.richArray
+import scalala.operators.Implicits._
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
+import scalala.tensor.::
 
 
 case class FileParser(var fileName: String) {
@@ -22,11 +23,15 @@ case class FileParser(var fileName: String) {
   }  
   
   def toMatrix: DenseMatrix[Double] = {
-    def lineToMatrix(line: String): DenseMatrix[Double] = line.split(',').map(_.toDouble).asMatrix(1)
+    def lineToMatrix(line: String) = line.split(',').map(_.toDouble)
 
-    val lineMatrices = processFile(lineToMatrix(_)) par // Speeds up file creation x 8!
+    val lineMatrices = processFile(lineToMatrix(_)) toArray
+        
+    //val matrix = lineMatrices reduce (DenseMatrix.vertcat(_, _))
     
-    val matrix = lineMatrices reduce (DenseMatrix.vertcat(_, _))
+    val matrix = DenseMatrix.zeros[Double](lineMatrices.length, lineMatrices(0).size)
+    
+    for(i <- 0 until lineMatrices.length) matrix(i, ::) := lineMatrices(i).asVector
     
     matrix
   }

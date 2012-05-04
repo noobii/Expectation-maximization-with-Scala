@@ -62,7 +62,7 @@ object Gaussian {
     
     val out = gaussian50k.runAlgo
     
-    printstatus("Runing algo 600k")
+    printStatus("Runing algo 600k")
     val k500k = 5
     val X500k = FileParser("src/test/ressources/em/500k/X.csv").toMatrix
     val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")

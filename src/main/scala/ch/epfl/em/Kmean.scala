@@ -1,12 +1,18 @@
 package ch.epfl.em
 
-import scalala.library.Library.Axis
-import scalala.library.Library.covariance
-import scalala.tensor.dense.DenseMatrix
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.{:: => ::}
+import scalala.scalar._; 
+import scalala.tensor.::; 
+import scalala.tensor.mutable._; 
+import scalala.tensor.dense._; 
+import scalala.tensor.sparse._; 
+import scalala.library.Library._; 
+import scalala.library.LinearAlgebra._; 
+import scalala.library.Statistics._; 
+import scalala.library.Plotting._; 
+import scalala.operators.Implicits._; 
 
-class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
+
+class Kmean(data: Matrix[Double], k: Int) extends GaussianInit {
   import ch.epfl.em.Kmean._
   
   lazy val clusters = run()
@@ -37,7 +43,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
    * @param maxIter: maximum number of iterations used in the algorithm
    * @return 
    */
-  def run(maxIter: Int = Int.MaxValue): Array[(Int, DenseVector[Double])] = {
+  def run(maxIter: Int = Int.MaxValue): Array[(Int, Vector[Double])] = {
 
     // First assigns a cluster to each mesurement
     var clusters = initializeClusters
@@ -63,7 +69,7 @@ class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
    * Currently it is purely deterministic and assigns clusters sequentially from 0 to k-1
    * and starts over again. 
    */
-  def initializeClusters: Array[(Int, DenseVector[Double])] = {
+  def initializeClusters: Array[(Int, Vector[Double])] = {
     // Not so very random but at least we are sure that all clusters indexes are represented
     (for(i <- 0 until data.numRows) yield (i % k, data(i, ::))).toArray
   }
@@ -75,12 +81,12 @@ object Kmean {
    * Computes the covariance of each cluster. 
    * TODO Make the code better :)
    */
-  def covarianceOfClusters(clusters: Seq[(Int, DenseVector[Double])]): Array[DenseMatrix[Double]] = {
+  def covarianceOfClusters(clusters: Seq[(Int, Vector[Double])]): Array[Matrix[Double]] = {
     
     /**
      * Creates a matrix with the given vectors as rows
      */
-    def agregatedMatrix(vects: Seq[(Int, DenseVector[Double])]): DenseMatrix[Double] = {
+    def agregatedMatrix(vects: Seq[(Int, Vector[Double])]): Matrix[Double] = {
       val matLines = vects map {case(_, vector) => DenseMatrix(vector.asRow)}
       
       val matrix = matLines reduce(DenseMatrix.vertcat(_, _))
@@ -103,7 +109,7 @@ object Kmean {
   /**
    * Computes the weight of each cluster.
    */
-  def weightOfClusters(clusters: Seq[(Int, DenseVector[Double])]): DenseVector[Double] =  {
+  def weightOfClusters(clusters: Seq[(Int, Vector[Double])]): Vector[Double] =  {
     def index(x: Tuple2[Int, _]) = x._1
     
     val groupedClusters = clusters groupBy(index(_)) toSeq
@@ -124,7 +130,7 @@ object Kmean {
   /**
    * Compute the centroids (mean) of the data that has been assigned to clusters
    */
-  def computeCentroids(data: Seq[(Int, DenseVector[Double])]): Map[Int, DenseVector[Double]] = {
+  def computeCentroids(data: Seq[(Int, Vector[Double])]): Map[Int, Vector[Double]] = {
 
     // Groups the data by the cluster index
     val groups = data groupBy { case(clusterIndex, _) => clusterIndex }
@@ -142,7 +148,7 @@ object Kmean {
   /**
    * Computes the mean of a sequence of vectors
    */
-  def mean(vects: Seq[DenseVector[Double]]): DenseVector[Double] = {
+  def mean(vects: Seq[Vector[Double]]): Vector[Double] = {
     val sum = vects.fold(DenseVector.zeros[Double](vects.head.size))(_ + _)
     sum :/ vects.size
   }
@@ -150,7 +156,7 @@ object Kmean {
   /**
    * Assign each measure to the closest centroid. Returns the new assignemend as well as boolean that indiciated convergence
    */
-  def updateClusters(data: Array[(Int, DenseVector[Double])], centroids: Map[Int, DenseVector[Double]]): (Array[(Int, DenseVector[Double])], Boolean) = {
+  def updateClusters(data: Array[(Int, Vector[Double])], centroids: Map[Int, Vector[Double]]): (Array[(Int, Vector[Double])], Boolean) = {
     val newClusters = data map {
       case(_, vector) => (closestClusterIndex(centroids, vector), vector)
     }
@@ -166,7 +172,7 @@ object Kmean {
   /**
    * Finds the closest cluster for a given vector
    */
-  def closestClusterIndex(means: Map[Int, DenseVector[Double]], vect: DenseVector[Double]): Int = {
+  def closestClusterIndex(means: Map[Int, Vector[Double]], vect: Vector[Double]): Int = {
     val distances = means map {
       case(clusterIndex, mean) => {
         val difference = vect.asRow - mean.asRow

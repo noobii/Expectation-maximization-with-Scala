@@ -2,20 +2,17 @@ package ch.epfl.em
 
 import scala.Array.canBuildFrom
 import scala.math.Pi
-import scalala.library.Library.Axis
-import scalala.library.Library.abs
-import scalala.library.Library.covariance
-import scalala.library.Library.exp
-import scalala.library.Library.log
-import scalala.library.Library.mean
-import scalala.library.Library.pow
-import scalala.library.Library.sqrt
-import scalala.library.Plotting._
-import scalala.library.LinearAlgebra.det
-import scalala.library.LinearAlgebra.inv
-import scalala.tensor.dense.DenseMatrix
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.{:: => ::}
+import scalala.scalar._; 
+import scalala.tensor.::; 
+import scalala.tensor.mutable._; 
+import scalala.tensor.dense._; 
+import scalala.tensor.sparse._; 
+import scalala.library.Library._; 
+import scalala.library.LinearAlgebra._; 
+import scalala.library.Statistics._; 
+import scalala.library.Plotting._; 
+import scalala.operators.Implicits._; 
+
 
 class Chrono {
   
@@ -35,7 +32,7 @@ object EChrono extends Chrono
 object MChrono extends Chrono
 object GChrono extends Chrono
 
-case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
+case class MatricesTupple(weights: Vector[Double], means: Matrix[Double], covariances: Array[_ <: Matrix[Double]])
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
@@ -110,7 +107,7 @@ object Gaussian {
   }*/
 }
 
-class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianComponents: Int) {
+class Gaussian(initStrategy: GaussianInit)(data: Matrix[Double], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
   
   private val measurements = data.numRows
@@ -167,9 +164,9 @@ class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianCo
     
     def approxGoodEnough = (abs(100*(Ln - Lo) / Lo) <= minLikelihoodVar)
     
-    var lEstW: DenseVector[Double] = estimates.weights
-    var lEstM: DenseMatrix[Double] = estimates.means
-    var lEstC: Array[DenseMatrix[Double]] = estimates.covariances
+    var lEstW: Vector[Double] = estimates.weights
+    var lEstM: Matrix[Double] = estimates.means
+    var lEstC: Array[_ <: Matrix[Double]] = estimates.covariances
     
     
     while(!approxGoodEnough && (iterations < maxIter)) {
@@ -230,7 +227,7 @@ class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianCo
     val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
     
     val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComponents)((dim, comp) => {
-      val col: DenseVector[Double] = data(::, dim)
+      val col: Vector[Double] = data(::, dim)
       
       val weightCol = col.mapPairs((index: Int, value: Double) => value * estimate(index, comp))
       

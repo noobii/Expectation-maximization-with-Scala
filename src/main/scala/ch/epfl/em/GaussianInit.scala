@@ -2,9 +2,17 @@ package ch.epfl.em
 
 import java.io.File
 
-import scalala.tensor.dense.DenseMatrix
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.{:: => ::}
+import scalala.scalar._; 
+import scalala.tensor.::; 
+import scalala.tensor.mutable._; 
+import scalala.tensor.dense._; 
+import scalala.tensor.sparse._; 
+import scalala.library.Library._; 
+import scalala.library.LinearAlgebra._; 
+import scalala.library.Statistics._; 
+import scalala.library.Plotting._; 
+import scalala.operators.Implicits._; 
+
 
 
 trait GaussianInit {
@@ -13,9 +21,9 @@ trait GaussianInit {
     MatricesTupple(weights, means, covariances)
   }
   
-  def weights: DenseVector[Double]
-  def means: DenseMatrix[Double]
-  def covariances: Array[DenseMatrix[Double]]
+  def weights: Vector[Double]
+  def means: Matrix[Double]
+  def covariances: Array[Matrix[Double]]
 
 }
 

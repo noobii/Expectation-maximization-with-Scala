@@ -19,6 +19,7 @@ trait GaussianInit {
 
   def init: MatricesTupple = {
     MatricesTupple(weights, means, covariances)
+    
   }
   
   def weights: Vector[Double]

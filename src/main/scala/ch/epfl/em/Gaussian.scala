@@ -62,10 +62,18 @@ object Gaussian {
     
     val out = gaussian50k.runAlgo
     
+    val k500k = 5
+    val X500k = FileParser("src/test/ressources/em/500k/X.csv").toMatrix
+    val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
+    val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
+    
+    val out500k = gaussian500k.runAlgo
+    
+    /*
     plot.hold = true
     plot(X50k(::, 0), X50k(::, 1), '.')
     plot(out.means(0, ::), out.means(1, ::), '+', "b")
-    
+    */
     /*
     val fileName2 = "src/test/ressources/em/50k/X.csv"
     val k2 = 6

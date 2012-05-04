@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# A bit messy but it works !
+# A bit messy but it works
 
 #Gets the latest version from git
 GITOUT=$(git pull)

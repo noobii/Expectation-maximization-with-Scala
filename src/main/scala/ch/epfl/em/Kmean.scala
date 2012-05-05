@@ -1,10 +1,16 @@
 package ch.epfl.em
 
-import scalala.library.Library.Axis
-import scalala.library.Library.covariance
-import scalala.tensor.dense.DenseMatrix
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.{:: => ::}
+import scalala.scalar._;
+import scalala.tensor.::;
+import scalala.tensor.mutable._;
+import scalala.tensor.dense._;
+import scalala.tensor.sparse._;
+import scalala.library.Library._;
+import scalala.library.LinearAlgebra._;
+import scalala.library.Statistics._;
+import scalala.library.Plotting._;
+import scalala.operators.Implicits._;
+
 
 class Kmean(data: DenseMatrix[Double], k: Int) extends GaussianInit {
   import ch.epfl.em.Kmean._

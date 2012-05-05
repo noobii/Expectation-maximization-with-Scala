@@ -2,20 +2,16 @@ package ch.epfl.em
 
 import scala.Array.canBuildFrom
 import scala.math.Pi
-import scalala.library.Library.Axis
-import scalala.library.Library.abs
-import scalala.library.Library.covariance
-import scalala.library.Library.exp
-import scalala.library.Library.log
-import scalala.library.Library.mean
-import scalala.library.Library.pow
-import scalala.library.Library.sqrt
-import scalala.library.Plotting._
-import scalala.library.LinearAlgebra.det
-import scalala.library.LinearAlgebra.inv
-import scalala.tensor.dense.DenseMatrix
-import scalala.tensor.dense.DenseVector
-import scalala.tensor.{:: => ::}
+import scalala.scalar._;
+import scalala.tensor.::;
+import scalala.tensor.mutable._;
+import scalala.tensor.dense._;
+import scalala.tensor.sparse._;
+import scalala.library.Library._;
+import scalala.library.LinearAlgebra._;
+import scalala.library.Statistics._;
+import scalala.library.Plotting._;
+import scalala.operators.Implicits._;
 
 class Chrono {
   

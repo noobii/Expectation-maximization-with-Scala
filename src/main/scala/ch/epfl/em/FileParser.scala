@@ -26,7 +26,6 @@ case class FileParser(var fileName: String) {
     def lineToMatrix(line: String) = line.split(',').map(_.toDouble)
 
     val lineMatrices = processFile(lineToMatrix(_)) toArray
-        
     //val matrix = lineMatrices reduce (DenseMatrix.vertcat(_, _))
     
     val matrix = DenseMatrix.zeros[Double](lineMatrices.length, lineMatrices(0).size)

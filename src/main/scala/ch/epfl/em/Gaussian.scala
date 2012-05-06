@@ -11,9 +11,10 @@ import scalala.library.Library._
 import scalala.library.LinearAlgebra._
 import scalala.library.Statistics._
 import scalala.library.Plotting._
-import scalala.operators.Implicits._;
+import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
+import scala.collection.parallel.ParSeq
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
@@ -125,7 +126,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
    * Expectation part of the algorithm.
    * Return the expectation of the value
    */
-  def expectation(estimates: MatricesTupple): GenSeq[DenseVector[Double]] = {
+  def expectation(estimates: MatricesTupple): ParSeq[DenseVector[Double]] = {
 
     val nEstC = estimates.covariances map {matrix => 
       if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
@@ -158,7 +159,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
    * Maximization part of the algorithm.
    * Returns Estimated weight, mean and covariance
    */
-  def maximization(estimate: GenSeq[DenseVector[Double]]): MatricesTupple = {
+  def maximization(estimate: ParSeq[DenseVector[Double]]): MatricesTupple = {
         
     val estWeight = estimate reduce(_ + _)
     

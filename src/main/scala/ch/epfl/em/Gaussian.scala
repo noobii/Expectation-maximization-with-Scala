@@ -182,25 +182,7 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
     
     val estimateSeq = dataMatToGenSeq(estimate)
     
-    //val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
-    
     val estWeight = estimateSeq reduce(_ + _)
-    
-    /*
-    val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComponents)((dim, comp) => {
-      val col: DenseVector[Double] = data(::, dim)
-      
-      val weightCol = col.mapPairs((index: Int, value: Double) => value * estimate(index, comp))
-      
-      val weightSum = weightCol.sum / estWeight(comp)
-      weightSum
-    })*/
-    
-    /*
-    val estMeanToto = for(k <- (0 until gaussianComponents).toArray) yield {
-      val m = (dataSeq zip estimateSeq) map{case(point, es) => point * es(k)}
-      (m reduce(_ + _)) / estWeight(k)
-    }*/
     
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
@@ -208,16 +190,14 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
-    //val estMean = meansArrayToMat(estMeanToto)
-
-    val estCovariance = (0 until gaussianComponents) map(index => {
-      val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)
-      for(j <- 0 until measurements) {
-        val dXM = data(j, ::).asCol - estMean(::, index)
-        matrix += (dXM * dXM.t) :* estimate(j, index)
-      }
-      matrix := matrix / estWeight(index)
-    }) toArray
+    val estCovariance = (0 until gaussianComponents).toArray map(k => {
+      val sumMat = ((dataSeq zip estimateSeq) map {case(point, est) =>
+        val dXM = point.asCol - estMean(::, k)
+        (dXM * dXM.t) :* est(k)
+      }) reduce (_ + _)
+      
+      sumMat :/ estWeight(k)
+    })
     
     estWeight := estWeight / measurements
     

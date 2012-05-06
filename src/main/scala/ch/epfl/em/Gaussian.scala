@@ -91,20 +91,6 @@ object Gaussian {
     println(now + ": " + text)
   }
   
-  /*
-  protected def printStatusAround(toSay: String)(toRun: Unit): Unit = {
-    printStatus(toSay + ": start!")
-    toRun
-    printStatus(toSay + ": done!")
-  }*/
-  /*
-  def fromFile(dataSource: String, gaussianComp: Int, initStrategy: GaussianInit): Gaussian = {
-    printStatus("Reading file: " + dataSource)
-    val data = FileParser(dataSource).toMatrix
-    printStatus("File read")
-    
-    new Gaussian(data, gaussianComp, initStrategy)
-  }*/
 }
 
 class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
@@ -134,23 +120,6 @@ class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], g
     
     est
   }
-  
-  /*
-  def initEmKmean: MatricesTupple = {
-
-    val kmean = new Kmean(data, gaussianComponents)
-    //val (initialMeans, clusters) = kmean.compute(Int.MaxValue)
-    val initialMeans = kmean.means
-    val initialCovariances = kmean.covariances
-    val initialWeights = kmean.weights
-    
-    MatricesTupple(initialWeights, initialMeans, initialCovariances)
-  }
-  */
-  /*
-  def initEmMatlab: (DenseVector[Double], DenseMatrix[Double], Array[DenseMatrix[Double]]) = {
-    
-  }*/
 
   /**
    * The implementation of the Expecatation-maximization algorithm

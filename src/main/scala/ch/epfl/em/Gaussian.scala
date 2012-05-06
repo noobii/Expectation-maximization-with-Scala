@@ -19,14 +19,14 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
-  /*
+  
     val k10k = 3
-    val X10k = FileParser("src/test/ressources/em/10k/X.csv").toGenSeq
+    val X10k = FileParser("src/test/ressources/em/10k/X.csv").data
     val strategy10k = new Kmean(X10k, k10k)
     val gaussian = new Gaussian(strategy10k)(X10k, k10k)
     
     gaussian.runAlgo
-    */
+    
     
     println("Weights should be: (0.6, 0.2, 0.2)")
     println("Means should be:")

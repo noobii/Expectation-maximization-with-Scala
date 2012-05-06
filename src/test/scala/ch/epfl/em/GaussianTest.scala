@@ -1,5 +1,6 @@
 package ch.epfl.em
 
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import org.scalatest.junit.AssertionsForJUnit
 
@@ -74,8 +75,11 @@ class GaussianTest extends AssertionsForJUnit {
     val matlab2 = DenseMatrix((1.5, 1.5), (1.5, 1.5))
     val matlab3 = Array(DenseMatrix((0.25, 0.25), (0.25, 0.25)), DenseMatrix((0.25, 0.25), (0.25, 0.25)))
     
+    println(res.means)
+    println("toto" + matlab2)
+    
     assert(res.weights == matlab1)
-    assert(res.means == matlab2)
+    assert(NumericalChecks.closeEnough(res.means, matlab2))
     assert(res.covariances(0) == matlab3(0))
     assert(res.covariances(1) == matlab3(1))
   }

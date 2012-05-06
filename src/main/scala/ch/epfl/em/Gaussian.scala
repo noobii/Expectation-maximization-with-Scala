@@ -196,12 +196,17 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
       weightSum
     })*/
     
+    /*
     val estMeanToto = for(k <- (0 until gaussianComponents).toArray) yield {
       val m = (dataSeq zip estimateSeq) map{case(point, es) => point * es(k)}
       (m reduce(_ + _)) / estWeight(k)
-    }
+    }*/
     
-    val estMean = meansArrayToMat(estMeanToto)
+    val estMean = (dataSeq zip estimateSeq) map{case(point, est) =>
+      point.asCol * (est.asRow :/ estWeight.asRow)
+    } reduce(_ + _)
+    
+    //val estMean = meansArrayToMat(estMeanToto)
 
     val estCovariance = (0 until gaussianComponents) map(index => {
       val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)

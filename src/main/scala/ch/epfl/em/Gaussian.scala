@@ -144,7 +144,7 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
    * Expectation part of the algorithm.
    * Return the expectation of the value
    */
-  def expectation(estimates: MatricesTupple): DenseMatrix[Double] = {
+  def expectation(estimates: MatricesTupple): GenSeq[DenseVector[Double]] = {
 
     val nEstC = estimates.covariances map {matrix => 
       if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
@@ -170,27 +170,25 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
       normalize(vector)
     })
     
-    dataGenSeqToMat(E)
+    E
   }
 
   /**
    * Maximization part of the algorithm.
    * Returns Estimated weight, mean and covariance
    */
-  def maximization(estimate: DenseMatrix[Double]): MatricesTupple = {
-    
-    val estimateSeq = dataMatToGenSeq(estimate)
-    
-    val estWeight = estimateSeq reduce(_ + _)
+  def maximization(estimate: GenSeq[DenseVector[Double]]): MatricesTupple = {
+        
+    val estWeight = estimate reduce(_ + _)
     
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
-    val estMean = ((dataSeq zip estimateSeq) map{case(point, est) =>
+    val estMean = ((dataSeq zip estimate) map{case(point, est) =>
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
     val estCovariance = (0 until gaussianComponents).toArray map(k => {
-      val sumMat = ((dataSeq zip estimateSeq) map {case(point, est) =>
+      val sumMat = ((dataSeq zip estimate) map {case(point, est) =>
         val dXM = point.asCol - estMean(::, k)
         (dXM * dXM.t) :* est(k)
       }) reduce (_ + _)

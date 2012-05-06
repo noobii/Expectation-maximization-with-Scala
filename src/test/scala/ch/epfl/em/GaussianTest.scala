@@ -8,6 +8,9 @@ import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
+import ch.epfl.em.NumericalChecks._
+import ch.epfl.em.Conversions._
+
 class GaussianTest extends AssertionsForJUnit {
 
   def delta = 0.1
@@ -59,16 +62,17 @@ class GaussianTest extends AssertionsForJUnit {
       (0.2689,    0.7311)
     )
     
-    assert((matlabExpVal(::, 0) - exp(::, 0)).norm(2) < delta)
-    assert((matlabExpVal(::, 1) - exp(::, 1)).norm(2) < delta)
+    assert(closeEnough(matlabExpVal, dataGenSeqToMat(exp)))
   }
   
   
   @Test def testMaximization() {
     val (gaus, a, b, mat) = freshTestValues
     
-    val E = DenseMatrix.ones[Double](a.length, a.head.length)
+    //val E = DenseMatrix.ones[Double](a.length, a.head.length)
 
+    val E = (0 until a.length).toArray map (x => DenseVector.ones[Double](a.head.length))
+    
     val res = gaus.maximization(E)
     
     val matlab1 = DenseVector(1.0, 1.0)

@@ -34,15 +34,15 @@ class ConversionsTest extends AssertionsForJUnit {
     
   }
   
-  @Test def meansMatToGenSeqTest() {
+  @Test def meansMatToArrayTest() {
     val matrix = DenseMatrix((1.0, 3.0), (2.0, 4.0))
     
-    val genSeq = meansMatToGenSeq(matrix)
+    val genSeq = meansMatToArray(matrix)
     
     assert(genSeq(0) == DenseVector(1.0, 2.0))
     assert(genSeq(1) == DenseVector(3.0, 4.0))
     
-    val chain = meansGenSeqToMat(meansMatToGenSeq(matrix))
+    val chain = meansArrayToMat(meansMatToArray(matrix))
     
     println(chain)
     println(matrix)
@@ -50,14 +50,14 @@ class ConversionsTest extends AssertionsForJUnit {
     assert(matrix == chain)
   }
   
-  @Test def meansGenSeqToMatTest() {
+  @Test def meansArrayToMatTest() {
     val genSeq = Array(DenseVector(1.0, 2.0), DenseVector(3.0, 4.0))
     
-    val matrix = meansGenSeqToMat(genSeq)
+    val matrix = meansArrayToMat(genSeq)
     
     assert(matrix == DenseMatrix((1.0, 3.0), (2.0, 4.0)))
     
-    val chain = meansMatToGenSeq(meansGenSeqToMat(genSeq))
+    val chain = meansMatToArray(meansArrayToMat(genSeq))
     
     assert(genSeq(0) == chain(0) && genSeq(1) == chain(1))
   }

@@ -20,3 +20,4 @@ scalaVersion := "2.9.1"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
+logBuffered in Test := false

@@ -180,8 +180,13 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
    */
   def maximization(estimate: DenseMatrix[Double]): MatricesTupple = {
     
-    val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
+    val estimateSeq = dataMatToGenSeq(estimate)
     
+    //val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
+    
+    val estWeight = estimateSeq reduce(_ + _)
+    
+    /*
     val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComponents)((dim, comp) => {
       val col: DenseVector[Double] = data(::, dim)
       
@@ -189,7 +194,14 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
       
       val weightSum = weightCol.sum / estWeight(comp)
       weightSum
-    })
+    })*/
+    
+    val estMeanToto = for(k <- (0 until gaussianComponents).toArray) yield {
+      val m = (dataSeq zip estimateSeq) map{case(point, es) => point * es(k)}
+      (m reduce(_ + _)) / estWeight(k)
+    }
+    
+    val estMean = meansArrayToMat(estMeanToto)
 
     val estCovariance = (0 until gaussianComponents) map(index => {
       val matrix = DenseMatrix.zeros[Double](dimensions, dimensions)

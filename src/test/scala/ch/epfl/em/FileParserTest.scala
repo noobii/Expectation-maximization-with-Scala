@@ -40,6 +40,26 @@ class FileParserTest extends AssertionsForJUnit {
     assert(parsedMatrix == rightMatrix)
   }
   
+  @Test def meanTest() {
+    val fileName = path + "meanMatrix.csv"
+    
+    val parsed = FileParser(fileName).means
+    
+    val right = Array(DenseVector(1.0, 2.0), DenseVector(3.0, 4.0), DenseVector(5.0, 6.0))
+    
+    assert((parsed zip right) forall(x => x._1.asCol == x._2.asCol))
+  }
+  
+  @Test def dataTest() {
+    val fileName = path + "data.csv"
+    
+    val parsed = FileParser(fileName).data
+    
+    val right = Array(DenseVector(1.0, 2.0).asRow, DenseVector(3.0, 4.0).asRow, DenseVector(5.0, 6.0))
+    
+    assert((parsed zip right) forall(x => x._1 == x._2))
+  }
+  
   /*
   @Test def parseForFun() {
     val fileName = path + "X.csv"

@@ -41,8 +41,12 @@ case class FileParser(var fileName: String) {
     matrix
   }
   
-  def toGenSeq: GenSeq[DenseVector[Double]] = processFile(_.split(',').map(_.toDouble).asVector.asRow)
+  def data: GenSeq[DenseVector[Double]] = processFile(splitToDouble(_).asVector.asRow)
+  
+  def means: GenSeq[DenseVector[Double]] = processFile(splitToDouble(_).asVector.asCol)
 
+  private def splitToDouble(s: String): Array[Double] = s.split(',') map (_.toDouble)
+  
   def toVector: DenseVector[Int] = processFile(_.toInt).toArray.asVector
   
   private def processFile[V](applyToLine: String => V) = {

@@ -13,7 +13,7 @@ import scalala.library.Statistics._
 import scalala.library.Plotting._
 import scalala.operators.Implicits._;
 import scala.collection.GenSeq
-import ch.epfl.em.TransferTools._
+import ch.epfl.em.Conversions._
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 

@@ -10,7 +10,7 @@ import scalala.library.Statistics._
 import scalala.library.Plotting._
 import scalala.operators.Implicits._;
 
-object TransferTools {
+object Conversions {
 
   def dataMatToGenSeq(data: DenseMatrix[Double]): GenSeq[DenseVector[Double]] = {
     for(i <- 0 until data.numRows) yield data(i, ::)

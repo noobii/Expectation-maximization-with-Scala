@@ -19,4 +19,12 @@ object Conversions {
   def dataGenSeqToMat(data: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
     DenseMatrix.tabulate[Double](data.length, data.head.length)((x, y) => data(x)(y))
   }
+  
+  def meansMatToGenSeq(means: DenseMatrix[Double]): GenSeq[DenseVector[Double]] = {
+    for(i <- 0 until means.numCols) yield means(::, i)
+  }
+  
+  def meansGenSeqToMat(means: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
+    DenseMatrix.tabulate[Double](means.head.length, means.length)((x, y) => means(y)(x))
+  }
 }

@@ -58,9 +58,6 @@ class GaussianTest extends AssertionsForJUnit {
       (0.2689,    0.7311)
     )
     
-    println("a" + matlabExpVal(::, 0).asRow)
-    println("b" + exp(::, 0))
-    
     assert((matlabExpVal(::, 0) - exp(::, 0)).norm(2) < delta)
     assert((matlabExpVal(::, 1) - exp(::, 1)).norm(2) < delta)
   }

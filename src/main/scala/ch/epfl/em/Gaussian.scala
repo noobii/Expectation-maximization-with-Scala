@@ -76,14 +76,14 @@ object Gaussian {
   
 }
 
-class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
+class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
 
     
-  private val measurements = data2.length
-  private val dimensions = data2.head.length
+  private val measurements = dataSeq.length
+  private val dimensions = dataSeq.head.length
   
-  val data = dataGenSeqToMat(data2)
+  val data = dataGenSeqToMat(dataSeq)
 
   
   def runAlgo = {
@@ -206,8 +206,8 @@ class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], g
   }
   
   // This data will be used several times and do not need to be recomputed
-  var meanVect = mean(data2)
-  var covarianceMat = covarianceOfData(data2)
+  var meanVect = mean(dataSeq)
+  var covarianceMat = covarianceOfData(dataSeq)
   
   def mean(data: GenSeq[DenseVector[Double]]): DenseVectorCol[Double] = {
     data.reduce(_ + _).asCol / data.length

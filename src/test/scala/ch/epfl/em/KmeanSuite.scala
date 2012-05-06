@@ -73,7 +73,7 @@ class KmeanSuite extends AssertionsForJUnit {
     val matrix = DenseMatrix.ones[Double](10, 10)
     val k = 5
     
-    val kmean = new Kmean(matrix, k)
+    val kmean = new Kmean(Conversions.dataMatToGenSeq(matrix), k)
     val randClusters = kmean.initializeClusters
         
     // Check that there are as many rows as objects
@@ -195,7 +195,7 @@ class KmeanSuite extends AssertionsForJUnit {
 	    val k = 3
 	    val maxIter = 1000
 	    
-	    val kmean = new Kmean(data, k)
+	    val kmean = new Kmean(Conversions.dataMatToGenSeq(data), k)
 	    //val res = kmean.compute(maxIter)
 	    val means = mean(kmean.means, Axis.Vertical).toList
 	    val mat = kmean.means

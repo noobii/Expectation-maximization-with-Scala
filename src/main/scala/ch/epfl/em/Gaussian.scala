@@ -49,23 +49,6 @@ object Gaussian {
     val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
     
     val out500k = gaussian500k.runAlgo
-    
-    /*
-    plot.hold = true
-    plot(X50k(::, 0), X50k(::, 1), '.')
-    plot(out.means(0, ::), out.means(1, ::), '+', "b")
-    */
-    /*
-    val fileName2 = "src/test/ressources/em/50k/X.csv"
-    val k2 = 6
-    
-    printStatus("Read file")
-    val data2 = FileParser(fileName2).toMatrix
-    printStatus("File read")
-    
-    val g2 = new Gaussian(data2, k2)
-    
-    g2.runAlgo*/
   }
   
   protected def printStatus(text: String) {
@@ -76,15 +59,13 @@ object Gaussian {
   
 }
 
-class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
+class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
 
-    
-  private val measurements = dataSeq.length
-  private val dimensions = dataSeq.head.length
+  private val measurements = dataIn.length
+  private val dimensions = dataIn.head.length
   
-  val data = dataGenSeqToMat(dataSeq)
-
+  val data = dataIn.par
   
   def runAlgo = {
     
@@ -100,7 +81,7 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
     println("Means: \n" + est.means)
     
     println("Time: " + GChrono.count/1000.0)
-    
+
     est
   }
 
@@ -158,7 +139,7 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
 
     def normalize(v: DenseVector[Double]) = v :/ v.sum
 
-    val E = dataSeq map(point => {
+    val E = data map(point => {
       val vector = DenseVector.tabulate[Double](gaussianComponents)(j => {
         val delta = point.asCol - estimates.means(::, j)
         val coef = delta.t * invEstC(j) * delta
@@ -183,12 +164,12 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
     
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
-    val estMean = ((dataSeq zip estimate) map{case(point, est) =>
+    val estMean = ((data zip estimate) map{case(point, est) =>
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
     val estCovariance = (0 until gaussianComponents).toArray map(k => {
-      val sumMat = ((dataSeq zip estimate) map {case(point, est) =>
+      val sumMat = ((data zip estimate) map {case(point, est) =>
         val dXM = point.asCol - estMean(::, k)
         (dXM * dXM.t) :* est(k)
       }) reduce (_ + _)
@@ -202,8 +183,8 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
   }
   
   // This data will be used several times and do not need to be recomputed
-  var meanVect = mean(dataSeq)
-  var covarianceMat = covarianceOfData(dataSeq)
+  var meanVect = mean(data)
+  var covarianceMat = covarianceOfData(data)
   
   def mean(data: GenSeq[DenseVector[Double]]): DenseVectorCol[Double] = {
     data.reduce(_ + _).asCol / data.length

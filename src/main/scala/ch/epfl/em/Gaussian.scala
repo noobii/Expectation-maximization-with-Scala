@@ -53,7 +53,7 @@ object Gaussian {
     printStatus("Runing algo 50k")
     
     val k50k = 6
-    val X50k = FileParser("src/test/ressources/em/50k/X.csv").toGenSeq
+    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
     val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
     val gaussian50k = new Gaussian(strategy50k)(X50k, k50k)
     
@@ -61,7 +61,7 @@ object Gaussian {
     
     printStatus("Runing algo 600k")
     val k500k = 5
-    val X500k = FileParser("src/test/ressources/em/500k/X.csv").toGenSeq
+    val X500k = FileParser("src/test/ressources/em/500k/X.csv").data
     val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
     val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
     

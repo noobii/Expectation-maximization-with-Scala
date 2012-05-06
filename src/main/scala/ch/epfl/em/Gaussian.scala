@@ -156,22 +156,21 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
 
     val a = pow(2 * Pi, dimensions / 2.0)
 
-    val E = DenseMatrix.tabulate[Double](data.numRows, gaussianComponents)((i, j) => {
-        val delta = data(i, ::).asCol - estimates.means(::, j)
+    def normalize(v: DenseVector[Double]) = v :/ v.sum
+
+    val E = dataSeq map(point => {
+      val vector = DenseVector.tabulate[Double](gaussianComponents)(j => {
+        val delta = point.asCol - estimates.means(::, j)
         val coef = delta.t * invEstC(j) * delta
         val pl = exp(-0.5 * coef) / (a * S(j))
-      
+        
         estimates.weights(j) * pl
-      }
-    )
-
-    def normalize(v: DenseVector[Double]) = v :/ v.sum
+      })
+      
+      normalize(vector)
+    })
     
-    // Make all row have 1 as element sum
-    // Don't know yet how to make this any more functionnal... scalala doesn't provide a map per line
-    for(i <- 0 until E.numRows) E(i, ::) := normalize(E(i, ::))
-    
-    E
+    dataGenSeqToMat(E)
   }
 
   /**

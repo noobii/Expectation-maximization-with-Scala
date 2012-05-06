@@ -13,6 +13,7 @@ import scalala.library.Statistics._
 import scalala.library.Plotting._
 import scalala.operators.Implicits._;
 import scala.collection.GenSeq
+import ch.epfl.em.TransferTools._
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
@@ -82,7 +83,7 @@ class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], g
   private val measurements = data2.length
   private val dimensions = data2.head.length
   
-  val data = toMatrix(data2)
+  val data = dataGenSeqToMat(data2)
 
   
   def runAlgo = {
@@ -213,15 +214,7 @@ class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], g
   }
   
   def covarianceOfData(data: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
-    covariance(toMatrix(data), Axis.Vertical)._1
-  }
-  
-  def toMatrix(data: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
-    val matrix = DenseMatrix.zeros[Double](measurements, dimensions)
-    
-    (0 until measurements) map (i => matrix(i, ::) := data(i))
-    
-    matrix
+    covariance(dataGenSeqToMat(data), Axis.Vertical)._1
   }
   
   /**

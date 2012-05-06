@@ -2,17 +2,17 @@ package ch.epfl.em
 
 import scala.Array.canBuildFrom
 import scala.io.Source.fromFile
-
-import scalala.scalar._;
-import scalala.tensor.::;
-import scalala.tensor.mutable._;
-import scalala.tensor.dense._;
-import scalala.tensor.sparse._;
-import scalala.library.Library._;
-import scalala.library.LinearAlgebra._;
-import scalala.library.Statistics._;
-import scalala.library.Plotting._;
+import scalala.scalar._
+import scalala.tensor.::
+import scalala.tensor.mutable._
+import scalala.tensor.dense._
+import scalala.tensor.sparse._
+import scalala.library.Library._
+import scalala.library.LinearAlgebra._
+import scalala.library.Statistics._
+import scalala.library.Plotting._
 import scalala.operators.Implicits._;
+import scala.collection.GenSeq
 
 
 case class FileParser(var fileName: String) {
@@ -40,6 +40,8 @@ case class FileParser(var fileName: String) {
     
     matrix
   }
+  
+  def toGenSeq: GenSeq[DenseVector[Double]] = processFile(_.split(',').map(_.toDouble).asVector.asRow)
 
   def toVector: DenseVector[Int] = processFile(_.toInt).toArray.asVector
   

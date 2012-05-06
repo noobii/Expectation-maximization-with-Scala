@@ -2,16 +2,17 @@ package ch.epfl.em
 
 import scala.Array.canBuildFrom
 import scala.math.Pi
-import scalala.scalar._;
-import scalala.tensor.::;
-import scalala.tensor.mutable._;
-import scalala.tensor.dense._;
-import scalala.tensor.sparse._;
-import scalala.library.Library._;
-import scalala.library.LinearAlgebra._;
-import scalala.library.Statistics._;
-import scalala.library.Plotting._;
+import scalala.scalar._
+import scalala.tensor.::
+import scalala.tensor.mutable._
+import scalala.tensor.dense._
+import scalala.tensor.sparse._
+import scalala.library.Library._
+import scalala.library.LinearAlgebra._
+import scalala.library.Statistics._
+import scalala.library.Plotting._
 import scalala.operators.Implicits._;
+import scala.collection.GenSeq
 
 class Chrono {
   
@@ -35,14 +36,14 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
-  
+  /*
     val k10k = 3
-    val X10k = FileParser("src/test/ressources/em/10k/X.csv").toMatrix
+    val X10k = FileParser("src/test/ressources/em/10k/X.csv").toGenSeq
     val strategy10k = new Kmean(X10k, k10k)
     val gaussian = new Gaussian(strategy10k)(X10k, k10k)
     
     gaussian.runAlgo
-    
+    */
     
     println("Weights should be: (0.6, 0.2, 0.2)")
     println("Means should be:")
@@ -52,7 +53,7 @@ object Gaussian {
     printStatus("Runing algo 50k")
     
     val k50k = 6
-    val X50k = FileParser("src/test/ressources/em/50k/X.csv").toMatrix
+    val X50k = FileParser("src/test/ressources/em/50k/X.csv").toGenSeq
     val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
     val gaussian50k = new Gaussian(strategy50k)(X50k, k50k)
     
@@ -60,7 +61,7 @@ object Gaussian {
     
     printStatus("Runing algo 600k")
     val k500k = 5
-    val X500k = FileParser("src/test/ressources/em/500k/X.csv").toMatrix
+    val X500k = FileParser("src/test/ressources/em/500k/X.csv").toGenSeq
     val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
     val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
     
@@ -106,11 +107,15 @@ object Gaussian {
   }*/
 }
 
-class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianComponents: Int) {
+class Gaussian(initStrategy: GaussianInit)(data2: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
+
+    
+  private val measurements = data2.length
+  private val dimensions = data2.head.length
   
-  private val measurements = data.numRows
-  private val dimensions = data.numCols
+  val data = toMatrix(data2)
+
   
   def runAlgo = {
     
@@ -222,7 +227,7 @@ class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianCo
    * Returns Estimated weight, mean and covariance
    */
   def maximization(estimate: DenseMatrix[Double]): MatricesTupple = {
-
+    
     val estWeight = DenseVector.tabulate(gaussianComponents)(i => estimate(::, i).sum)
     
     val estMean = DenseMatrix.tabulate[Double](dimensions, gaussianComponents)((dim, comp) => {
@@ -249,8 +254,24 @@ class Gaussian(initStrategy: GaussianInit)(data: DenseMatrix[Double], gaussianCo
   }
   
   // This data will be used several times and do not need to be recomputed
-  var meanVect = mean(data, Axis.Vertical).asCol
-  var covarianceMat = covariance(data, Axis.Vertical)._1
+  var meanVect = mean(data2)
+  var covarianceMat = covarianceOfData(data2)
+  
+  def mean(data: GenSeq[DenseVector[Double]]): DenseVectorCol[Double] = {
+    data.reduce(_ + _).asCol / data.length
+  }
+  
+  def covarianceOfData(data: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
+    covariance(toMatrix(data), Axis.Vertical)._1
+  }
+  
+  def toMatrix(data: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
+    val matrix = DenseMatrix.zeros[Double](measurements, dimensions)
+    
+    (0 until measurements) map (i => matrix(i, ::) := data(i))
+    
+    matrix
+  }
   
   /**
    * Computes the log-likelihood that the estimated values are correct.

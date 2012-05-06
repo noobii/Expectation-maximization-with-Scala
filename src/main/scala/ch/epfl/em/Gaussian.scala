@@ -120,9 +120,9 @@ class Gaussian(initStrategy: GaussianInit)(dataSeq: GenSeq[DenseVector[Double]],
     
     def approxGoodEnough = (abs(100*(Ln - Lo) / Lo) <= minLikelihoodVar)
     
-    var lEstW: DenseVector[Double] = estimates.weights
-    var lEstM: DenseMatrix[Double] = estimates.means
-    var lEstC: Array[DenseMatrix[Double]] = estimates.covariances
+    var lEstW = estimates.weights
+    var lEstM = estimates.means
+    var lEstC = estimates.covariances
     
     
     while(!approxGoodEnough && (iterations < maxIter)) {

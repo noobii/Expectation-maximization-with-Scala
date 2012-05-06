@@ -14,24 +14,6 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._;
 import scala.collection.GenSeq
 
-class Chrono {
-  
-  private var currentCount = 0l
-  
-  private var lastStart = 0l
-  
-  def start { lastStart = System.currentTimeMillis() }
-  def stop { currentCount += (System.currentTimeMillis() - lastStart)}
-  
-  def reset {currentCount = 0l}
-  
-  def count = currentCount
-}
-
-object EChrono extends Chrono
-object MChrono extends Chrono
-object GChrono extends Chrono
-
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
 object Gaussian {

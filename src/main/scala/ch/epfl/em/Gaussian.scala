@@ -19,7 +19,9 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
-  
+    
+    printStatus("Runing algo 10k")
+
     val k10k = 3
     val X10k = FileParser("src/test/ressources/em/10k/X.csv").data
     val strategy10k = new Kmean(X10k, k10k)
@@ -27,11 +29,11 @@ object Gaussian {
     
     gaussian.runAlgo
     
-    
+    /*
     println("Weights should be: (0.6, 0.2, 0.2)")
     println("Means should be:")
     println("0.5\t3\t3")
-    println("0\t-2\t3")
+    println("0\t-2\t3")*/
     
     printStatus("Runing algo 50k")
     
@@ -71,14 +73,11 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     
     printStatus("Init data")
     val initial = initStrategy.init
-    printStatus("Data init")
     
-    printStatus("Run algo"); GChrono.start
+    printStatus("Run algo"); 
+    GChrono.start
     val (est, lg) = em(initial, 0.1, 1000)
-    printStatus("End algo"); GChrono.stop
-        
-    println("Weight: \n" + est.weights)
-    println("Means: \n" + est.means)
+    GChrono.stop
     
     println("Time: " + GChrono.count/1000.0)
 

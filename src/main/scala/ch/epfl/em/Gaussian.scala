@@ -81,6 +81,8 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     
     println("Time: " + GChrono.count/1000.0)
 
+    GChrono.reset
+    
     est
   }
 
@@ -168,11 +170,12 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     } reduce(_ + _)) :/ weightsAsMatrix
     
     val estCovariance = (0 until gaussianComponents).toArray map(k => {
-      /*val sumMat = ((data zip estimate) map {case(point, est) =>
+      val sumMat = ((data zip estimate) map {case(point, est) =>
         val dXM = point.asCol - estMean(::, k)
         (dXM * dXM.t) :* est(k)
-      }) reduce (_ + _)*/
-            
+      }) reduce (_ + _)
+      
+      /*
       def co(point: DenseVector[Double], est: DenseVector[Double]) = {
         val dXM = point.asCol - estMean(::, k)
         (dXM * dXM.t) :* est(k)
@@ -180,7 +183,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
       
       val sumMat = ((data zip estimate).foldLeft(DenseMatrix.zeros[Double](dimensions, dimensions)){
           case(runingSum, (point, est)) => runingSum + co(point, est)}
-      )
+      )*/
             
       sumMat :/ estWeight(k)
     })

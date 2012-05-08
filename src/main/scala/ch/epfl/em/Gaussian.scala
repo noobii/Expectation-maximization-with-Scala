@@ -36,6 +36,8 @@ object Gaussian {
     println("0.5\t3\t3")
     println("0\t-2\t3")*/
     
+    println("Available cores: " + Runtime.getRuntime().availableProcessors())
+    
     printStatus("Runing algo 50k")
     
     val k50k = 6
@@ -52,6 +54,14 @@ object Gaussian {
     val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
     
     val out500k = gaussian500k.runAlgo
+    
+    printStatus("Runing algo 1M")
+    val k1M = 5
+    val X1M = FileParser("src/test/ressources/em/1M/X.csv").data
+    val strategy1M = new InitFromMatlab("src/test/ressources/em/1M/")
+    val gaussian1M = new Gaussian(strategy1M)(X1M, k1M)
+    
+    val out1M = gaussian1M.runAlgo
   }
   
   protected def printStatus(text: String) {
@@ -70,7 +80,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
   
   private val data = dataIn.par
   
-  private val zeroUntilGaussianComp = (0 until gaussianComponents).toArray.par
+  private val zeroUntilGaussianComp = (0 until gaussianComponents).toArray
   
   def runAlgo = {
     
@@ -194,7 +204,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     
     estWeight := estWeight / measurements
     
-    MatricesTupple(estWeight, estMean, estCovariance.seq.toArray)
+    MatricesTupple(estWeight, estMean, estCovariance)
   }
   
   // This data will be used several times and do not need to be recomputed

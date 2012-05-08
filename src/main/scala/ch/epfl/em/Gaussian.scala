@@ -20,6 +20,7 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 object Gaussian {
   def main(args: Array[String]): Unit = {
     
+    /*
     printStatus("Runing algo 10k")
 
     val k10k = 3
@@ -28,7 +29,7 @@ object Gaussian {
     val gaussian = new Gaussian(strategy10k)(X10k, k10k)
     
     gaussian.runAlgo
-    
+    */
     /*
     println("Weights should be: (0.6, 0.2, 0.2)")
     println("Means should be:")
@@ -67,7 +68,9 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
   private val measurements = dataIn.length
   private val dimensions = dataIn.head.length
   
-  val data = dataIn.par
+  private val data = dataIn.par
+  
+  private val zeroUntilGaussianComp = (0 until gaussianComponents).toArray
   
   def runAlgo = {
     
@@ -163,13 +166,14 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
         
     val estWeight = estimate reduce(_ + _)
     
+    // The weights repeated in each line of a (dim, gaussianComp) matrix
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
     val estMean = ((data zip estimate) map{case(point, est) =>
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
-    val estCovariance = (0 until gaussianComponents).toArray map(k => {
+    val estCovariance = zeroUntilGaussianComp map(k => {
       val sumMat = ((data zip estimate) map {case(point, est) =>
         val dXM = point.asCol - estMean(::, k)
         (dXM * dXM.t) :* est(k)

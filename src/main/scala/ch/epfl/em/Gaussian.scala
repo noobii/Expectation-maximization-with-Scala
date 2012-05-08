@@ -20,22 +20,6 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 object Gaussian {
   def main(args: Array[String]): Unit = {
     
-    /*
-    printStatus("Runing algo 10k")
-
-    val k10k = 3
-    val X10k = FileParser("src/test/ressources/em/10k/X.csv").data
-    val strategy10k = new Kmean(X10k, k10k)
-    val gaussian = new Gaussian(strategy10k)(X10k, k10k)
-    
-    gaussian.runAlgo
-    */
-    /*
-    println("Weights should be: (0.6, 0.2, 0.2)")
-    println("Means should be:")
-    println("0.5\t3\t3")
-    println("0\t-2\t3")*/
-    
     println("Available cores: " + Runtime.getRuntime().availableProcessors())
     
     printStatus("Runing algo 50k")
@@ -105,34 +89,38 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
   def em(
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
-      maxIter: Int
+      maximumIterations: Int
       ): (MatricesTupple, Double) = {
 
     var iterations = 0;
     
-    var Ln = minLikelihoodVar
-    var Lo = 2 * Ln
+    // Initalizes the likelihood values
+    var newLikelihood = minLikelihoodVar
+    var oldLikelihood = 2 * newLikelihood
     
-    def approxGoodEnough = (abs(100*(Ln - Lo) / Lo) <= minLikelihoodVar)
+    // Determines if the likelihood variation is small engough to stop the iteration
+    def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= minLikelihoodVar)
     
-    var lEstW = estimates.weights
-    var lEstM = estimates.means
-    var lEstC = estimates.covariances
+    var estimatedWeights = estimates.weights
+    var estimatedMeans = estimates.means
+    var estimatedCovariances = estimates.covariances
     
     
-    while(!approxGoodEnough && (iterations < maxIter)) {
-      val exp = expectation(MatricesTupple(lEstW, lEstM, lEstC))
+    while(!hasConverged && (iterations < maximumIterations)) {
+      val exp = expectation(MatricesTupple(estimatedWeights, estimatedMeans, estimatedCovariances))
       val maxRes = maximization(exp)
       
-      lEstW = maxRes.weights
-      lEstM = maxRes.means
-      lEstC = maxRes.covariances
-      Lo = Ln
-      Ln = likelihood(MatricesTupple(lEstW, lEstM, lEstC))
+      estimatedWeights = maxRes.weights
+      estimatedMeans = maxRes.means
+      estimatedCovariances = maxRes.covariances
+            
+      oldLikelihood = newLikelihood
+      newLikelihood = likelihood(maxRes)
+      
       iterations += 1
     }
     
-    (MatricesTupple(lEstW, lEstM, lEstC), Ln)
+    (MatricesTupple(estimatedWeights, estimatedMeans, estimatedCovariances), newLikelihood)
   }
 
   /**
@@ -141,20 +129,25 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
    */
   def expectation(estimates: MatricesTupple): GenSeq[DenseVector[Double]] = {
 
-    val nEstC = estimates.covariances map {matrix => 
+    // Function to make the sum of the elements equal 1
+    def normalize(v: DenseVector[Double]) = v :/ v.sum
+
+    
+    // Creates new empty covariances matrices if needed
+    val estimatedCovariances = estimates.covariances map {matrix => 
       if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
       else matrix
     }
     
-    val S = nEstC map (matrix => sqrt(det(matrix)))
-    val invEstC = nEstC map (matrix => inv(matrix))
+    // Computes values that are used later in the algo
+    val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
+    val invEstC = estimatedCovariances map (matrix => inv(matrix))
 
     val a = pow(2 * Pi, dimensions / 2.0)
 
-    def normalize(v: DenseVector[Double]) = v :/ v.sum
-
-    val E = data map(point => {
+    val expec = data map(point => {
       val vector = DenseVector.tabulate[Double](gaussianComponents)(j => {
+
         val delta = point.asCol - estimates.means(::, j)
         val coef = delta.t * invEstC(j) * delta
         val pl = exp(-0.5 * coef) / (a * S(j))
@@ -165,7 +158,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
       normalize(vector)
     })
     
-    E
+    expec
   }
 
   /**
@@ -179,14 +172,14 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     // The weights repeated in each line of a (dim, gaussianComp) matrix
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
-    val estMean = ((data zip estimate) map{case(point, est) =>
+    val estMean = ((data zip estimate) map {case(point, est) =>
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
     val estCovariance = zeroUntilGaussianComp map(k => {
       val sumMat = ((data zip estimate) map {case(point, est) =>
-        val dXM = point.asCol - estMean(::, k)
-        (dXM * dXM.t) :* est(k)
+        val delta = point.asCol - estMean(::, k)
+        (delta * delta.t) :* est(k)
       }) reduce (_ + _)
       
       /*
@@ -208,16 +201,9 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
   }
   
   // This data will be used several times and do not need to be recomputed
-  var meanVect = mean(data)
-  var covarianceMat = covarianceOfData(data)
-  
-  def mean(data: GenSeq[DenseVector[Double]]): DenseVectorCol[Double] = {
-    data.reduce(_ + _).asCol / data.length
-  }
-  
-  def covarianceOfData(data: GenSeq[DenseVector[Double]]): DenseMatrix[Double] = {
-    covariance(dataGenSeqToMat(data), Axis.Vertical)._1
-  }
+  var dataMean = (data reduce(_ + _)).asCol / measurements
+  var dataCovariance = covariance(dataGenSeqToMat(data), Axis.Vertical)._1
+
   
   /**
    * Computes the log-likelihood that the estimated values are correct.
@@ -227,12 +213,12 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     val estCWithIndex = estimate.covariances zipWithIndex
 
     // Thought it could be an elegant solution to use a map with indices
-    val elements = estCWithIndex.map {
+    val elements = estCWithIndex map {
       case (matrix, index) => {
         val invEstC = inv(matrix)
       
         val lg = log(det(matrix * 2 * Pi))
-        val tr = (invEstC * covarianceMat).trace + (meanVect - estimate.means(::, index)).t * invEstC * (meanVect - estimate.means(::, index))
+        val tr = (invEstC * dataCovariance).trace + (dataMean - estimate.means(::, index)).t * invEstC * (dataMean - estimate.means(::, index))
       
         estimate.weights(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
       }

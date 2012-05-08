@@ -1,5 +1,7 @@
 name := "EM"
 
+scalaVersion := "2.9.2"
+
 libraryDependencies  ++= Seq(
             // other dependencies here
             //"org.scalala" %% "scalala" % "1.0.0.RC2-SNAPSHOT",
@@ -16,8 +18,6 @@ resolvers ++= Seq(
             "ScalaNLP Maven2" at "http://repo.scalanlp.org/repo"
 )
 
-scalaVersion := "2.9.1"
-
-scalacOptions ++= Seq("-unchecked", "-deprecation")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-optimize")
 
 logBuffered in Test := false

@@ -23,10 +23,9 @@ class Kmean(dataSeq: GenSeq[DenseVector[Double]], k: Int) extends GaussianInit {
   lazy val means = {
     val centroids = computeCentroids(clusters)
     // Create a matrix where each columns is a mean (centroid) of a cluster
-    val matrix = DenseMatrix.zeros[Double](data.numCols, k)
-    for(i <- 0 until centroids.size) matrix(::, i) := centroids(i)
-    
-    matrix
+    //val matrix = DenseMatrix.zeros[Double](data.numCols, k)
+    (for(i <- 0 until centroids.size) yield centroids(i)).toArray
+ 
   }
   
   lazy val weights = {

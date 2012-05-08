@@ -22,7 +22,7 @@ trait GaussianInit {
   }
   
   def weights: DenseVector[Double]
-  def means: DenseMatrix[Double]
+  def means: Array[DenseVector[Double]]
   def covariances: Array[DenseMatrix[Double]]
 
 }
@@ -35,7 +35,7 @@ class InitFromMatlab(folderPath: String) extends GaussianInit {
   
   def weights = new FileParser(folderPath + "kmeanW.csv").toMatrix(0, ::).asCol
 
-  def means = new FileParser(folderPath + "kmeanM.csv").toMatrix
+  def means = Conversions.meansMatToArray(new FileParser(folderPath + "kmeanM.csv").toMatrix)
   
   def covariances = {
     val files = new File(folderPath).listFiles

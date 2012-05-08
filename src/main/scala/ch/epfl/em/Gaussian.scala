@@ -15,7 +15,7 @@ import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 
-case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
+case class MatricesTupple(weights: DenseVector[Double], means: Array[DenseVector[Double]], covariances: Array[DenseMatrix[Double]])
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
@@ -143,7 +143,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     val expec = data map(point => {
       val vector = DenseVector.tabulate[Double](gaussianComponents)(j => {
 
-        val delta = point.asCol - estimates.means(::, j)
+        val delta = point.asCol - estimates.means(j)
         val coef = delta.t * invEstC(j) * delta
         val pl = exp(-0.5 * coef) / (a * S(j))
         
@@ -167,13 +167,15 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     // The weights repeated in each line of a (dim, gaussianComp) matrix
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
-    val estMean = ((data zip estimate) map {case(point, est) =>
+    val estMeanMat = ((data zip estimate) map {case(point, est) =>
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
+    val estMean = Conversions.meansMatToArray(estMeanMat)
+    
     val estCovariance = zeroUntilGaussianComp map(k => {
       val sumMat = ((data zip estimate) map {case(point, est) =>
-        val delta = point.asCol - estMean(::, k)
+        val delta = point.asCol - estMean(k)
         (delta * delta.t) :* est(k)
       }) reduce (_ + _)
       
@@ -213,7 +215,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
         val invEstC = inv(matrix)
       
         val lg = log(det(matrix * 2 * Pi))
-        val tr = (invEstC * dataCovariance).trace + (dataMean - estimate.means(::, index)).t * invEstC * (dataMean - estimate.means(::, index))
+        val tr = (invEstC * dataCovariance).trace + (dataMean - estimate.means(index)).t * invEstC * (dataMean - estimate.means(index))
       
         estimate.weights(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
       }

@@ -33,7 +33,7 @@ class GaussianTest extends AssertionsForJUnit {
     
     val gaussian = new Gaussian(null)(X, k)
     
-    (gaussian, X, k, MatricesTupple(W, M, V))
+    (gaussian, X, k, MatricesTupple(W, Conversions.meansMatToArray(M), V))
   }
   
   @Test def testInitEm() {
@@ -83,7 +83,7 @@ class GaussianTest extends AssertionsForJUnit {
     println("toto" + matlab2)
     
     assert(res.weights == matlab1)
-    assert(NumericalChecks.closeEnough(res.means, matlab2))
+    assert(NumericalChecks.closeEnough(Conversions.meansArrayToMat(res.means), matlab2))
     assert(res.covariances(0) == matlab3(0))
     assert(res.covariances(1) == matlab3(1))
   }

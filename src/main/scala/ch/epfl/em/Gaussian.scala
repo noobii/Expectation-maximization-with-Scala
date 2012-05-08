@@ -171,11 +171,14 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
       point.asCol * est.asRow 
     } reduce(_ + _)) :/ weightsAsMatrix
     
+    /*
     val estCovariance = zeroUntilGaussianComp map(k => {
-      val sumMat = ((data zip estimate) map {case(point, est) =>
+      // Hotest point in the algo
+      
+      /*val sumMat = ((data zip estimate) map {case(point, est) =>
         val delta = point.asCol - estMean(::, k)
         (delta * delta.t) :* est(k)
-      }) reduce (_ + _)
+      }) reduce (_ + _)*/
       
       /*
       def co(point: DenseVector[Double], est: DenseVector[Double]) = {
@@ -188,7 +191,16 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
       )*/
             
       sumMat :/ estWeight(k)
-    })
+    })*/
+    
+    val estCovariance = ((data zip estimate) map {case(point, est) => 
+        
+        (0 until gaussianComponents).toArray map {k => {
+          val delta = point.asCol - estMean(::, k)
+          (delta * delta.t) :* (est(k) / estWeight(k))
+        }}
+        
+      }) reduce((x, y) => (x zip y) map (z => z._1 + z._2)) 
     
     estWeight := estWeight / measurements
     

@@ -22,30 +22,32 @@ object Gaussian {
     
     println("Available cores: " + Runtime.getRuntime().availableProcessors())
     
-    printStatus("Runing algo 50k")
-    
-    val k50k = 6
-    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
-    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
-    val gaussian50k = new Gaussian(strategy50k)(X50k, k50k)
-    
-    val out = gaussian50k.runAlgo
-    
-    printStatus("Runing algo 600k")
-    val k500k = 5
-    val X500k = FileParser("src/test/ressources/em/500k/X.csv").data
-    val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
-    val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
-    
-    val out500k = gaussian500k.runAlgo
-    
-    printStatus("Runing algo 1M")
-    val k1M = 5
-    val X1M = FileParser("src/test/ressources/em/1M/X.csv").data
-    val strategy1M = new InitFromMatlab("src/test/ressources/em/1M/")
-    val gaussian1M = new Gaussian(strategy1M)(X1M, k1M)
-    
-    val out1M = gaussian1M.runAlgo
+    for(i <- 0 until 5) {
+	    printStatus("Runing algo 50k")
+	    
+	    val k50k = 6
+	    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
+	    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
+	    val gaussian50k = new Gaussian(strategy50k)(X50k, k50k)
+	    
+	    val out = gaussian50k.runAlgo
+	    
+	    printStatus("Runing algo 600k")
+	    val k500k = 5
+	    val X500k = FileParser("src/test/ressources/em/500k/X.csv").data
+	    val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
+	    val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
+	    
+	    val out500k = gaussian500k.runAlgo
+	    
+	    printStatus("Runing algo 1M")
+	    val k1M = 5
+	    val X1M = FileParser("src/test/ressources/em/1M/X.csv").data
+	    val strategy1M = new InitFromMatlab("src/test/ressources/em/1M/")
+	    val gaussian1M = new Gaussian(strategy1M)(X1M, k1M)
+	    
+	    val out1M = gaussian1M.runAlgo
+    }
   }
   
   protected def printStatus(text: String) {
@@ -68,7 +70,6 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
   
   def runAlgo = {
     
-    printStatus("Init data")
     val initial = initStrategy.init
     
     printStatus("Run algo"); 

@@ -14,7 +14,7 @@ testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
 resolvers ++= Seq(
             // other resolvers here
             "Sonatype" at "https://oss.sonatype.org/content/repositories/snapshots/",
-            // Will die soon "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots/",
+            // Will die soon: "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots/",
             "ScalaNLP Maven2" at "http://repo.scalanlp.org/repo"
 )
 

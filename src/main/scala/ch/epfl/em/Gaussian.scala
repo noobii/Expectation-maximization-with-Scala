@@ -95,33 +95,27 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
 
     var iterations = 0;
     
-    // Initalizes the likelihood values
+    // Initalises the likelihood values
     var newLikelihood = minLikelihoodVar
     var oldLikelihood = 2 * newLikelihood
     
     // Determines if the likelihood variation is small engough to stop the iteration
     def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= minLikelihoodVar)
     
-    var estimatedWeights = estimates.weights
-    var estimatedMeans = estimates.means
-    var estimatedCovariances = estimates.covariances
+    var newEstimates = estimates
     
     
     while(!hasConverged && (iterations < maximumIterations)) {
-      val exp = expectation(MatricesTupple(estimatedWeights, estimatedMeans, estimatedCovariances))
-      val maxRes = maximization(exp)
-      
-      estimatedWeights = maxRes.weights
-      estimatedMeans = maxRes.means
-      estimatedCovariances = maxRes.covariances
+      val exp = expectation(newEstimates)
+      newEstimates = maximization(exp)
             
       oldLikelihood = newLikelihood
-      newLikelihood = likelihood(maxRes)
+      newLikelihood = likelihood(newEstimates)
       
       iterations += 1
     }
     
-    (MatricesTupple(estimatedWeights, estimatedMeans, estimatedCovariances), newLikelihood)
+    (newEstimates, newLikelihood)
   }
 
   /**

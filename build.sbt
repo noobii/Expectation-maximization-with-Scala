@@ -18,6 +18,6 @@ resolvers ++= Seq(
             "ScalaNLP Maven2" at "http://repo.scalanlp.org/repo"
 )
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-optimize")
+scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 logBuffered in Test := false

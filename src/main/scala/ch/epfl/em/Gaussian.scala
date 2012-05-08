@@ -70,7 +70,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
   
   private val data = dataIn.par
   
-  private val zeroUntilGaussianComp = (0 until gaussianComponents).toArray
+  private val zeroUntilGaussianComp = (0 until gaussianComponents).toArray.par
   
   def runAlgo = {
     

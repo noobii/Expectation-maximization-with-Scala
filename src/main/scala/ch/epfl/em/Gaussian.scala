@@ -194,7 +194,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     
     estWeight := estWeight / measurements
     
-    MatricesTupple(estWeight, estMean, estCovariance)
+    MatricesTupple(estWeight, estMean, estCovariance.seq.toArray)
   }
   
   // This data will be used several times and do not need to be recomputed

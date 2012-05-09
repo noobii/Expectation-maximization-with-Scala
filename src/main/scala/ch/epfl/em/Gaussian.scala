@@ -193,6 +193,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
       sumMat :/ estWeight(k)
     })*/
     
+    // This is crazy impossible to understand but was just a test to check if it maybe was runing faster...
     val estCovariance = ((data zip estimate) map {case(point, est) => 
         
         (0 until gaussianComponents).toArray map {k => {

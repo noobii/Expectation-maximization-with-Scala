@@ -56,7 +56,7 @@ case class FileParser(var fileName: String) {
     
     val maped = lines map(applyToLine(_))
             
-    source.close()
+    source close
         
     maped
   }

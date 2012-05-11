@@ -1,13 +1,13 @@
 name := "EM"
 
+//scalaVersion := "2.10.0-SNAPSHOT"
 scalaVersion := "2.9.2"
 
 libraryDependencies  ++= Seq(
             // other dependencies here
             //"org.scalala" %% "scalala" % "1.0.0.RC2-SNAPSHOT",
-            "org.scalatest" %% "scalatest" % "1.7.1" % "test",
-            "com.novocode" % "junit-interface" % "0.8" % "test",
-            "com.typesafe.akka" % "akka-actor" % "1.1"
+            "org.scalatest" %% "scalatest" % "1.7.2" % "test",
+            "com.novocode" % "junit-interface" % "0.8" % "test"
 )
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")

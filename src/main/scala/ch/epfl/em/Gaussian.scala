@@ -167,9 +167,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     // The weights repeated in each line of a (dim, gaussianComp) matrix
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
-    val estMean = ((data zip estimate) map {case(point, est) =>
-      point.asCol * est.asRow 
-    } reduce(_ + _)) :/ weightsAsMatrix
+    val estMean = ((data zip estimate) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
     
     /*
     val estCovariance = zeroUntilGaussianComp map(k => {

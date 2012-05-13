@@ -18,7 +18,7 @@ object GaussianMenthor extends App {
     val k50k = 6
     val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
     val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
-    val gaussian50k = new GaussianMenthor(X50k, k50k)
+    val gaussian50k = new GaussianMenthor(strategy50k)(X50k, k50k)
   }
 }
 
@@ -31,25 +31,32 @@ case class PointWithEstimate(point: DenseVector[Double], estimate: DenseVector[D
 //  var estimates: ConcurrentMap[Int, UsedByExpectation] = new ConcurrentHashMap[Int, UsedByExpectation]
 //}
 
-class GaussianMenthor(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
+class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
 
   val graph = new Graph[DenseVector[Double]]
   
+  val init = initStrategy.init
+  
   for(point <- dataIn) {
-    val newVertex = new DataVertex(point)
+    val newVertex = new DataVertex(point, init)
     graph.addVertex(newVertex)
   }
+  
+  
   
   graph.start
   graph.iterate(8)
   graph.terminate()
 }
 
-class DataVertex(point: DenseVector[Double]) extends Vertex[DenseVector[Double]]("point", point) {
+class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[DenseVector[Double]]("point", point) {
 
-  
+  var est: DenseVector[Double] = _
   
   def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {
+    def normalize(v: DenseVector[Double]) = v :/ v.sum
+    
+    
     List()
   }
   /*

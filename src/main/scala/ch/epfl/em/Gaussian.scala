@@ -169,14 +169,14 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     
     val estMean = ((data zip estimate) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
     
-    /*
+    
     val estCovariance = zeroUntilGaussianComp map(k => {
       // Hotest point in the algo
       
-      /*val sumMat = ((data zip estimate) map {case(point, est) =>
+      val sumMat = ((data zip estimate) map {case(point, est) =>
         val delta = point.asCol - estMean(::, k)
         (delta * delta.t) :* est(k)
-      }) reduce (_ + _)*/
+      }) reduce (_ + _)
       
       /*
       def co(point: DenseVector[Double], est: DenseVector[Double]) = {
@@ -189,8 +189,9 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
       )*/
             
       sumMat :/ estWeight(k)
-    })*/
+    })
     
+    /*
     // This is crazy impossible to understand but was just a test to check if it maybe was runing faster...
     val estCovariance = ((data zip estimate) map {case(point, est) => 
         
@@ -199,7 +200,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
           (delta * delta.t) :* (est(k) / estWeight(k))
         }}
         
-      }) reduce((x, y) => (x zip y) map (z => z._1 + z._2)) 
+      }) reduce((x, y) => (x zip y) map (z => z._1 + z._2)) */
     
     estWeight := estWeight / measurements
     

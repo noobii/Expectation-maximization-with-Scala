@@ -28,7 +28,7 @@ object Gaussian {
 	    val k50k = 6
 	    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
 	    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
-	    val gaussian50k = new Gaussian(strategy50k)(X50k, k50k)
+	    val gaussian50k = new GaussianClassic(strategy50k)(X50k, k50k)
 	    
 	    val out = gaussian50k.runAlgo
 	    
@@ -36,7 +36,7 @@ object Gaussian {
 	    val k500k = 5
 	    val X500k = FileParser("src/test/ressources/em/500k/X.csv").data
 	    val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
-	    val gaussian500k = new Gaussian(strategy500k)(X500k, k500k)
+	    val gaussian500k = new GaussianClassic(strategy500k)(X500k, k500k)
 	    
 	    val out500k = gaussian500k.runAlgo
 	    
@@ -44,13 +44,13 @@ object Gaussian {
 	    val k1M = 5
 	    val X1M = FileParser("src/test/ressources/em/1M/X.csv").data
 	    val strategy1M = new InitFromMatlab("src/test/ressources/em/1M/")
-	    val gaussian1M = new Gaussian(strategy1M)(X1M, k1M)
+	    val gaussian1M = new GaussianClassic(strategy1M)(X1M, k1M)
 	    
 	    val out1M = gaussian1M.runAlgo
     }
   }
   
-  protected def printStatus(text: String) {
+  def printStatus(text: String) {
     val now = new java.util.Date
     
     println(now + ": " + text)
@@ -58,15 +58,22 @@ object Gaussian {
   
 }
 
-class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
+abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
 
-  private val measurements = dataIn.length
-  private val dimensions = dataIn.head.length
+  protected val measurements = dataIn.length
+  protected val dimensions = dataIn.head.length
   
-  private val data = dataIn.par
+  protected val data = dataIn.par
   
-  private val zeroUntilGaussianComp = (0 until gaussianComponents).toArray
+  /**
+   * The implementation of the Expecatation-maximization algorithm
+   */
+  def em(
+      estimates: MatricesTupple, 
+      minLikelihoodVar: Double, 
+      maximumIterations: Int
+      ): (MatricesTupple, Double)
   
   def runAlgo = {
     
@@ -83,6 +90,10 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     
     est
   }
+}
+
+class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
+      Gaussian(initStrategy)(dataIn, gaussianComponents) {
 
   /**
    * The implementation of the Expecatation-maximization algorithm
@@ -170,7 +181,7 @@ class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], 
     val estMean = ((data zip estimate) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
     
     
-    val estCovariance = zeroUntilGaussianComp map(k => {
+    val estCovariance = (0 until gaussianComponents).toArray map(k => {
       // Hotest point in the algo
       
       val sumMat = ((data zip estimate) map {case(point, est) =>

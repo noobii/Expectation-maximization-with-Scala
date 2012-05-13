@@ -31,7 +31,7 @@ class GaussianTest extends AssertionsForJUnit {
     
     val V = Array(DenseMatrix.eye[Double](2, 2), DenseMatrix.eye[Double](2, 2))
     
-    val gaussian = new Gaussian(null)(X, k)
+    val gaussian = new GaussianClassic(null)(X, k)
     
     (gaussian, X, k, MatricesTupple(W, M, V))
   }

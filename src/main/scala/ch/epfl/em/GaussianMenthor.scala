@@ -3,9 +3,18 @@ package ch.epfl.em
 import processing.parallel._
 import benchmark.TicToc
 import processing.parallel.Vertex
-import scalala.tensor.dense.DenseVector
+import scala.math.Pi
+import scalala.scalar._
+import scalala.tensor.::
+import scalala.tensor.mutable._
+import scalala.tensor.dense._
+import scalala.tensor.sparse._
+import scalala.library.Library._
+import scalala.library.LinearAlgebra._
+import scalala.library.Statistics._
+import scalala.library.Plotting._
+import scalala.operators.Implicits._
 import scala.collection.GenSeq
-import scalala.tensor.dense.DenseMatrix
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentHashMap
 
@@ -31,34 +40,86 @@ case class PointWithEstimate(point: DenseVector[Double], estimate: DenseVector[D
 //  var estimates: ConcurrentMap[Int, UsedByExpectation] = new ConcurrentHashMap[Int, UsedByExpectation]
 //}
 
-class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
+class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
+      Gaussian(initStrategy)(dataIn, gaussianComponents){
 
-  val graph = new Graph[DenseVector[Double]]
+  def em(
+      estimates: MatricesTupple, 
+      minLikelihoodVar: Double, 
+      maximumIterations: Int
+      ): (MatricesTupple, Double) = {
+      
+    
+    val graph = new Graph[DenseVector[Double]]
+    
+    
+    val masterNode = new Vertex[DenseVector[Double]]("master", null) {
+      def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {List()}
+    }
+    
+    graph.addVertex(masterNode)
+    
+    for(point <- dataIn) {
+      val newVertex = new DataVertex(point, estimates)
+      graph.addVertex(newVertex)
+      newVertex.connectTo(masterNode)
+      masterNode.connectTo(newVertex)
+    }
   
-  val init = initStrategy.init
   
-  for(point <- dataIn) {
-    val newVertex = new DataVertex(point, init)
-    graph.addVertex(newVertex)
+  
+    graph.start
+    graph.iterate(0)
+    graph.terminate()
+    
+    null
   }
-  
-  
-  
-  graph.start
-  graph.iterate(8)
-  graph.terminate()
-}
+
 
 class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[DenseVector[Double]]("point", point) {
 
   var est: DenseVector[Double] = _
   
   def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {
+    println("TOTO")
     def normalize(v: DenseVector[Double]) = v :/ v.sum
     
+    // Creates new empty covariances matrices if needed
+    val estimatedCovariances = estimates.covariances map {matrix => 
+      if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
+      else matrix
+    }
     
-    List()
+    // Computes values that are used later in the algo
+    val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
+    val invEstC = estimatedCovariances map (matrix => inv(matrix))
+
+    val a = pow(2 * Pi, dimensions / 2.0)
+    
+    est = DenseVector.tabulate[Double](gaussianComponents)(j => {
+
+      val delta = point.asCol - estimates.means(::, j)
+      val coef = delta.t * invEstC(j) * delta
+      val pl = exp(-0.5 * coef) / (a * S(j))
+        
+      estimates.weights(j) * pl
+    })
+      
+    est = normalize(est)
+    
+    println(est)
+      
+    List(Message(this, this, est))
+  } crunch(_ + _) then {
+    incoming match {
+      case toto => {
+        println(toto)
+        List()
+        
+      }
+    }
   }
+  
   /*
     def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {
       List()
@@ -74,4 +135,5 @@ class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) exte
 	   }
     }
     */
+}
 }

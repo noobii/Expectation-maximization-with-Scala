@@ -28,6 +28,8 @@ object GaussianMenthor extends App {
     val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
     val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
     val gaussian50k = new GaussianMenthor(strategy50k)(X50k, k50k)
+    
+    gaussian50k.runAlgo
   }
 }
 
@@ -51,9 +53,8 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       
     
     val graph = new Graph[DenseVector[Double]]
-    
-    
-    val masterNode = new Vertex[DenseVector[Double]]("master", null) {
+        
+    val masterNode = new Vertex[DenseVector[Double]]("master", DenseVector(.0, .0, .0, .0, .0, .0)) {
       def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {List()}
     }
     
@@ -63,13 +64,13 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       val newVertex = new DataVertex(point, estimates)
       graph.addVertex(newVertex)
       newVertex.connectTo(masterNode)
-      masterNode.connectTo(newVertex)
+      //masterNode.connectTo(newVertex)
     }
   
-  
+    println("go start!")
   
     graph.start
-    graph.iterate(0)
+    graph.iterate(10)
     graph.terminate()
     
     null
@@ -78,10 +79,9 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
 
 class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[DenseVector[Double]]("point", point) {
 
-  var est: DenseVector[Double] = _
+  var est: DenseVector[Double] = null
   
   def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {
-    println("TOTO")
     def normalize(v: DenseVector[Double]) = v :/ v.sum
     
     // Creates new empty covariances matrices if needed
@@ -107,12 +107,16 @@ class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) exte
       
     est = normalize(est)
     
-    println(est)
-      
+    println("lala")
+    println(est.length)
+    
+    value = est
+    
     List(Message(this, this, est))
   } crunch(_ + _) then {
     incoming match {
       case toto => {
+        println("titi")
         println(toto)
         List()
         

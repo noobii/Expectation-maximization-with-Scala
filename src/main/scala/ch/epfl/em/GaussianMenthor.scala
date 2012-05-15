@@ -52,18 +52,19 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       ): (MatricesTupple, Double) = {
       
     
-    val graph = new Graph[DenseVector[Double]]
-        
+    val graph = new Graph[VertexValue]
+    
+    /*
     val masterNode = new Vertex[DenseVector[Double]]("master", DenseVector(.0, .0, .0, .0, .0, .0)) {
       def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {List()}
-    }
+    }*/
     
-    graph.addVertex(masterNode)
+    //graph.addVertex(masterNode)
     
     for(point <- dataIn) {
       val newVertex = new DataVertex(point, estimates)
       graph.addVertex(newVertex)
-      newVertex.connectTo(masterNode)
+      //newVertex.connectTo(masterNode)
       //masterNode.connectTo(newVertex)
     }
   
@@ -76,68 +77,46 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     null
   }
 
+  case class VertexValue(val point: DenseVector[Double], var expectation: DenseVector[Double])
 
-class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[DenseVector[Double]]("point", point) {
-
-  var est: DenseVector[Double] = null
-  
-  def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {
-    def normalize(v: DenseVector[Double]) = v :/ v.sum
-    
-    // Creates new empty covariances matrices if needed
-    val estimatedCovariances = estimates.covariances map {matrix => 
-      if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
-      else matrix
-    }
-    
-    // Computes values that are used later in the algo
-    val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
-    val invEstC = estimatedCovariances map (matrix => inv(matrix))
-
-    val a = pow(2 * Pi, dimensions / 2.0)
-    
-    est = DenseVector.tabulate[Double](gaussianComponents)(j => {
-
-      val delta = point.asCol - estimates.means(::, j)
-      val coef = delta.t * invEstC(j) * delta
-      val pl = exp(-0.5 * coef) / (a * S(j))
-        
-      estimates.weights(j) * pl
-    })
-      
-    est = normalize(est)
-    
-    println("lala")
-    println(est.length)
-    
-    value = est
-    
-    List(Message(this, this, est))
-  } crunch(_ + _) then {
-    incoming match {
-      case toto => {
-        println("titi")
-        println(toto)
-        List()
-        
-      }
-    }
+  class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[VertexValue]("point", VertexValue(point, null)) {
+		  
+    def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
+      def normalize(v: DenseVector[Double]) = v :/ v.sum
+	    
+      // Creates new empty covariances matrices if needed
+	  val estimatedCovariances = estimates.covariances map {matrix => 
+	    if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
+	    else matrix
+	  }
+	    
+	  // Computes values that are used later in the algo
+	  val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
+	  val invEstC = estimatedCovariances map (matrix => inv(matrix))
+	
+	  val a = pow(2 * Pi, dimensions / 2.0)
+	    
+	  val ex = normalize(DenseVector.tabulate[Double](gaussianComponents)(j => {
+	
+	    val delta = point.asCol - estimates.means(::, j)
+	    val coef = delta.t * invEstC(j) * delta
+	    val pl = exp(-0.5 * coef) / (a * S(j))
+	        
+	    estimates.weights(j) * pl
+	  }))
+	      	    
+	  value.expectation = ex
+	    
+	  List()
+	} crunch((x, y) => VertexValue(null, x.expectation + y.expectation)) then {
+	  incoming match {
+	    case toto => {
+	      //estimates.weights = toto.
+	      List()
+	        
+	    }
+	  }
+	}
+	  
   }
-  
-  /*
-    def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {
-      List()
-    } crunch ((v1, v2) => v1 + v2) then {
-		incoming match { 
-		  case List(reduced) => {
-		    List(Message(this, this, incoming.head.value * 2))
-		  }
-		  case Nil => {
-		    println("ah")
-		    List()
-		  }
-	   }
-    }
-    */
-}
 }

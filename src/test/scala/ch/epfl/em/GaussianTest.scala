@@ -50,8 +50,7 @@ class GaussianTest extends AssertionsForJUnit {
     
     assert(closeEnough(classicEstimates.weights, menthorEstimates.weights))
     assert(closeEnough(classicEstimates.means, menthorEstimates.means))
-    
-    // TODO add the covarinces
+    assert(closeEnough(classicEstimates.covariances, menthorEstimates.covariances))
   }
   
   @Test def testInitEm() {

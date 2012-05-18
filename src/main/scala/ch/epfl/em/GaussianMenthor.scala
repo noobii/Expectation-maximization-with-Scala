@@ -54,34 +54,40 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     
     val graph = new Graph[VertexValue]
     
-    /*
-    val masterNode = new Vertex[DenseVector[Double]]("master", DenseVector(.0, .0, .0, .0, .0, .0)) {
-      def update(superstep: Int, incoming: List[Message[DenseVector[Double]]]) = {List()}
-    }*/
-    
-    //graph.addVertex(masterNode)
-    
     for(point <- dataIn) {
-      val newVertex = new DataVertex(point, estimates)
+      val newVertex = new GaussianVertex(point, estimates)
       graph.addVertex(newVertex)
-      //newVertex.connectTo(masterNode)
-      //masterNode.connectTo(newVertex)
     }
   
     println("go start!")
   
     graph.start
-    graph.iterate(10)
+    graph.iterate(3)
     graph.terminate()
     
+    System.exit(0)
     null
   }
 
-  case class VertexValue(val point: DenseVector[Double], var expectation: DenseVector[Double])
 
-  class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[VertexValue]("point", VertexValue(point, null)) {
-		  
+  class VertexValue(
+      val point: DenseVector[Double] = null,
+      var exp: DenseVector[Double] = null,
+      val estWeights: DenseVector[Double] = null,
+      val estMeans: DenseMatrix[Double] = null,
+      val estCovariances: Array[DenseMatrix[Double]] = null
+  ) {
+    
+  }
+
+  class GaussianVertex(point: DenseVector[Double], estimates: MatricesTupple) extends 
+        Vertex[VertexValue]("point", new VertexValue(point = point, estWeights = estimates.weights, estMeans = estimates.means, estCovariances = estimates.covariances))
+  
+  /*
+  class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[VertexValue]("point", VertexValue(point, null, null, null)) {
+	    
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
+      
       def normalize(v: DenseVector[Double]) = v :/ v.sum
 	    
       // Creates new empty covariances matrices if needed
@@ -108,15 +114,22 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
 	  value.expectation = ex
 	    
 	  List()
-	} crunch((x, y) => VertexValue(null, x.expectation + y.expectation)) then {
-	  incoming match {
-	    case toto => {
-	      //estimates.weights = toto.
-	      List()
-	        
-	    }
+	} crunch((x:VertexValue, y:VertexValue) => VertexValue(null, x.expectation + y.expectation, null, null)) then {
+	  if(this == graph.vertices(0)) {
+		  incoming match {
+		    case List(estWeightMessage) => {
+		      //estimates.weights := estWeightMessage.value.expectation
+		      estWeight = estWeightMessage.value.expectation
+		    }
+		    case _ => List()
+		  }
 	  }
-	}
+	  List()
+	} crunch((x, y) => {
+	  //x.p
+	  null
+	}) 
 	  
   }
+  */
 }

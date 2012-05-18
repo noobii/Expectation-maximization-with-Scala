@@ -79,12 +79,14 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     
     val initial = initStrategy.init
     
+    println(initial)
+    
     printStatus("Run algo"); 
     GChrono.start
     val (est, lg) = em(initial, 0.05, 10000)
     GChrono.stop
     
-    println("Time: " + GChrono.count/1000.0)
+    println("estTime: " + GChrono.count/1000.0)
 
     GChrono.reset
     

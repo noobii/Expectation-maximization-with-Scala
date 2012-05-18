@@ -49,7 +49,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       graph.addVertex(newVertex)
     }
   
-    CurrentEstimaes.init(estimates)
+    CurrentEstimaes.init(estimates, minLikelihoodVar)
     
     println("go start!")
   
@@ -86,12 +86,17 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     @volatile var means: DenseMatrix[Double] = _
     @volatile var covariances: Array[DenseMatrix[Double]] = _
     @volatile var loglikelihood: Double = Double.MaxValue
+    var minLikelihood: Double = _
+    var iteration: Int = 0
     
-    def init(in: MatricesTupple) {
+    def init(in: MatricesTupple, likelihood: Double) {
       weights = in.weights
       means = in.means
       covariances = in.covariances
+      minLikelihood = likelihood
     }
+    
+    def tupples = new MatricesTupple(weights, means, covariances)
   }
 
   class GaussianVertex(point: DenseVector[Double]) extends 
@@ -155,7 +160,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       }
       List()
     } crunch((x, y) => {
-      val newSum = (x.covariances zip y.covariances) map(x => x._1 + x._2)
+      val newSum = (x.covariances zip y.covariances) map{case(mat1, mat2) => mat1 + mat2}
       new VertexValue(estCovariances = newSum)
     }) then {
       if(justOneVertex) {
@@ -172,7 +177,18 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       List()
     } then {
       if(justOneVertex) {
+        val newLikelihood = likelihood(CurrentEstimaes.tupples)
+        var oldLikelihood = CurrentEstimaes.loglikelihood
         
+        def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= CurrentEstimaes.minLikelihood)
+        
+        CurrentEstimaes.iteration += 1
+        
+        if(hasConverged) {
+          graph.terminate()
+        }
+        CurrentEstimaes.loglikelihood = newLikelihood
+
       }
       List()
     }

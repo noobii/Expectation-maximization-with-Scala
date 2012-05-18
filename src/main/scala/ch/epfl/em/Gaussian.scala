@@ -30,7 +30,7 @@ object Gaussian {
 	    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
 	    val gaussian50k = new GaussianClassic(strategy50k)(X50k, k50k)
 	    
-	    val out = gaussian50k.runAlgo
+	    val out = gaussian50k.runAlgo()
 	    
 	    printStatus("Runing algo 600k")
 	    val k500k = 5
@@ -38,7 +38,7 @@ object Gaussian {
 	    val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
 	    val gaussian500k = new GaussianClassic(strategy500k)(X500k, k500k)
 	    
-	    val out500k = gaussian500k.runAlgo
+	    val out500k = gaussian500k.runAlgo()
 	    
 	    printStatus("Runing algo 1M")
 	    val k1M = 5
@@ -46,7 +46,7 @@ object Gaussian {
 	    val strategy1M = new InitFromMatlab("src/test/ressources/em/1M/")
 	    val gaussian1M = new GaussianClassic(strategy1M)(X1M, k1M)
 	    
-	    val out1M = gaussian1M.runAlgo
+	    val out1M = gaussian1M.runAlgo()
     }
   }
   
@@ -75,13 +75,13 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
       maximumIterations: Int
       ): (MatricesTupple, Double)
   
-  def runAlgo = {
+  def runAlgo(minLikelihoodVar: Double = 0.05, maximumIterations: Int = 1000) = {
     
     val initial = initStrategy.init
         
     printStatus("Run algo"); 
     GChrono.start
-    val (est, lg) = em(initial, 0.05, 10000)
+    val (est, lg) = em(initial, minLikelihoodVar, maximumIterations)
     GChrono.stop
     
     println("estTime: " + GChrono.count/1000.0)
@@ -218,6 +218,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     
     estWeight := estWeight / measurements
     
+    println(estCovariance(0))
     MatricesTupple(estWeight, estMean, estCovariance)
   }
   

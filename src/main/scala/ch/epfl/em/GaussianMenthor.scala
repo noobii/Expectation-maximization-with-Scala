@@ -177,54 +177,5 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     }
     
   }
-  
-  /*
-  class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[VertexValue]("point", VertexValue(point, null, null, null)) {
-	    
-    def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
-      
-      def normalize(v: DenseVector[Double]) = v :/ v.sum
-	    
-      // Creates new empty covariances matrices if needed
-	  val estimatedCovariances = estimates.covariances map {matrix => 
-	    if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
-	    else matrix
-	  }
-	    
-	  // Computes values that are used later in the algo
-	  val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
-	  val invEstC = estimatedCovariances map (matrix => inv(matrix))
-	
-	  val a = pow(2 * Pi, dimensions / 2.0)
-	    
-	  val ex = normalize(DenseVector.tabulate[Double](gaussianComponents)(j => {
-	
-	    val delta = point.asCol - estimates.means(::, j)
-	    val coef = delta.t * invEstC(j) * delta
-	    val pl = exp(-0.5 * coef) / (a * S(j))
-	        
-	    estimates.weights(j) * pl
-	  }))
-	      	    
-	  value.expectation = ex
-	    
-	  List()
-	} crunch((x:VertexValue, y:VertexValue) => VertexValue(null, x.expectation + y.expectation, null, null)) then {
-	  if(this == graph.vertices(0)) {
-		  incoming match {
-		    case List(estWeightMessage) => {
-		      //estimates.weights := estWeightMessage.value.expectation
-		      estWeight = estWeightMessage.value.expectation
-		    }
-		    case _ => List()
-		  }
-	  }
-	  List()
-	} crunch((x, y) => {
-	  //x.p
-	  null
-	}) 
-	  
-  }
-  */
+
 }

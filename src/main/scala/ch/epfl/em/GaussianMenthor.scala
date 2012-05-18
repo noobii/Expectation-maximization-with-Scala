@@ -79,9 +79,56 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
   ) {
     
   }
+  
+  object SharedData {
+    @volatile var weights: DenseVector[Double] = _
+    @volatile var means: DenseMatrix[Double] = _
+    @volatile var covariances: Array[DenseMatrix[Double]] = _
+  }
 
   class GaussianVertex(point: DenseVector[Double], estimates: MatricesTupple) extends 
-        Vertex[VertexValue]("point", new VertexValue(point = point, estWeights = estimates.weights, estMeans = estimates.means, estCovariances = estimates.covariances))
+        Vertex[VertexValue]("point", new VertexValue(point = point, estWeights = estimates.weights, estMeans = estimates.means, estCovariances = estimates.covariances)) {
+    
+    def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
+      def normalize(v: DenseVector[Double]) = v :/ v.sum
+	    
+      // Creates new empty covariances matrices if needed
+	  val estimatedCovariances = SharedData.covariances map {matrix => 
+	    if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
+	    else matrix
+	  }
+	    
+	  // Computes values that are used later in the algo
+	  val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
+	  val invEstC = estimatedCovariances map (matrix => inv(matrix))
+	
+	  val a = pow(2 * Pi, dimensions / 2.0)
+	    
+	  val ex = DenseVector.tabulate[Double](gaussianComponents)(j => {
+	
+	    val delta = point.asCol - SharedData.means(::, j)
+	    val coef = delta.t * invEstC(j) * delta
+	    val pl = exp(-0.5 * coef) / (a * S(j))
+	        
+	    SharedData.weights(j) * pl
+	  })
+	  
+	  val exNorm = normalize(ex)
+	  
+	  value.exp = exNorm
+	  
+	  List()
+    } crunch((x, y) => new VertexValue(exp = x.exp + y.exp)) then {
+      if(this == graph.vertices(0)) {
+        incoming match {
+          case List(newWeightMessage) => SharedData.weights = newWeightMessage.value.estWeights
+          case _ => //Should throw exception
+        }
+      }
+      List()
+    }
+    
+  }
   
   /*
   class DataVertex(point: DenseVector[Double], var estimates: MatricesTupple) extends Vertex[VertexValue]("point", VertexValue(point, null, null, null)) {

@@ -33,9 +33,13 @@ object NumericalChecks {
   }
   
   def closeEnough(cov1: Array[DenseMatrix[Double]], cov2: Array[DenseMatrix[Double]]): Boolean = {
+    cov1 foreach(println(_))
+    println("------")
+    cov2 foreach(println(_))
+    
     if(cov1.length == cov2.length) {
       
-      (cov1 zip cov2) forall {case(mat1, mat2) => closeEnough(mat1, mat2)}
+      return (cov1 zip cov2) forall {case(mat1, mat2) => closeEnough(mat1, mat2)}
       
     }
     

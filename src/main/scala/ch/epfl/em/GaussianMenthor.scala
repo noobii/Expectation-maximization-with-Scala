@@ -102,7 +102,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
   class GaussianVertex(point: DenseVector[Double]) extends 
         Vertex[VertexValue]("point", new RealVertexValue(point)) {
     
-    val justOneVertex = this == graph.vertices(0)
+    def justOneVertex = this == graph.vertices(0)
     
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
       def normalize(v: DenseVector[Double]) = v :/ v.sum

@@ -14,7 +14,6 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
-import ch.epfl.em.FileParser
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 

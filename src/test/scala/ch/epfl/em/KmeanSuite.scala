@@ -177,6 +177,8 @@ class KmeanSuite extends AssertionsForJUnit {
   }
 */
 
+  // Takes too long to run !
+  /*
   @Test def testKmean() {
     
     for(k <- 0 until 1) {
@@ -207,7 +209,7 @@ class KmeanSuite extends AssertionsForJUnit {
 	    assert(means.exists(x => 0.9 < x && x < 1.1))
 	    assert(means.exists(x => 1.9 < x && x < 2.1))
     }
-  }
+  }*/
 
   def randomVect(size: Int, from: Double, to: Double): DenseVector[Double] = {
     val interval = to - from

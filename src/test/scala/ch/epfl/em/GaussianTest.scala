@@ -16,8 +16,6 @@ class GaussianTest extends AssertionsForJUnit {
   def delta = 0.1
   
   def freshTestValues = {
-    //val X = DenseMatrix.ones[Double](10, 2)
-    //X(5 until 10, ::) := DenseMatrix.ones[Double](5, 2) :* 2
     
     var X = for(i <- 0 until 10) yield {
       if(i < 5) DenseVector.ones[Double](2)

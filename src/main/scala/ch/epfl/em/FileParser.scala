@@ -15,7 +15,11 @@ import scalala.operators.Implicits._;
 import scala.collection.GenSeq
 
 
-case class FileParser(var fileName: String) {
+object FileParser {
+  def apply(fileName: String) = new FileParser(fileName)
+}
+
+class FileParser(var fileName: String) {
 
   val separator = System.getProperty("file.separator")
   if(fileName.contains("\\") && separator == "/") fileName = fileName.replace("\\", "/")

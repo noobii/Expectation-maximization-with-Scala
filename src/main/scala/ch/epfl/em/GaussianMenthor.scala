@@ -55,14 +55,18 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     val graph = new Graph[VertexValue]
     
     for(point <- dataIn) {
-      val newVertex = new GaussianVertex(point, estimates)
+      val newVertex = new GaussianVertex(point)
       graph.addVertex(newVertex)
     }
   
+    SharedData.weights = estimates.weights
+    SharedData.means = estimates.means
+    SharedData.covariances = estimates.covariances
+    
     println("go start!")
   
     graph.start
-    graph.iterate(3)
+    graph.iterate(8)
     graph.terminate()
     
     System.exit(0)
@@ -77,7 +81,18 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       val estMeans: DenseMatrix[Double] = null,
       val estCovariances: Array[DenseMatrix[Double]] = null
   ) {
-    
+    def means = estMeans
+    def covariances = estCovariances
+  }
+  
+  class VertexValueChild(point: DenseVector[Double]) extends VertexValue(point = point) {
+    override def means = point.asCol * exp.asRow
+    override def covariances = {
+      (0 until gaussianComponents).toArray map(k => {
+        val delta = point.asCol - SharedData.means(::, k)
+        (delta * delta.t) :* exp(k) :/ SharedData.weights(k)
+      })
+    }
   }
   
   object SharedData {
@@ -86,8 +101,8 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     @volatile var covariances: Array[DenseMatrix[Double]] = _
   }
 
-  class GaussianVertex(point: DenseVector[Double], estimates: MatricesTupple) extends 
-        Vertex[VertexValue]("point", new VertexValue(point = point, estWeights = estimates.weights, estMeans = estimates.means, estCovariances = estimates.covariances)) {
+  class GaussianVertex(point: DenseVector[Double]) extends 
+        Vertex[VertexValue]("point", new VertexValueChild(point = point)) {
     
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
       def normalize(v: DenseVector[Double]) = v :/ v.sum
@@ -121,9 +136,42 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     } crunch((x, y) => new VertexValue(exp = x.exp + y.exp)) then {
       if(this == graph.vertices(0)) {
         incoming match {
-          case List(newWeightMessage) => SharedData.weights = newWeightMessage.value.estWeights
-          case _ => //Should throw exception
+          case List(message) => SharedData.weights = message.value.exp
+          case _ => throw new Exception("Something went wrong with weights")
         }
+        
+        println(SharedData.weights)
+      }
+      List()
+    } crunch((x, y) => new VertexValue(estMeans = x.means + y.means)) then {
+      if(this == graph.vertices(0)) {
+        incoming match {
+          case List(newMessage) => {
+            val sumedMeans = newMessage.value.estMeans
+            // The weights repeated in each line of a (dim, gaussianComp) matrix
+            val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * SharedData.weights.asRow
+            
+            SharedData.means = sumedMeans :/ weightsAsMatrix
+            
+            println(SharedData.means)
+          }
+          case _ => // Should throw an exception
+        }
+      }
+      List()
+    } crunch((x, y) => {
+      val newSum = (x.covariances zip y.covariances) map(x => x._1 + x._2)
+      new VertexValue(estCovariances = newSum)
+    }) then {
+      if(this == graph.vertices(0)) {
+        incoming match {
+          case List(message) => SharedData.covariances = message.value.estCovariances
+          case _ => throw new Exception("Boom!")
+        }
+        // Other small cleanup tasks
+        
+        SharedData.weights := SharedData.weights / measurements
+      
       }
       List()
     }

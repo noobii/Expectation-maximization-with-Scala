@@ -78,9 +78,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
   def runAlgo = {
     
     val initial = initStrategy.init
-    
-    println(initial)
-    
+        
     printStatus("Run algo"); 
     GChrono.start
     val (est, lg) = em(initial, 0.05, 10000)
@@ -177,11 +175,14 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
         
     val estWeight = estimate reduce(_ + _)
     
+    println(estWeight)
+    
     // The weights repeated in each line of a (dim, gaussianComp) matrix
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
     val estMean = ((data zip estimate) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
     
+    println(estMean)
     
     val estCovariance = (0 until gaussianComponents).toArray map(k => {
       // Hotest point in the algo

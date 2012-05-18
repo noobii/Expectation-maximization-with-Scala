@@ -174,16 +174,12 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
   def maximization(estimate: GenSeq[DenseVector[Double]]): MatricesTupple = {
         
     val estWeight = estimate reduce(_ + _)
-    
-    println(estWeight)
-    
+        
     // The weights repeated in each line of a (dim, gaussianComp) matrix
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
     val estMean = ((data zip estimate) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
-    
-    println(estMean)
-    
+        
     val estCovariance = (0 until gaussianComponents).toArray map(k => {
       // Hotest point in the algo
       
@@ -218,7 +214,6 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     
     estWeight := estWeight / measurements
     
-    println(estCovariance(0))
     MatricesTupple(estWeight, estMean, estCovariance)
   }
   

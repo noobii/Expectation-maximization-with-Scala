@@ -128,8 +128,6 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
           case List(message) => CurrentEstimaes.weights = message.value.exp
           case _ => throw new Exception("Something went wrong with weights")
         }
-        
-        println(CurrentEstimaes.weights)
       }
       List()
     } crunch((x, y) => new VertexValue(estMeans = x.means + y.means)) then {
@@ -141,8 +139,6 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
             val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * CurrentEstimaes.weights.asRow
             
             CurrentEstimaes.means = sumedMeans :/ weightsAsMatrix
-            
-            println(CurrentEstimaes.means)
           }
           case _ => // Should throw an exception
         }
@@ -159,7 +155,6 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
         }
         // Other small cleanup tasks
         
-        println(CurrentEstimaes.covariances(0))
         CurrentEstimaes.weights = CurrentEstimaes.weights / measurements
       
       }

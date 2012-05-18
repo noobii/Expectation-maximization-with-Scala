@@ -38,12 +38,12 @@ class GaussianTest extends AssertionsForJUnit {
   
   @Test def compareImplementations() {
     
-    val k50k = 6
-    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
-    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
+    val k = 6
+    val X = FileParser("src/test/ressources/em/50k/X.csv").data
+    val strategy = new InitFromMatlab("src/test/ressources/em/50k/")
     
-    val gaussianMenthor = new GaussianMenthor(strategy50k)(X50k, k50k)
-    val gaussianClassic = new GaussianClassic(strategy50k)(X50k, k50k)
+    val gaussianMenthor = new GaussianMenthor(strategy)(X, k)
+    val gaussianClassic = new GaussianClassic(strategy)(X, k)
     
     val classicEstimates = gaussianClassic.runAlgo(maximumIterations = 1)
     val menthorEstimates = gaussianMenthor.runAlgo(maximumIterations = 1)

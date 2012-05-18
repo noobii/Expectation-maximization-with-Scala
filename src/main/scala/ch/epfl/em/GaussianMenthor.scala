@@ -76,6 +76,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
   
   class RealVertexValue(point: DenseVector[Double]) extends VertexValue(point = point) {
     override def means = point.asCol * exp.asRow
+
     override def covariances = {
       (0 until gaussianComponents).toArray map(k => {
         val delta = point.asCol - CurrentEstimaes.means(::, k)
@@ -140,7 +141,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
             
             CurrentEstimaes.means = sumedMeans :/ weightsAsMatrix
           }
-          case _ => // Should throw an exception
+          case _ => throw new Exception("Boom!")
         }
       }
       List()

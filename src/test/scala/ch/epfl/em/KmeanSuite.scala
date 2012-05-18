@@ -35,9 +35,6 @@ class KmeanSuite extends AssertionsForJUnit {
     
     val computedWeightVector = Kmean.weightOfClusters(clusters) asCol
     val matlabCovarianceVector = FileParser(path + "W.csv").toMatrix(0, ::)
-
-    println(computedWeightVector)
-    println(matlabCovarianceVector)
     
     assert(closeEnough(computedWeightVector, matlabCovarianceVector))
   }

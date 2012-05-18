@@ -59,8 +59,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     graph.iterate(8)
     graph.terminate()
     
-    System.exit(0)
-    null
+    (new MatricesTupple(CurrentEstimaes.weights, CurrentEstimaes.means, CurrentEstimaes.covariances), -1.0)
   }
 
   

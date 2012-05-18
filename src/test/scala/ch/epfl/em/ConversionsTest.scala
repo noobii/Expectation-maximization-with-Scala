@@ -44,9 +44,6 @@ class ConversionsTest extends AssertionsForJUnit {
     
     val chain = meansArrayToMat(meansMatToArray(matrix))
     
-    println(chain)
-    println(matrix)
-    
     assert(matrix == chain)
   }
   

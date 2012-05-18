@@ -15,8 +15,6 @@ import scalala.library.Statistics._
 import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
-import java.util.concurrent.ConcurrentMap
-import java.util.concurrent.ConcurrentHashMap
 
 object GaussianMenthor extends App {
 
@@ -33,14 +31,6 @@ object GaussianMenthor extends App {
   }
 }
 
-case class PointWithEstimate(point: DenseVector[Double], estimate: DenseVector[Double])
-
-// Stupid name
-//case class UsedByExpectation(est: MatricesTupple, S: Array[Double], invEstC: Array[DenseMatrix[Double]])
-
-//object SharedData {
-//  var estimates: ConcurrentMap[Int, UsedByExpectation] = new ConcurrentHashMap[Int, UsedByExpectation]
-//}
 
 class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
       Gaussian(initStrategy)(dataIn, gaussianComponents){

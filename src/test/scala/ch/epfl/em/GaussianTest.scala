@@ -36,6 +36,24 @@ class GaussianTest extends AssertionsForJUnit {
     (gaussian, X, k, MatricesTupple(W, M, V))
   }
   
+  @Test def compareImplementations() {
+    
+    val k50k = 6
+    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
+    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
+    
+    val gaussianMenthor = new GaussianMenthor(strategy50k)(X50k, k50k)
+    val gaussianClassic = new GaussianClassic(strategy50k)(X50k, k50k)
+    
+    val classicEstimates = gaussianClassic.runAlgo(maximumIterations = 1)
+    val menthorEstimates = gaussianMenthor.runAlgo(maximumIterations = 1)
+    
+    assert(closeEnough(classicEstimates.weights, menthorEstimates.weights))
+    assert(closeEnough(classicEstimates.means, menthorEstimates.means))
+    
+    // TODO add the covarinces
+  }
+  
   @Test def testInitEm() {
     
   }
@@ -78,9 +96,6 @@ class GaussianTest extends AssertionsForJUnit {
     val matlab1 = DenseVector(1.0, 1.0)
     val matlab2 = DenseMatrix((1.5, 1.5), (1.5, 1.5))
     val matlab3 = Array(DenseMatrix((0.25, 0.25), (0.25, 0.25)), DenseMatrix((0.25, 0.25), (0.25, 0.25)))
-    
-    println(res.means)
-    println("toto" + matlab2)
     
     assert(res.weights == matlab1)
     assert(NumericalChecks.closeEnough(res.means, matlab2))

@@ -49,9 +49,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       graph.addVertex(newVertex)
     }
   
-    CurrentEstimaes.weights = estimates.weights
-    CurrentEstimaes.means = estimates.means
-    CurrentEstimaes.covariances = estimates.covariances
+    CurrentEstimaes.init(estimates)
     
     println("go start!")
   
@@ -61,14 +59,12 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     
     (new MatricesTupple(CurrentEstimaes.weights, CurrentEstimaes.means, CurrentEstimaes.covariances), -1.0)
   }
-
   
   class VertexValue(
       val point: DenseVector[Double] = null,
       var exp: DenseVector[Double] = null,
-      val estWeights: DenseVector[Double] = null,
-      val estMeans: DenseMatrix[Double] = null,
-      val estCovariances: Array[DenseMatrix[Double]] = null
+      private val estMeans: DenseMatrix[Double] = null,
+      private val estCovariances: Array[DenseMatrix[Double]] = null
   ) {
     def means = estMeans
     def covariances = estCovariances
@@ -89,10 +85,19 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     @volatile var weights: DenseVector[Double] = _
     @volatile var means: DenseMatrix[Double] = _
     @volatile var covariances: Array[DenseMatrix[Double]] = _
+    @volatile var loglikelihood: Double = Double.MaxValue
+    
+    def init(in: MatricesTupple) {
+      weights = in.weights
+      means = in.means
+      covariances = in.covariances
+    }
   }
 
   class GaussianVertex(point: DenseVector[Double]) extends 
         Vertex[VertexValue]("point", new RealVertexValue(point)) {
+    
+    val justOneVertex = this == graph.vertices(0)
     
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
       def normalize(v: DenseVector[Double]) = v :/ v.sum
@@ -123,8 +128,11 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
 	  value.exp = exNorm
 	  
 	  List()
-    } crunch((x, y) => new VertexValue(exp = x.exp + y.exp)) then {
-      if(this == graph.vertices(0)) {
+    } crunch((x, y) => 
+         new VertexValue(exp = x.exp + y.exp)
+    ) then {
+      if(justOneVertex) {
+        
         incoming match {
           case List(message) => CurrentEstimaes.weights = message.value.exp
           case _ => throw new Exception("Something went wrong with weights")
@@ -132,10 +140,11 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       }
       List()
     } crunch((x, y) => new VertexValue(estMeans = x.means + y.means)) then {
-      if(this == graph.vertices(0)) {
+      if(justOneVertex) {
+        
         incoming match {
           case List(newMessage) => {
-            val sumedMeans = newMessage.value.estMeans
+            val sumedMeans = newMessage.value.means
             // The weights repeated in each line of a (dim, gaussianComp) matrix
             val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * CurrentEstimaes.weights.asRow
             
@@ -149,15 +158,21 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       val newSum = (x.covariances zip y.covariances) map(x => x._1 + x._2)
       new VertexValue(estCovariances = newSum)
     }) then {
-      if(this == graph.vertices(0)) {
+      if(justOneVertex) {
+        
         incoming match {
-          case List(message) => CurrentEstimaes.covariances = message.value.estCovariances
+          case List(message) => CurrentEstimaes.covariances = message.value.covariances
           case _ => throw new Exception("Boom!")
         }
         // Other small cleanup tasks
         
         CurrentEstimaes.weights = CurrentEstimaes.weights / measurements
       
+      }
+      List()
+    } then {
+      if(justOneVertex) {
+        
       }
       List()
     }

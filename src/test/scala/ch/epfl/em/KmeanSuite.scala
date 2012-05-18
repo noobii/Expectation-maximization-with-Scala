@@ -163,19 +163,6 @@ class KmeanSuite extends AssertionsForJUnit {
     
     assert(output == matlabVal)
   }
-  /*
-  @Test def testHugeKmean() {
-    
-    println("Start huge: " + new java.util.Date())
-    val data = DenseMatrix.rand(200000, 10)
-    println("Created matrix: " + new java.util.Date())
-    
-    val kmeans = Kmean.kmeans(data, 2, 1000)
-    
-    println("End huge: " + new java.util.Date())
-    assert(true)
-  }
-*/
 
   // Takes too long to run !
   /*

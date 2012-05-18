@@ -90,6 +90,33 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     
     est
   }
+  
+  // This data will be used several times and do not need to be recomputed
+  var dataMean = (data reduce(_ + _)).asCol / measurements
+  var dataCovariance = covariance(dataGenSeqToMat(data), Axis.Vertical)._1
+
+  
+  /**
+   * Computes the log-likelihood that the estimated values are correct.
+   */
+  def likelihood(estimate: MatricesTupple): Double = {
+
+    val estCWithIndex = estimate.covariances zipWithIndex
+
+    // Thought it could be an elegant solution to use a map with indices
+    val elements = estCWithIndex map {
+      case (matrix, index) => {
+        val invEstC = inv(matrix)
+      
+        val lg = log(det(matrix * 2 * Pi))
+        val tr = (invEstC * dataCovariance).trace + (dataMean - estimate.means(::, index)).t * invEstC * (dataMean - estimate.means(::, index))
+      
+        estimate.weights(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
+      }
+    }
+    
+    elements.sum
+  }
 }
 
 class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
@@ -106,7 +133,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
 
     var iterations = 0;
     
-    // Initalises the likelihood values
+    // Initalizes the likelihood values
     var newLikelihood = minLikelihoodVar
     var oldLikelihood = 2 * newLikelihood
     
@@ -215,33 +242,6 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     estWeight := estWeight / measurements
     
     MatricesTupple(estWeight, estMean, estCovariance)
-  }
-  
-  // This data will be used several times and do not need to be recomputed
-  var dataMean = (data reduce(_ + _)).asCol / measurements
-  var dataCovariance = covariance(dataGenSeqToMat(data), Axis.Vertical)._1
-
-  
-  /**
-   * Computes the log-likelihood that the estimated values are correct.
-   */
-  def likelihood(estimate: MatricesTupple): Double = {
-
-    val estCWithIndex = estimate.covariances zipWithIndex
-
-    // Thought it could be an elegant solution to use a map with indices
-    val elements = estCWithIndex map {
-      case (matrix, index) => {
-        val invEstC = inv(matrix)
-      
-        val lg = log(det(matrix * 2 * Pi))
-        val tr = (invEstC * dataCovariance).trace + (dataMean - estimate.means(::, index)).t * invEstC * (dataMean - estimate.means(::, index))
-      
-        estimate.weights(index) * (-0.5 * measurements * lg - 0.5 * (measurements - 1) * tr)
-      }
-    }
-    
-    elements.sum
   } 
 
 }

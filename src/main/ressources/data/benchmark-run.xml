@@ -20,7 +20,7 @@
     <data>src/test/ressources/em/100M/X.csv</data>
     <k>8</k>
     <init from="matlab">
-      <folder>src/test/ressources/em/100M/</folder>
+      <folder>src/test/ressources/em/1M/</folder>
     </init>
   </run>
 </benchmark>

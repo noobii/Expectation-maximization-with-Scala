@@ -83,6 +83,8 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     GChrono.stop
     println("estTime: " + GChrono.count/1000.0)
 
+    println("iterations: " + iter)
+    
     GChrono.reset
     
     est

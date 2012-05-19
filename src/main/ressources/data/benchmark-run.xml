@@ -17,7 +17,7 @@
   </run>
   <run>
     <name>1'000'000 points, easy</name>
-    <data>src/test/ressources/em/100M/X.csv</data>
+    <data>src/test/ressources/em/1M/X.csv</data>
     <k>8</k>
     <init from="matlab">
       <folder>src/test/ressources/em/1M/</folder>

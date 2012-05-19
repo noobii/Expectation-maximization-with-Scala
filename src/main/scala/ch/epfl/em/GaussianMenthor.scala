@@ -29,53 +29,81 @@ class GaussianMenthor(
     
     val graph = new Graph[VertexValue]
     
+    // Build the graph. It is unconnected !
+    // Each vertex hold the data associated with one point.
     for(point <- dataIn) {
       val newVertex = new GaussianVertex(point)
       graph.addVertex(newVertex)
     }
   
-    CurrentEstimaes.init(estimates, minLikelihoodVar)
+    // Initializes the current data
+    CurrentData.init(estimates, minLikelihoodVar)
 
+    // Starts to run the algo
     graph.start
+    // Why 8? It is the number of substeps in the algo
     graph.iterate(8 * maximumIterations)
     graph.terminate()
     
+    // Gets back the current data to return it
+    val finalEstimates = new MatricesTupple(CurrentData.weights, CurrentData.means, CurrentData.covariances)
+    val finalLoglikelihood = CurrentData.loglikelihood
+    val iterations = CurrentData.iteration
     
-    val finalEstimates = new MatricesTupple(CurrentEstimaes.weights, CurrentEstimaes.means, CurrentEstimaes.covariances)
-    val finalLoglikelihood = CurrentEstimaes.loglikelihood
-    
-    (finalEstimates, finalLoglikelihood, CurrentEstimaes.iteration)
+    (finalEstimates, finalLoglikelihood, iterations)
   }
   
+  /**
+   * Serves as wrapper for all the data that must be passed around as message in the algo.
+   * VertexValue is in practice only instancieted during the crunch operations later.
+   * For the vertices use RealVertexValue
+   */
   class VertexValue(
       val point: DenseVector[Double] = null,
       var exp: DenseVector[Double] = null,
       private val estMeans: DenseMatrix[Double] = null,
-      private val estCovariances: Array[DenseMatrix[Double]] = null
-  ) {
+      private val estCovariances: Array[DenseMatrix[Double]] = null) {
+
+    // This is the case where the Vertex value is used to hold a computed valud (runing sum)
     def means = estMeans
     def covariances = estCovariances
   }
   
+  /**
+   * This class is used as value in the vertex as oposed to its ancestor that is
+   * only used for the crunch operations.
+   */
   class RealVertexValue(point: DenseVector[Double]) extends VertexValue(point = point) {
+    // Called during in the crunch step when we compute the means
     override def means = point.asCol * exp.asRow
 
+    // Called during the crunch step when we compute the covariances
     override def covariances = {
       (0 until gaussianComponents).toArray map(k => {
-        val delta = point.asCol - CurrentEstimaes.means(::, k)
-        (delta * delta.t) :* exp(k) :/ CurrentEstimaes.weights(k)
+        val delta = point.asCol - CurrentData.means(::, k)
+        (delta * delta.t) :* exp(k) :/ CurrentData.weights(k)
       })
     }
   }
   
-  object CurrentEstimaes {
+  /**
+   * Object that holds all the data that must be shared accros the vertices
+   * during the algo or that must persist after the algo has run.
+   */
+  object CurrentData {
     @volatile var weights: DenseVector[Double] = _
     @volatile var means: DenseMatrix[Double] = _
     @volatile var covariances: Array[DenseMatrix[Double]] = _
     @volatile var loglikelihood: Double = Double.MaxValue
-    var minLikelihood: Double = _
-    var iteration: Int = 0
     
+    /** Variation when the algo should stop */
+    var minLikelihood: Double = _
+    /** Current iteration count */
+    var iteration: Int = 1
+    
+    /**
+     * Easily initialize the object
+     */
     def init(in: MatricesTupple, likelihood: Double) {
       weights = in.weights
       means = in.means
@@ -83,19 +111,23 @@ class GaussianMenthor(
       minLikelihood = likelihood
     }
     
+    /**
+     * Gets the data in a convinient way
+     */
     def tupples = new MatricesTupple(weights, means, covariances)
   }
 
   class GaussianVertex(point: DenseVector[Double]) extends 
         Vertex[VertexValue]("point", new RealVertexValue(point)) {
     
+    // For certain steps operations must only be performed in one vertex
     lazy val justOneVertex = (this == graph.vertices(0))
     
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
       def normalize(v: DenseVector[Double]) = v :/ v.sum
 	    
       // Creates new empty covariances matrices if needed
-	  val estimatedCovariances = CurrentEstimaes.covariances map {matrix => 
+	  val estimatedCovariances = CurrentData.covariances map {matrix => 
 	    if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
 	    else matrix
 	  }
@@ -108,11 +140,11 @@ class GaussianMenthor(
 	    
 	  val ex = DenseVector.tabulate[Double](gaussianComponents)(j => {
 	
-	    val delta = point.asCol - CurrentEstimaes.means(::, j)
+	    val delta = point.asCol - CurrentData.means(::, j)
 	    val coef = delta.t * invEstC(j) * delta
 	    val pl = exp(-0.5 * coef) / (a * S(j))
 	        
-	    CurrentEstimaes.weights(j) * pl
+	    CurrentData.weights(j) * pl
 	  })
 	  
 	  val exNorm = normalize(ex)
@@ -129,7 +161,7 @@ class GaussianMenthor(
         // Only one vertex takes the computed weight and stores it
         incoming match {
           // Stores the new estimated weights
-          case List(message) => CurrentEstimaes.weights = message.value.exp
+          case List(message) => CurrentData.weights = message.value.exp
           case _ => // Will never happen
         }
       }
@@ -146,10 +178,10 @@ class GaussianMenthor(
             // The value that has been summed with the crunch step
             val sumedMeans = newMessage.value.means
             // The weights repeated in each line of a (dim, gaussianComp) matrix
-            val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * CurrentEstimaes.weights.asRow
+            val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * CurrentData.weights.asRow
             
             // Stores the new estimated means
-            CurrentEstimaes.means = sumedMeans :/ weightsAsMatrix
+            CurrentData.means = sumedMeans :/ weightsAsMatrix
           }
           case _ => // Will never happen
         }
@@ -165,25 +197,23 @@ class GaussianMenthor(
       if(justOneVertex) {
         // Only one vertex takes care of storing the result
         incoming match {
-          case List(message) => CurrentEstimaes.covariances = message.value.covariances
+          case List(message) => CurrentData.covariances = message.value.covariances
           case _ => // Will never happen
         }
 
         // Readjusting the weight coefficients
-        CurrentEstimaes.weights = CurrentEstimaes.weights / measurements
+        CurrentData.weights = CurrentData.weights / measurements
       
       }
       List()
     } then {
       if(justOneVertex) {
         // Just one vertex takes care of checking if the algo converges
-        val newLikelihood = likelihood(CurrentEstimaes.tupples)
-        var oldLikelihood = CurrentEstimaes.loglikelihood
+        val newLikelihood = likelihood(CurrentData.tupples)
+        var oldLikelihood = CurrentData.loglikelihood
         
-        def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= CurrentEstimaes.minLikelihood)
-        
-        // We increment the iteration counter to keep track of when the algo stops
-        CurrentEstimaes.iteration += 1
+        // Checks if the algorithm has converged or not
+        def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= CurrentData.minLikelihood)
         
         if(hasConverged) {
           // Our result is good enough we stop the iterations
@@ -191,7 +221,9 @@ class GaussianMenthor(
         }
         
         // Sets the newly computed likelihood
-        CurrentEstimaes.loglikelihood = newLikelihood
+        CurrentData.loglikelihood = newLikelihood
+        // We increment the iteration counter to keep track of when the algo stops
+        CurrentData.iteration += 1
 
       }
       List()

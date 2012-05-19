@@ -8,12 +8,13 @@ object RunConfiguration {
   
   def load(configFile: String) = {
   
-    val elem = loadFile(configFile: String) 
+    val elem = loadFile(configFile) 
   
+    // There are typically several run configs in each file
     for(setup <- elem \\"run") yield {
 
       // Get the name of the run
-      val name = (setup \\ "name").text
+      val name = (setup \\ "name") text
     
       // Get the data
       val dataPath = (setup \\ "data").text
@@ -22,14 +23,20 @@ object RunConfiguration {
       // Get the number of gaussian components
       val k = (setup \\ "k").text.toInt
     
-      lazy val strategy = new InitFromMatlab((setup \\ "init" \ "folder").text)
+      val strategy: GaussianInit = if(true) {
+        new InitFromMatlab((setup \\ "init" \ "folder").text)
+      } else {
+        // TODO init from kmeans
+        throw new Exception("Should be kmeans")
+        null
+      }
       
       RunConfiguration(name, X, k, strategy)
     }
 
+    
   
-  }
-  
+  }  
   
 }
 

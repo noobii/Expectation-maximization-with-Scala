@@ -15,8 +15,8 @@ import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 
-class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
-      Gaussian(initStrategy)(dataIn, gaussianComponents) {
+class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) 
+    extends Gaussian(initStrategy)(dataIn, gaussianComponents) {
 
   /**
    * The implementation of the Expecatation-maximization algorithm
@@ -30,7 +30,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     
     // Initalizes the likelihood values
     var newLikelihood = minLikelihoodVar
-    var oldLikelihood = 2 * newLikelihood
+    var oldLikelihood = Double.MaxValue
     
     // Determines if the likelihood variation is small engough to stop the iteration
     def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= minLikelihoodVar)

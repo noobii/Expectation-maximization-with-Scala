@@ -16,15 +16,16 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 
-class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
-      Gaussian(initStrategy)(dataIn, gaussianComponents){
+class GaussianMenthor(
+    initStrategy: GaussianInit)
+    (dataIn: GenSeq[DenseVector[Double]], 
+     gaussianComponents: Int) 
+  extends Gaussian(initStrategy)(dataIn, gaussianComponents) {
 
   def em(
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
-      maximumIterations: Int
-      ) = {
-      
+      maximumIterations: Int) = {
     
     val graph = new Graph[VertexValue]
     
@@ -36,7 +37,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     CurrentEstimaes.init(estimates, minLikelihoodVar)
 
     graph.start
-    graph.iterate(8)
+    graph.iterate(8 * maximumIterations)
     graph.terminate()
     
     

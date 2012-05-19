@@ -14,23 +14,36 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
+import Gaussian.printStatus
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
-        
+    
+    // Default number of times the algo will be run
+    val defaultNumberOfRuns = 5
+    
+    // If the parameter is given we use it else we take the default
+    val numberOfRuns = if(args.isDefinedAt(0)) args(0).toInt else defaultNumberOfRuns
+    
+    // Loads the configuration from file
     val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
     
-    println("Available cores: " + Runtime.getRuntime().availableProcessors())
+    // Informations about the environement
+    val runtime = Runtime.getRuntime()
+    println("Available cores: " + runtime.availableProcessors())
+    println("Total Memory:" + runtime.totalMemory());
+    println("Max Memory:" + runtime.maxMemory());
     
+    // The configurations are run sequentially
     for(rc <- runConfigs) {
       printStatus("Runing: " + rc.name) 
       
-      // Initializes the strategy so we it is equal for all runs
+      // Initializes the strategy beforehand so we it is equal for all runs
       rc.initStrategy
       
-      for(i <- 1 to 5) {
+      for(i <- 1 to numberOfRuns) {
         printStatus("Iteration #" + i) 
         
         printStatus("Classic implementation")
@@ -48,6 +61,9 @@ object Gaussian {
     }
   }
   
+  /**
+   * Handy method to see what is going on and when.
+   */
   def printStatus(text: String) {
     val now = new java.util.Date
     
@@ -57,23 +73,27 @@ object Gaussian {
 }
 
 abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
-  import Gaussian.printStatus // is this really the best way to do it?
 
   val measurements = dataIn.length
   val dimensions = dataIn.head.length
   
+  // Not really necessary anymore
   protected val data = dataIn
   
   /**
-   * The implementation of the Expecatation-maximization algorithm
+   * The expectation-maximization algorithm. Must be implemented.
    */
   def em(
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
-      maximumIterations: Int
-      ): (MatricesTupple, Double, Int)
+      maximumIterations: Int): (MatricesTupple, Double, Int)
   
-  def runAlgo(minLikelihoodVar: Double = 0.05, maximumIterations: Int = 1000) = {
+  /**
+   * Runs the em algo. The method has default values to be called with only runAlgo()
+   */
+  def runAlgo(
+      minLikelihoodVar: Double = 0.05, 
+      maximumIterations: Int = 1000) = {
     
     val initial = initStrategy.init
         
@@ -81,8 +101,9 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     GChrono.start
     val (est, lg, iter) = em(initial, minLikelihoodVar, maximumIterations)
     GChrono.stop
-    println("estTime: " + GChrono.count/1000.0)
-
+    
+    // TODO cleanup
+    println("time: " + GChrono.count/1000.0)
     println("iterations: " + iter)
     
     GChrono.reset
@@ -90,8 +111,8 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     est
   }
   
-  // This data will be used several times and do not need to be recomputed
-  var dataMean = (data reduce(_ + _)).asCol / measurements
+  // This data will be used several times by the likelihood method
+  var dataMean = ((data reduce(_ + _)) / measurements).asCol
   var dataCovariance = covariance(dataGenSeqToMat(data), Axis.Vertical)._1
 
   
@@ -102,7 +123,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
 
     val estCWithIndex = estimate.covariances zipWithIndex
 
-    // Thought it could be an elegant solution to use a map with indices
+    // Algo to compute the likelihood value
     val elements = estCWithIndex map {
       case (matrix, index) => {
         val invEstC = inv(matrix)

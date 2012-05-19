@@ -19,10 +19,34 @@ case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Doubl
 
 object Gaussian {
   def main(args: Array[String]): Unit = {
+        
+    val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
     
     println("Available cores: " + Runtime.getRuntime().availableProcessors())
     
-    for(i <- 0 until 5) {
+    for(rc <- runConfigs) {
+      printStatus("Runing: " + rc.name) 
+      
+      // Initializes the strategy so we it is equal for all runs
+      rc.initStrategy
+      
+      for(i <- 1 to 5) {
+        printStatus("Iteration #" + i) 
+        
+        printStatus("Classic implementation")
+        val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
+        classic.runAlgo()
+        
+        printStatus("Parrallel implementation")
+        val parallel = new GaussianClassic(rc.strategy)(rc.parData, rc.k)
+        parallel.runAlgo()
+        
+        printStatus("Menthor implementation")
+        val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
+        menthor.runAlgo()
+      }
+      
+      /*
 	    printStatus("Runing algo 50k")
 	    
 	    val k50k = 6
@@ -49,6 +73,7 @@ object Gaussian {
 	    val gaussian1M = new GaussianClassic(strategy1M)(X1M, k1M)
 	    
 	    val out1M = gaussian1M.runAlgo()
+	    */
     }
   }
   

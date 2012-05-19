@@ -50,14 +50,16 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     }
   
     CurrentEstimaes.init(estimates, minLikelihoodVar)
-    
-    println("go start!")
-  
+
     graph.start
     graph.iterate(8)
     graph.terminate()
     
-    (new MatricesTupple(CurrentEstimaes.weights, CurrentEstimaes.means, CurrentEstimaes.covariances), -1.0)
+    
+    val finalEstimates = new MatricesTupple(CurrentEstimaes.weights, CurrentEstimaes.means, CurrentEstimaes.covariances)
+    val finalLoglikelihood = CurrentEstimaes.loglikelihood
+    
+    (finalEstimates, finalLoglikelihood, CurrentEstimaes.iteration)
   }
   
   class VertexValue(

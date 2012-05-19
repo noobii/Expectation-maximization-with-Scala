@@ -61,8 +61,8 @@ object Gaussian {
 abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
   import Gaussian.printStatus // is this really the best way to do it?
 
-  protected val measurements = dataIn.length
-  protected val dimensions = dataIn.head.length
+  val measurements = dataIn.length
+  val dimensions = dataIn.head.length
   
   protected val data = dataIn
   
@@ -73,7 +73,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
       maximumIterations: Int
-      ): (MatricesTupple, Double)
+      ): (MatricesTupple, Double, Int)
   
   def runAlgo(minLikelihoodVar: Double = 0.05, maximumIterations: Int = 1000) = {
     
@@ -81,7 +81,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
         
     printStatus("Run algo"); 
     GChrono.start
-    val (est, lg) = em(initial, minLikelihoodVar, maximumIterations)
+    val (est, lg, iter) = em(initial, minLikelihoodVar, maximumIterations)
     GChrono.stop
     
     println("estTime: " + GChrono.count/1000.0)

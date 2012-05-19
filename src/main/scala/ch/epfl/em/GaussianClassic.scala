@@ -49,7 +49,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       iterations += 1
     }
     
-    (newEstimates, newLikelihood)
+    (newEstimates, newLikelihood, iterations)
   }
 
   /**

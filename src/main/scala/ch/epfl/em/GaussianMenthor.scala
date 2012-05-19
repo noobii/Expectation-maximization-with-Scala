@@ -39,7 +39,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
       maximumIterations: Int
-      ): (MatricesTupple, Double) = {
+      ) = {
       
     
     val graph = new Graph[VertexValue]

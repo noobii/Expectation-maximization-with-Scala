@@ -25,7 +25,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
       maximumIterations: Int
-      ): (MatricesTupple, Double) = {
+      ) = {
 
     var iterations = 0;
     

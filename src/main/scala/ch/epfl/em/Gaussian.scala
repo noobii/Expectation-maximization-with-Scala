@@ -28,6 +28,7 @@ object Gaussian {
 	    val k50k = 6
 	    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
 	    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
+	    
 	    val gaussian50k = new GaussianClassic(strategy50k)(X50k, k50k)
 	    
 	    val out = gaussian50k.runAlgo()
@@ -36,6 +37,7 @@ object Gaussian {
 	    val k500k = 5
 	    val X500k = FileParser("src/test/ressources/em/500k/X.csv").data
 	    val strategy500k = new InitFromMatlab("src/test/ressources/em/500k/")
+	    
 	    val gaussian500k = new GaussianClassic(strategy500k)(X500k, k500k)
 	    
 	    val out500k = gaussian500k.runAlgo()
@@ -83,7 +85,6 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     GChrono.start
     val (est, lg, iter) = em(initial, minLikelihoodVar, maximumIterations)
     GChrono.stop
-    
     println("estTime: " + GChrono.count/1000.0)
 
     GChrono.reset

@@ -34,8 +34,6 @@ object RunConfiguration {
       RunConfiguration(name, X, k, strategy)
     }
 
-    
-  
   }  
   
 }

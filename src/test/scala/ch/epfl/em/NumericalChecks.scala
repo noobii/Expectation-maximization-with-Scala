@@ -2,19 +2,27 @@ package ch.epfl.em
 import scalala.tensor.dense.DenseMatrix
 import scalala.tensor.dense.DenseVector
 import scala.math.abs
+import scala.math.min
+import scala.math.max
 import NumericalChecks.CheckMatrix._
+import NumericalChecks.CheckDouble._
 
 object NumericalChecks {
 
-  val delta = 0.01
+  val delta = 0.01 // 1%
+  
+  def closeEnough(double1: Double, double2: Double): Boolean = {
+    val small = min(double1, double2)
+    val big = max(double1, double2)
+    
+    ((big - small) / big) < delta
+  }
   
   def closeEnough(mat1: DenseMatrix[Double], mat2: DenseMatrix[Double]): Boolean = {
     
     (mat1.numCols == mat2.numCols && mat1.numRows == mat2.numRows) && {
       
-      val diff = mat1 - mat2
-            
-      diff.forallValues(abs(_) < delta)
+      mat1.forallPairs{case((i, j), value) => value closeEnough mat2(i, j)}
       
     }
 
@@ -22,9 +30,8 @@ object NumericalChecks {
   
   def closeEnough(vect1: DenseVector[Double], vect2: DenseVector[Double]): Boolean = {
     (vect1.size == vect2.size) && {
-      val diff = vect1 - vect2
       
-      diff.forallValues(abs(_) < delta)
+      vect1.forallPairs{case(i, value) => value closeEnough vect2(i)}
     }
   }
   
@@ -32,7 +39,7 @@ object NumericalChecks {
     (cov1.length == cov2.length) && ((cov1 zip cov2) forall {case(mat1, mat2) => mat1 closeEnough mat2})
   }
   
-  
+  // TODO is there a way to make them generic? 
   class CheckMatrix(matrix: DenseMatrix[Double]) {  
     def closeEnough(otherMatrix: DenseMatrix[Double]): Boolean = NumericalChecks.closeEnough(matrix, otherMatrix)
   }
@@ -55,5 +62,13 @@ object NumericalChecks {
 
   object CheckArrayOfMatrices {
     implicit def arrayOfMatricesToCheckArrayOfMatrices(array: Array[DenseMatrix[Double]]) = new CheckArrayOfMatrices(array)
+  }
+  
+  class CheckDouble(double: Double) {
+    def closeEnough(otherDouble: Double): Boolean = NumericalChecks.closeEnough(double, otherDouble)
+  }
+  
+  object CheckDouble {
+    implicit def double2CheckDouble(double: Double): CheckDouble = new CheckDouble(double)
   }
 }

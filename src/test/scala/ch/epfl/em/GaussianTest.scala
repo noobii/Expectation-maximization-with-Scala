@@ -9,6 +9,10 @@ import scalala.tensor.dense.DenseVector
 import scalala.tensor.{:: => ::}
 
 import ch.epfl.em.NumericalChecks._
+import ch.epfl.em.NumericalChecks.CheckVector._
+import ch.epfl.em.NumericalChecks.CheckMatrix._
+import ch.epfl.em.NumericalChecks.CheckArrayOfMatrices._
+import ch.epfl.em.NumericalChecks.CheckDouble._
 import ch.epfl.em.Conversions._
 
 class GaussianTest extends AssertionsForJUnit {
@@ -46,17 +50,9 @@ class GaussianTest extends AssertionsForJUnit {
     val classicEstimates = gaussianClassic.runAlgo(maximumIterations = 1)
     val menthorEstimates = gaussianMenthor.runAlgo(maximumIterations = 1)
     
-    assert(closeEnough(classicEstimates.weights, menthorEstimates.weights))
-    assert(closeEnough(classicEstimates.means, menthorEstimates.means))
-    assert(closeEnough(classicEstimates.covariances, menthorEstimates.covariances))
-  }
-  
-  @Test def testInitEm() {
-    
-  }
-  
-  @Test def testEM() {
-    
+    assert(classicEstimates.weights closeEnough menthorEstimates.weights)
+    assert(classicEstimates.means closeEnough menthorEstimates.means)
+    assert(classicEstimates.covariances closeEnough menthorEstimates.covariances)
   }
   
   @Test def testExpectation() {
@@ -77,7 +73,7 @@ class GaussianTest extends AssertionsForJUnit {
       (0.2689,    0.7311)
     )
     
-    assert(closeEnough(matlabExpVal, dataGenSeqToMat(exp)))
+    assert(matlabExpVal closeEnough dataGenSeqToMat(exp))
   }
   
   
@@ -94,10 +90,9 @@ class GaussianTest extends AssertionsForJUnit {
     val matlab2 = DenseMatrix((1.5, 1.5), (1.5, 1.5))
     val matlab3 = Array(DenseMatrix((0.25, 0.25), (0.25, 0.25)), DenseMatrix((0.25, 0.25), (0.25, 0.25)))
     
-    assert(res.weights == matlab1)
-    assert(NumericalChecks.closeEnough(res.means, matlab2))
-    assert(res.covariances(0) == matlab3(0))
-    assert(res.covariances(1) == matlab3(1))
+    assert(res.weights closeEnough matlab1)
+    assert(res.means closeEnough matlab2)
+    assert(res.covariances closeEnough matlab3)
   }
   
   @Test def testLoglikelihood() {
@@ -107,8 +102,8 @@ class GaussianTest extends AssertionsForJUnit {
     val res = gaus.likelihood(mat)
     
     // Value computed with Matlbab with the same inputs
-    val matlabResult = 2 * -11.5643
+    val matlabRes = 2 * -11.5643
     
-    assert(matlabResult < res + delta && matlabResult > res - delta)
+    assert(res closeEnough matlabRes)
   }
 }

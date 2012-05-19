@@ -16,8 +16,6 @@ import ch.epfl.em.NumericalChecks.CheckDouble._
 import ch.epfl.em.Conversions._
 
 class GaussianTest extends AssertionsForJUnit {
-
-  def delta = 0.1
   
   def freshTestValues = {
     

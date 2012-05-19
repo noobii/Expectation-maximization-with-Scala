@@ -1,6 +1,6 @@
 package ch.epfl.em
 
-class RunConfiguration {
+class RunConfiguration(folder: String) {
 
   
   

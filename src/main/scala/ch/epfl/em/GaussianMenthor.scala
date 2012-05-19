@@ -16,22 +16,6 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 
-object GaussianMenthor extends App {
-
-  override def main(args: Array[String]):Unit = {
-      
-    println("Runing algo 50k Menthor")
-    
-    val k50k = 6
-    val X50k = FileParser("src/test/ressources/em/50k/X.csv").data
-    val strategy50k = new InitFromMatlab("src/test/ressources/em/50k/")
-    val gaussian50k = new GaussianMenthor(strategy50k)(X50k, k50k)
-    
-    gaussian50k.runAlgo()
-  }
-}
-
-
 class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends
       Gaussian(initStrategy)(dataIn, gaussianComponents){
 

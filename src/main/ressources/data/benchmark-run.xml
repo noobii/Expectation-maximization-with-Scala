@@ -1,0 +1,26 @@
+<benchmark>
+  <run>
+    <name>50'000 points, easy</name>
+    <data>src/test/ressources/em/50k/X.csv</data>
+    <k>5</k>
+    <init from="matlab">
+      <folder>src/test/ressources/em/50k/</folder>
+    </init>
+  </run>
+  <run>
+    <name>600'000 points, easy</name>
+    <data>src/test/ressources/em/500k/X.csv</data>
+    <k>6</k>
+    <init from="matlab">
+      <folder>src/test/ressources/em/500k/</folder>
+    </init>
+  </run>
+  <run>
+    <name>1'000'000 points, easy</name>
+    <data>src/test/ressources/em/100M/X.csv</data>
+    <k>8</k>
+    <init from="matlab">
+      <folder>src/test/ressources/em/100M/</folder>
+    </init>
+  </run>
+</benchmark>

@@ -2,7 +2,7 @@
   <run>
     <name>50'000 points, easy</name>
     <data>src/test/ressources/em/50k/X.csv</data>
-    <k>5</k>
+    <k>6</k>
     <init from="matlab">
       <folder>src/test/ressources/em/50k/</folder>
     </init>
@@ -10,7 +10,7 @@
   <run>
     <name>600'000 points, easy</name>
     <data>src/test/ressources/em/500k/X.csv</data>
-    <k>6</k>
+    <k>5</k>
     <init from="matlab">
       <folder>src/test/ressources/em/500k/</folder>
     </init>

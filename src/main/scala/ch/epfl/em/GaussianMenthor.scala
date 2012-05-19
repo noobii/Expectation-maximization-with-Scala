@@ -102,7 +102,7 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
   class GaussianVertex(point: DenseVector[Double]) extends 
         Vertex[VertexValue]("point", new RealVertexValue(point)) {
     
-    def justOneVertex = this == graph.vertices(0)
+    lazy val justOneVertex = (this == graph.vertices(0))
     
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
       def normalize(v: DenseVector[Double]) = v :/ v.sum
@@ -135,58 +135,75 @@ class GaussianMenthor(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
 	  List()
     } crunch((x, y) => 
          new VertexValue(exp = x.exp + y.exp)
+         // The estimated weights are computed by summing up all expectations
     ) then {
+      // The result of the crunch is sent out to all vertices
       if(justOneVertex) {
-        
+        // Only one vertex takes the computed weight and stores it
         incoming match {
+          // Stores the new estimated weights
           case List(message) => CurrentEstimaes.weights = message.value.exp
-          case _ => throw new Exception("Something went wrong with weights")
+          case _ => // Will never happen
         }
       }
       List()
-    } crunch((x, y) => new VertexValue(estMeans = x.means + y.means)) then {
+    } crunch((x, y) => 
+         new VertexValue(estMeans = x.means + y.means)
+         // The estimated means are computed by summing computed values at each vertex
+    ) then {
+      // The result is available to all vertices
       if(justOneVertex) {
-        
+        // Only one vertex takes care of computing the value and storing it
         incoming match {
           case List(newMessage) => {
+            // The value that has been summed with the crunch step
             val sumedMeans = newMessage.value.means
             // The weights repeated in each line of a (dim, gaussianComp) matrix
             val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * CurrentEstimaes.weights.asRow
             
+            // Stores the new estimated means
             CurrentEstimaes.means = sumedMeans :/ weightsAsMatrix
           }
-          case _ => throw new Exception("Boom!")
+          case _ => // Will never happen
         }
       }
       List()
     } crunch((x, y) => {
-      val newSum = (x.covariances zip y.covariances) map{case(mat1, mat2) => mat1 + mat2}
-      new VertexValue(estCovariances = newSum)
+      val covarianceSum = (x.covariances zip y.covariances) map{case(mat1, mat2) => mat1 + mat2}
+      
+      new VertexValue(estCovariances = covarianceSum)
+      // The estimated covariances are computed by summing computed values at each vertex
     }) then {
+      // The result is available to all vertices
       if(justOneVertex) {
-        
+        // Only one vertex takes care of storing the result
         incoming match {
           case List(message) => CurrentEstimaes.covariances = message.value.covariances
-          case _ => throw new Exception("Boom!")
+          case _ => // Will never happen
         }
-        // Other small cleanup tasks
-        
+
+        // Readjusting the weight coefficients
         CurrentEstimaes.weights = CurrentEstimaes.weights / measurements
       
       }
       List()
     } then {
       if(justOneVertex) {
+        // Just one vertex takes care of checking if the algo converges
         val newLikelihood = likelihood(CurrentEstimaes.tupples)
         var oldLikelihood = CurrentEstimaes.loglikelihood
         
         def hasConverged = (abs(100*(newLikelihood - oldLikelihood) / oldLikelihood) <= CurrentEstimaes.minLikelihood)
         
+        // We increment the iteration counter to keep track of when the algo stops
         CurrentEstimaes.iteration += 1
         
         if(hasConverged) {
+          // Our result is good enough we stop the iterations
           graph.terminate()
         }
+        
+        // Sets the newly computed likelihood
         CurrentEstimaes.loglikelihood = newLikelihood
 
       }

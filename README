@@ -6,6 +6,9 @@
 \____/\_|  |_/          \____/ \___|\__,_|_|\__,_|
 
 
-Uses sbt
+To run the project use sbt. Simply do: 
+./sbt run
+Choose ch.epfl.em.Gaussian
 
-For now only test-only does something you can look at...
+To build a standalone jar do:
+./sbt one-jar

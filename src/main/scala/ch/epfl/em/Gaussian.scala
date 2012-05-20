@@ -34,8 +34,8 @@ object Gaussian {
     // Informations about the environement
     val runtime = Runtime.getRuntime()
     println("Available cores: " + runtime.availableProcessors())
-    println("Total Memory:" + runtime.totalMemory());
-    println("Max Memory:" + runtime.maxMemory());
+    println("Total Memory: " + runtime.totalMemory());
+    println("Max Memory: " + runtime.maxMemory());
     
     // The configurations are run sequentially
     for(rc <- runConfigs) {

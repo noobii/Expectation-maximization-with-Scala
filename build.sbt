@@ -24,23 +24,23 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 logBuffered in Test := false
 
-/*
-seq(ProguardPlugin.proguardSettings :_*)
 
-proguardOptions ++= Seq (
-  "-keep class scalala.** { *; }",
-  "-keep class org.jfree.** { *; }",
-  keepMain("ch.epfl.em.Gaussian$"),
-  keepMain("scala.tools.nsc.MainGenericRunner"),
-  "-dontoptimize",
-  "-dontobfuscate",
-  keepLimitedSerializability,
-  keepAllScala,
-  "-keep class ch.epfl.** { *; }",
-  "-keep interface scala.ScalaObject",
-  "-keep class processing.parallel.** { *; }"
-)
-*/
+//seq(ProguardPlugin.proguardSettings :_*)
+
+//proguardOptions ++= Seq (
+//  "-keep class scalala.** { *; }",
+//  "-keep class org.jfree.** { *; }",
+//  keepMain("ch.epfl.em.Gaussian$"),
+//  keepMain("scala.tools.nsc.MainGenericRunner"),
+//  "-dontoptimize",
+//  "-dontobfuscate",
+//  keepLimitedSerializability,
+//  keepAllScala,
+//  "-keep class ch.epfl.** { *; }",
+//  "-keep interface scala.ScalaObject",
+//  "-keep class processing.parallel.** { *; }"
+//)
+
 
 
 seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)

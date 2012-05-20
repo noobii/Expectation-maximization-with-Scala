@@ -1,10 +1,3 @@
-import AssemblyKeys._
-
-assemblySettings
-
-seq(ProguardPlugin.proguardSettings :_*)
-
-
 name := "EM"
 
 //scalaVersion := "2.10.0-SNAPSHOT"
@@ -30,3 +23,10 @@ resolvers ++= Seq(
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 logBuffered in Test := false
+
+seq(ProguardPlugin.proguardSettings :_*)
+
+proguardOptions ++= Seq(
+  keepAllScala
+)
+

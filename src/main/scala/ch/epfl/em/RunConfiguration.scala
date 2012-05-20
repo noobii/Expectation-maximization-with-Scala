@@ -6,13 +6,16 @@ import scalala.tensor.dense.DenseVector
 
 object RunConfiguration {
   
-  def load(configFile: String) = {
-  
-    val elem = loadFile(configFile) 
-  
-    // There are typically several run configs in each file
-    for(setup <- elem \\"run") yield {
-
+  def load(configFile: String) = new Iterator[RunConfiguration] {
+    
+    private val elem = loadFile(configFile)
+    
+    private val ownIterator = (elem \\ "run").iterator
+    
+    def hasNext = ownIterator.hasNext
+    def next = {
+      val setup = ownIterator.next
+      
       // Get the name of the run
       val name = (setup \\ "name") text
     
@@ -33,8 +36,7 @@ object RunConfiguration {
       
       RunConfiguration(name, X, k, strategy)
     }
-
-  }  
+  } 
   
 }
 

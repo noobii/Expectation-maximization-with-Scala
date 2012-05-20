@@ -2,6 +2,8 @@ import AssemblyKeys._
 
 assemblySettings
 
+seq(ProguardPlugin.proguardSettings :_*)
+
 
 name := "EM"
 

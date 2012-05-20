@@ -99,7 +99,7 @@ class GaussianMenthor(
     /** Variation when the algo should stop */
     var minLikelihood: Double = _
     /** Current iteration count */
-    var iteration: Int = 1
+    var iteration: Int = 0
     
     /**
      * Easily initialize the object

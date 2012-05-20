@@ -15,6 +15,7 @@ import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 import Gaussian.printStatus
+import scala.io.Source
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
@@ -30,6 +31,11 @@ object Gaussian {
     // Loads the configuration from file
     val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
     
+    // Waiting so we can set the affinity in the settings
+    println("Set processor affinity to the process")
+    println("Press enter to start...")
+    val waiting = readLine() 
+    
     // Informations about the environement
     val runtime = Runtime.getRuntime()
     println("Available cores: " + runtime.availableProcessors())
@@ -44,7 +50,7 @@ object Gaussian {
       rc.initStrategy
       
       for(i <- 1 to numberOfRuns) {
-        printStatus("Iteration #" + i) 
+        println("Iteration #" + i + "-----------------------------------------") 
         
         printStatus("Classic implementation")
         val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
@@ -97,14 +103,12 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     
     val initial = initStrategy.init
         
-    printStatus("Run algo"); 
     GChrono.start
     val (est, lg, iter) = em(initial, minLikelihoodVar, maximumIterations)
     GChrono.stop
     
     // TODO cleanup
-    println("time: " + GChrono.count/1000.0)
-    println("iterations: " + iter)
+    printStatus("time: " + GChrono.count/1000.0)
     
     GChrono.reset
     

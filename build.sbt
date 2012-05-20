@@ -1,3 +1,8 @@
+import AssemblyKeys._
+
+assemblySettings
+
+
 name := "EM"
 
 //scalaVersion := "2.10.0-SNAPSHOT"

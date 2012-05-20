@@ -9,7 +9,8 @@ plot.png
 
 #sbt stuff
 dist/*
-target/
+target/cache/
+target/*.jar
 lib_managed/
 src_managed/
 project/boot/

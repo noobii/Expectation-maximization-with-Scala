@@ -31,11 +31,6 @@ object Gaussian {
     // Loads the configuration from file
     val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
     
-    // Waiting so we can set the affinity in the settings
-    println("Set processor affinity to the process")
-    println("Press enter to start...")
-    val waiting = readLine() 
-    
     // Informations about the environement
     val runtime = Runtime.getRuntime()
     println("Available cores: " + runtime.availableProcessors())

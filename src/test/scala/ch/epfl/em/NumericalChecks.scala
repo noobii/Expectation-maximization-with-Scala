@@ -61,7 +61,7 @@ object NumericalChecks {
   }
 
   object CheckArrayOfMatrices {
-    implicit def arrayOfMatricesToCheckArrayOfMatrices(array: Array[DenseMatrix[Double]]) = new CheckArrayOfMatrices(array)
+    implicit def arrayOfMatrices2CheckArrayOfMatrices(array: Array[DenseMatrix[Double]]) = new CheckArrayOfMatrices(array)
   }
   
   class CheckDouble(double: Double) {

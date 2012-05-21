@@ -9,7 +9,7 @@ import NumericalChecks.CheckDouble._
 
 object NumericalChecks {
 
-  val delta = 0.01 // 1%
+  def delta = 0.01 // 1%
   
   def closeEnough(double1: Double, double2: Double): Boolean = {
     val small = min(double1, double2)

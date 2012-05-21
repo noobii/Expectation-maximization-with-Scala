@@ -15,6 +15,12 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
     next = new CrunchStep(fun, this)
     next
   }
+  
+  // PG
+  def crunchToOne(fun: (Data, Data) => Data): Substep[Data] = {
+    next = new CrunchToOneStep(fun, this)
+    next
+  }
 
   def size: Int = {
     var currStep = firstSubstep
@@ -52,3 +58,6 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
 }
 
 class CrunchStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data]) extends Substep[Data](null, previous)
+
+// PG
+class CrunchToOneStep[Data](cruncher: (Data, Data) => Data, previous: Substep[Data]) extends CrunchStep[Data](cruncher, previous)

@@ -116,6 +116,14 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             // immediately start new superstep (explain in paper)
             superstep()
 
+            // PG
+            case CrunchToOneResult(res: Data) if(id == 1) =>
+              println("Crunch to one happened")
+              val msgToOne = Message[Data](null, global.vertices(0), res)
+              msgToOne.step = step
+              this ! msgToOne
+              
+              superstep()
             case "Stop" =>
               exit()
           }

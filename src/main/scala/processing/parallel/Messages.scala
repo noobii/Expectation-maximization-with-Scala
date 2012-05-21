@@ -11,3 +11,6 @@ case class Message[Data](val source: Vertex[Data], val dest: Vertex[Data], val v
 case class Crunch[Data](val cruncher: (Data, Data) => Data, val crunchResult: Data)
 
 case class CrunchResult[Data](res: Data)
+
+// @author PG
+case class CrunchToOneResult[Data](res: Data)

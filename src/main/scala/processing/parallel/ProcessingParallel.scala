@@ -146,7 +146,7 @@ class Graph[Data] extends Actor {
           createWorkers()
           //for (w <- workers) { w ! "Init" }
 
-          var crunchResult: Option[Data] = None
+          var crunchResult: Option[AbstractCrunchResult[Data]] = None
 
           var shouldFinish = false
           var i = 1
@@ -161,7 +161,7 @@ class Graph[Data] extends Actor {
             
             if (!crunchResult.isEmpty)
               for (w <- workers) { // go to next superstep
-                w ! CrunchResult(crunchResult.get)
+                w ! crunchResult.get
               }
             else
               for (w <- workers) { // go to next superstep
@@ -197,7 +197,7 @@ class Graph[Data] extends Actor {
             if (!shouldFinish) {
               // are we inside a crunch step?
               if (!cruncher.isEmpty) {
-                crunchResult = Some(workerResults.reduceLeft(cruncher.get))
+                crunchResult = Some(CrunchResult(workerResults.reduceLeft(cruncher.get)))
               } else {
                 crunchResult = None
 

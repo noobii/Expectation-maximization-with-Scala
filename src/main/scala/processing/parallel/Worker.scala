@@ -91,6 +91,8 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
           //parent ! "DoneOutgoing"
 //      }
     } else
+      // PG
+      // We send the crunch result higher up
       parent ! crunch.get
   }
 

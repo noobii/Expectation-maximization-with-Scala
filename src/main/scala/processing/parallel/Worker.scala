@@ -25,7 +25,6 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
     while (!done) {
       receiveWithin(0) {
         case msg: Message[Data] if (msg.step == step) =>
-          println("yep right step")
           incoming(msg.dest) = msg :: incoming(msg.dest)
         case TIMEOUT =>
           done = true
@@ -64,7 +63,6 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             crunch = Some(Crunch(crunchStep.cruncher, crunchResult))
         }
       } else {
-        println("c")
         println(vertex.value)
         //println("substep object for substep " + ((step - 1) % substeps.size) + ": " + substep)
         val outgoing = substep.stepfun()
@@ -153,9 +151,23 @@ class Foreman(parent: Actor, var children: List[Actor]) extends Actor {
 
   def waitForRepliesFrom(children: List[Actor], response: Option[AnyRef]) {
     if (children.isEmpty) {
+      // We got all we needed from the children, we send the result to the graph
       parent ! response.get
     } else {
       react {
+        case c: CrunchToOne[d] => // UGLY COPY / PASTE CODE !!!!!!!!!
+          val cruncher = c.cruncher
+          val crunchResult = c.crunchResult
+//          println(this + ": received " + c + " from " + sender)
+
+          if (response.isEmpty) {
+            waitForRepliesFrom(children.tail, Some(CrunchToOne(cruncher, crunchResult)))
+          } else {
+            val previousCrunchResult = response.get.asInstanceOf[CrunchToOne[d]].crunchResult
+            // aggregate previous result with new response
+            val newResponse = cruncher(crunchResult, previousCrunchResult)
+            waitForRepliesFrom(children.tail, Some(CrunchToOne(cruncher, newResponse)))
+          }
         case c: Crunch[d] => // have to wait for results of all children
           val cruncher = c.cruncher
           val crunchResult = c.crunchResult
@@ -196,6 +208,7 @@ class Foreman(parent: Actor, var children: List[Actor]) extends Actor {
           } else { // received from child
             val otherChildren = children.filterNot((child: Actor) => child == sender)
             val response: Option[AnyRef] = msg match {
+              case CrunchToOne(_, _) => Some(msg)
               case Crunch(_, _) => Some(msg)
               case otherwise => Some(msg)
             }

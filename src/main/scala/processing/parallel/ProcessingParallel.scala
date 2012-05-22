@@ -306,17 +306,32 @@ class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
     } crunchToOne((v1: Double, v2: Double) => v1 + v2) then {
       println("---------3")
       println(incoming)
-      incoming match {
-        case List(crunchResult) =>
-          println(crunchResult)
-          value = crunchResult.value
-        case _ =>
+      if(this == graph.vertices(0)) {
+        incoming match {
+          case List(crunchResult) =>
+            println(crunchResult)
+            value = crunchResult.value
+          case _ =>
+        }
       }
       List()
     } then {
       println("lol")
       List()
     }
+  }
+}
+
+class Test0Vertex extends Vertex[Double]("v", 0.0d) {
+  def update(superstep: Int, incoming: List[Message[Double]]): Substep[Double] = {
+    if(this == graph.vertices(0)) {
+      println("hfjdshfkjdshfkjdshfkjdshfkjdsh")
+      List(Message(graph.vertices(0), graph.vertices(1), 2.0))
+    }
+    List()
+  } then {
+    println(label + incoming)
+    List()
   }
 }
 
@@ -370,11 +385,27 @@ object Test {
       }
     }
   }
+  
+  def runTest0() {
+    println("running test0...")
+    val g = new Graph[Double]
+    for(i <- 1 to 48) {
+      g.addVertex(new Test0Vertex)
+    }
+    g.start()
+    g.iterate(2)
+    g.synchronized {
+      for(v <- g.vertices) {
+        println(v.label + "; " + v.value)
+      }
+    }
+  }
 
   def main(args: Array[String]) {
     //runTest1()
     //runTest2()
-    runTest3()
+    //runTest3()
+    runTest0()
   }
 
 }

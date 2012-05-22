@@ -17,8 +17,8 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
   }
   
   // PG
-  def crunchTo(fun: (Data, Data) => Data)(to: List[Vertex[Data]]): Substep[Data] = {
-    next = new CrunchToStep(fun, this)(to)
+  def crunchToOne(fun: (Data, Data) => Data): Substep[Data] = {
+    next = new CrunchToOneStep(fun, this)
     next
   }
 
@@ -60,4 +60,4 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
 class CrunchStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data]) extends Substep[Data](null, previous)
 
 // PG
-class CrunchToStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data])(val to: List[Vertex[Data]]) extends Substep[Data](null, previous)
+class CrunchToOneStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data]) extends Substep[Data](null, previous)

@@ -19,6 +19,6 @@ case class Crunch[Data](cruncher: (Data, Data) => Data, crunchResult: Data) exte
 case class CrunchResult[Data](res: Data) extends AbstractCrunchResult[Data]
 
 // @author PG
-case class CrunchTo[Data](to: List[Vertex[Data]])(cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch
+case class CrunchToOne[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch
 
-case class CrunchToResult[Data](to: List[Vertex[Data]])(res: Data) extends AbstractCrunchResult[Data]
+case class CrunchToOneResult[Data](res: Data) extends AbstractCrunchResult[Data]

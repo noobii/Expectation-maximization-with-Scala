@@ -9,6 +9,13 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
     next = new Substep(() => block, this)
     next
   }
+  
+  // PG
+ /* def thenOne(block: => List[Message[Data]]): Substep[Data] = {
+    // TODO ! simple copy paste...
+    next = new Substep(() => block, this)
+    next
+  }*/
 
   // TODO: merge crunch steps
   def crunch(fun: (Data, Data) => Data): Substep[Data] = {
@@ -18,6 +25,7 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
   
   // PG
   def crunchToOne(fun: (Data, Data) => Data): Substep[Data] = {
+    // OK !
     next = new CrunchToOneStep(fun, this)
     next
   }

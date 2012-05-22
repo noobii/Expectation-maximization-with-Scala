@@ -25,6 +25,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
     while (!done) {
       receiveWithin(0) {
         case msg: Message[Data] if (msg.step == step) =>
+          println("yep right step")
           incoming(msg.dest) = msg :: incoming(msg.dest)
         case TIMEOUT =>
           done = true
@@ -38,6 +39,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
 
     // iterate over all vertices that this worker manages
     for (vertex <- partition) {
+      //println("toto +" + vertex.label)
       // compute outgoing messages using application-level `update` method
       // and forward to parent
       // paper: obtain chain of closures again for new params!!
@@ -45,8 +47,10 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
       //println("#substeps = " + substeps.size)
       val substep = substeps((step - 1) % substeps.size)
 
+      //println(substep)
+      
       if (substep.isInstanceOf[CrunchStep[Data]]) {
-        
+        //println("b")
         val crunchStep = substep.asInstanceOf[CrunchStep[Data]]
         // assume every vertex has crunch step at this point
         if (vertex == partition(0)) {
@@ -60,6 +64,8 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             crunch = Some(Crunch(crunchStep.cruncher, crunchResult))
         }
       } else {
+        println("c")
+        println(vertex.value)
         //println("substep object for substep " + ((step - 1) % substeps.size) + ": " + substep)
         val outgoing = substep.stepfun()
         // set step field of outgoing messages to current step
@@ -111,7 +117,18 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             case "Next" => // TODO: make it a class
               //println(this + ": received Next")
               superstep()
-
+              
+            // PG
+            case CrunchToOneResult(res: Data) if(id == 1) =>
+              // Only the first worker takes care of sending a message to the first vertex
+              // Maybe the first vertex is not in the first worker's partition but I don't think it matters...
+              println("Crunch to one happened, sending to: " + global.vertices(0).label)
+              val msgToOne = Message[Data](null, global.vertices(0), res)
+              msgToOne.step = step
+              this ! msgToOne
+              //OK println("more")
+              superstep()
+ 
             case CrunchResult(res: Data) =>
               //println(this + ": received CrunchResult")
               // deliver as incoming message to all vertices
@@ -123,16 +140,6 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             // immediately start new superstep (explain in paper)
             superstep()
 
-            // PG
-            case CrunchToOneResult(res: Data) if(id == 1) =>
-              // Only the first worker takes care of sending a message to the first vertex
-              // Maybe the first vertex is not in the first worker's partition but I don't think it matters...
-              println("Crunch to one happened")
-              val msgToOne = Message[Data](null, global.vertices(0), res)
-              msgToOne.step = step
-              this ! msgToOne
-              
-              superstep()
             case "Stop" =>
               exit()
           }

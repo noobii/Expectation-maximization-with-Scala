@@ -161,6 +161,7 @@ class Graph[Data] extends Actor {
             
             if (!crunchResult.isEmpty)
               for (w <- workers) { // go to next superstep
+                // OK println("send to workers")
                 w ! crunchResult.get
               }
             else
@@ -174,16 +175,27 @@ class Graph[Data] extends Actor {
 
             var cruncher: Option[(Data, Data) => Data] = None
             var workerResults: List[Data] = List()
+            
+            // UGLY !!!!
+            var toOne = false
 
             for (w <- workers) {
+              println("Doing something")
               receive {
                 case "Stop" => // stop iterating
                   //println("should stop now (received from " + sender + ")")
                   shouldFinish = true
 
-                case Crunch(fun: ((Data, Data) => Data), workerResult: Data) =>
-                  if (cruncher.isEmpty)
+                case CrunchToOne(fun: ((Data, Data) => Data), workerResult: Data) =>
+                  // OK println("inin")
+                  toOne = true
+                  if(cruncher.isEmpty)
                     cruncher = Some(fun)
+                  workerResults ::= workerResult
+                case Crunch(fun: ((Data, Data) => Data), workerResult: Data) =>
+                  if (cruncher.isEmpty) {
+                    cruncher = Some(fun)
+                  }
                   workerResults ::= workerResult
 
                 case "Done" =>
@@ -197,7 +209,13 @@ class Graph[Data] extends Actor {
             if (!shouldFinish) {
               // are we inside a crunch step?
               if (!cruncher.isEmpty) {
-                crunchResult = Some(CrunchResult(workerResults.reduceLeft(cruncher.get)))
+                if(toOne) {
+                  // OK println("in")
+                  crunchResult = Some(CrunchToOneResult(workerResults.reduceLeft(cruncher.get)))
+                }
+                else {
+                  crunchResult = Some(CrunchResult(workerResults.reduceLeft(cruncher.get)))
+                }
               } else {
                 crunchResult = None
 
@@ -280,6 +298,28 @@ class Test2Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
   }
 }
 
+class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
+  def update(superstep: Int, incoming: List[Message[Double]]): Substep[Double] = {
+    {
+      value += 1
+      List()
+    } crunchToOne((v1: Double, v2: Double) => v1 + v2) then {
+      println("---------3")
+      println(incoming)
+      incoming match {
+        case List(crunchResult) =>
+          println(crunchResult)
+          value = crunchResult.value
+        case _ =>
+      }
+      List()
+    } then {
+      println("lol")
+      List()
+    }
+  }
+}
+
 object Test {
 
   def runTest1() {
@@ -315,10 +355,26 @@ object Test {
     g.terminate()
     println("test2 OK")
   }
+  
+  def runTest3() {
+    println("running test3...")
+    val g = new Graph[Double]
+    for(i <- 1 to 48) {
+      g.addVertex(new Test3Vertex)
+    }
+    g.start()
+    g.iterate(4)
+    g.synchronized {
+      for(v <- g.vertices) {
+        println(v.label + "; " + v.value)
+      }
+    }
+  }
 
   def main(args: Array[String]) {
-    runTest1()
-    runTest2()
+    //runTest1()
+    //runTest2()
+    runTest3()
   }
 
 }

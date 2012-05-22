@@ -34,7 +34,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
     step += 1 // beginning of next superstep
 
     var allOutgoing: List[Message[Data]] = List()
-    var crunch: Option[Crunch[Data]] = None
+    var crunch: Option[AbstractCrunch[Data]] = None
 
     // iterate over all vertices that this worker manages
     for (vertex <- partition) {
@@ -46,13 +46,18 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
       val substep = substeps((step - 1) % substeps.size)
 
       if (substep.isInstanceOf[CrunchStep[Data]]) {
+        
         val crunchStep = substep.asInstanceOf[CrunchStep[Data]]
         // assume every vertex has crunch step at this point
         if (vertex == partition(0)) {
           // compute aggregated value
           val vertexValues = partition.map(v => v.value)
           val crunchResult = vertexValues.reduceLeft(crunchStep.cruncher)
-          crunch = Some(Crunch(crunchStep.cruncher, crunchResult))
+          
+          if(substep.isInstanceOf[CrunchToOneStep[Data]])
+            crunch = Some(CrunchToOne(crunchStep.cruncher, crunchResult))
+          else
+            crunch = Some(Crunch(crunchStep.cruncher, crunchResult))
         }
       } else {
         //println("substep object for substep " + ((step - 1) % substeps.size) + ": " + substep)
@@ -120,6 +125,8 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
 
             // PG
             case CrunchToOneResult(res: Data) if(id == 1) =>
+              // Only the first worker takes care of sending a message to the first vertex
+              // Maybe the first vertex is not in the first worker's partition but I don't think it matters...
               println("Crunch to one happened")
               val msgToOne = Message[Data](null, global.vertices(0), res)
               msgToOne.step = step

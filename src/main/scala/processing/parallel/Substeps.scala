@@ -60,4 +60,4 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
 class CrunchStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data]) extends Substep[Data](null, previous)
 
 // PG
-class CrunchToOneStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data]) extends Substep[Data](null, previous)
+class CrunchToOneStep[Data](cruncher: (Data, Data) => Data, previous: Substep[Data]) extends CrunchStep[Data](cruncher, previous)

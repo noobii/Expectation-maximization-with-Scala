@@ -14,11 +14,11 @@ abstract class AbstractCrunch[Data]
 
 abstract class AbstractCrunchResult[Data]
 
-case class Crunch[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch
+case class Crunch[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch[Data]
 
 case class CrunchResult[Data](res: Data) extends AbstractCrunchResult[Data]
 
 // @author PG
-case class CrunchToOne[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch
+case class CrunchToOne[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch[Data]
 
 case class CrunchToOneResult[Data](res: Data) extends AbstractCrunchResult[Data]

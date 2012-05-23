@@ -16,7 +16,7 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 
-class GaussianMenthor(
+class GaussianMenthor (
     initStrategy: GaussianInit)
     (dataIn: GenSeq[DenseVector[Double]], 
      gaussianComponents: Int) 
@@ -42,14 +42,16 @@ class GaussianMenthor(
     // Starts to run the algo
     graph.start
     // Why 8? It is the number of substeps in the algo
+    tic
     graph.iterate(8 * maximumIterations)
+    toc("algo")
     graph.terminate()
     
     // Gets back the current data to return it
     val finalEstimates = new MatricesTupple(CurrentData.weights, CurrentData.means, CurrentData.covariances)
     val finalLoglikelihood = CurrentData.loglikelihood
     val iterations = CurrentData.iteration
-    
+    printTimesLog // TicToc
     (finalEstimates, finalLoglikelihood, iterations)
   }
   

@@ -16,6 +16,7 @@ import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 import Gaussian.printStatus
 import scala.io.Source
+import benchmark.TicToc
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
@@ -73,7 +74,7 @@ object Gaussian {
   
 }
 
-abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) {
+abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) extends TicToc {
 
   val measurements = dataIn.length
   val dimensions = dataIn.head.length

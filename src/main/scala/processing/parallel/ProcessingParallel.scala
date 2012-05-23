@@ -165,7 +165,7 @@ class Graph[Data] extends Actor {
                 w ! crunchResult.get
               }
             else {
-              println("not crunch!")
+              //println("not crunch!")
               for (w <- workers) { // go to next superstep
                 w ! "Next"
               }
@@ -182,7 +182,7 @@ class Graph[Data] extends Actor {
             var toOne = false
 
             for (w <- workers) {
-              println("Doing something")
+              //println("Doing something")
               receive {
                 case "Stop" => // stop iterating
                   //println("should stop now (received from " + sender + ")")
@@ -307,7 +307,6 @@ class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
       value += 1
       List()
     } crunchToOne((v1: Double, v2: Double) => v1 + v2) then {
-      println("++")
       if(this == graph.vertices(0)) {
         incoming match {
           case List(crunchResult) =>
@@ -316,10 +315,8 @@ class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
           case _ =>
         }
       }
-      println("-")
       List()
     } then {
-      println("lol")
       List()
     }
   

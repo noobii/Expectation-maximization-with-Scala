@@ -20,7 +20,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
   }
 
   def superstep() {
-    println(step + "super")
+    //println(step + "super")
     // remove all application-level messages from mailbox
     var done = false
     while (!done) {
@@ -64,7 +64,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             crunch = Some(Crunch(crunchStep.cruncher, crunchResult))
         }
       } else {
-        println(vertex.value)
+        //println(vertex.value)
         //println("substep object for substep " + ((step - 1) % substeps.size) + ": " + substep)
         val outgoing = substep.stepfun()
         // set step field of outgoing messages to current step
@@ -112,7 +112,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
         for (v <- partition) { v.initialize() }
 */
         loop {
-          println(step + "aaaa")
+          //println(step + "aaaa")
           react {
             
             case "Next" => // TODO: make it a class
@@ -145,7 +145,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             case "Stop" =>
               exit()
               
-                        
+            // It is for the other CrunchToOneResult            
             case _ => 
               superstep()
           }

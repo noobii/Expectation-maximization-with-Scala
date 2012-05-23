@@ -20,6 +20,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
   }
 
   def superstep() {
+    println(step + "super")
     // remove all application-level messages from mailbox
     var done = false
     while (!done) {
@@ -30,7 +31,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
           done = true
       }
     }
-
+    
     step += 1 // beginning of next superstep
 
     var allOutgoing: List[Message[Data]] = List()
@@ -111,7 +112,9 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
         for (v <- partition) { v.initialize() }
 */
         loop {
+          println(step + "aaaa")
           react {
+            
             case "Next" => // TODO: make it a class
               //println(this + ": received Next")
               superstep()
@@ -138,8 +141,13 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             // immediately start new superstep (explain in paper)
             superstep()
 
+
             case "Stop" =>
               exit()
+              
+                        
+            case _ => 
+              superstep()
           }
         }
     //}

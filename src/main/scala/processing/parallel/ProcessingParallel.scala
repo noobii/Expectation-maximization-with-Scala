@@ -164,11 +164,13 @@ class Graph[Data] extends Actor {
                 // OK println("send to workers")
                 w ! crunchResult.get
               }
-            else
+            else {
+              println("not crunch!")
               for (w <- workers) { // go to next superstep
                 w ! "Next"
               }
-
+            }
+              
             var numDone = 0
             var numTotal: Int = workers.size
             if (numTotal < 100) numTotal = 100
@@ -189,8 +191,9 @@ class Graph[Data] extends Actor {
                 case CrunchToOne(fun: ((Data, Data) => Data), workerResult: Data) =>
                   // OK println("inin")
                   toOne = true
-                  if(cruncher.isEmpty)
+                  if(cruncher.isEmpty) {
                     cruncher = Some(fun)
+                  }
                   workerResults ::= workerResult
                 case Crunch(fun: ((Data, Data) => Data), workerResult: Data) =>
                   if (cruncher.isEmpty) {
@@ -299,38 +302,42 @@ class Test2Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
 }
 
 class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
-  def update(superstep: Int, incoming: List[Message[Double]]): Substep[Double] = {
+  def update(superstep: Int, incoming: List[Message[Double]]): Substep[Double] = 
     {
       value += 1
       List()
     } crunchToOne((v1: Double, v2: Double) => v1 + v2) then {
-      println("---------3")
-      println(incoming)
+      println("++")
       if(this == graph.vertices(0)) {
         incoming match {
           case List(crunchResult) =>
-            println(crunchResult)
+            println("curnch result: " + crunchResult)
             value = crunchResult.value
           case _ =>
         }
       }
+      println("-")
       List()
     } then {
       println("lol")
       List()
     }
-  }
+  
 }
 
 class Test0Vertex extends Vertex[Double]("v", 0.0d) {
   def update(superstep: Int, incoming: List[Message[Double]]): Substep[Double] = {
     if(this == graph.vertices(0)) {
-      println("hfjdshfkjdshfkjdshfkjdshfkjdsh")
       List(Message(graph.vertices(0), graph.vertices(1), 2.0))
-    }
+    } else {
     List()
+    }
   } then {
-    println(label + incoming)
+    incoming match {
+      case List(message) =>
+        value = message.value
+      case _ =>
+    }
     List()
   }
 }
@@ -381,9 +388,10 @@ object Test {
     g.iterate(4)
     g.synchronized {
       for(v <- g.vertices) {
-        println(v.label + "; " + v.value)
+        println(v.label + ": " + v.value)
       }
     }
+    g.terminate
   }
   
   def runTest0() {
@@ -399,13 +407,14 @@ object Test {
         println(v.label + "; " + v.value)
       }
     }
+    g.terminate
   }
 
   def main(args: Array[String]) {
     //runTest1()
     //runTest2()
-    //runTest3()
-    runTest0()
+    runTest3()
+    //runTest0()
   }
 
 }

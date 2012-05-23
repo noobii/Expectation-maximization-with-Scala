@@ -152,7 +152,7 @@ class GaussianMenthor(
 	  value.exp = exNorm
 	  
 	  List()
-    } crunchToOne((x, y) => 
+    } crunch((x, y) => 
          new VertexValue(exp = x.exp + y.exp)
          // The estimated weights are computed by summing up all expectations
     ) then {
@@ -166,7 +166,7 @@ class GaussianMenthor(
         }
       }
       List()
-    } crunchToOne((x, y) => 
+    } crunch((x, y) => 
          new VertexValue(estMeans = x.means + y.means)
          // The estimated means are computed by summing computed values at each vertex
     ) then {
@@ -187,7 +187,7 @@ class GaussianMenthor(
         }
       }
       List()
-    } crunchToOne((x, y) => {
+    } crunch((x, y) => {
       val covarianceSum = (x.covariances zip y.covariances) map{case(mat1, mat2) => mat1 + mat2}
       
       new VertexValue(estCovariances = covarianceSum)

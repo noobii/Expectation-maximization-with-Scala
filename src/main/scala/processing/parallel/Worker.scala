@@ -123,7 +123,7 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
             case CrunchToOneResult(res: Data) if(id == 1) =>
               // Only the first worker takes care of sending a message to the first vertex
               // Maybe the first vertex is not in the first worker's partition but I don't think it matters...
-              println("Crunch to one happened, sending to: " + global.vertices(0).label)
+              //println("Crunch to one happened, sending to: " + global.vertices(0).label)
               val msgToOne = Message[Data](null, global.vertices(0), res)
               msgToOne.step = step
               this ! msgToOne

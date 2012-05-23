@@ -310,7 +310,7 @@ class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
       if(this == graph.vertices(0)) {
         incoming match {
           case List(crunchResult) =>
-            println("curnch result: " + crunchResult)
+            //println("curnch result: " + crunchResult)
             value = crunchResult.value
           case _ =>
         }

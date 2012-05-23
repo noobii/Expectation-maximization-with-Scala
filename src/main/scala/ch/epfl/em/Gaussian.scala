@@ -47,7 +47,7 @@ object Gaussian {
       
       for(i <- 1 to numberOfRuns) {
         println("Iteration #" + i + "-----------------------------------------") 
-        
+        /*
         printStatus("Classic implementation")
         val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
         classic.runAlgo()
@@ -55,7 +55,7 @@ object Gaussian {
         printStatus("Parrallel implementation")
         val parallel = new GaussianClassic(rc.strategy)(rc.parData, rc.k)
         parallel.runAlgo()
-        
+        */
         printStatus("Menthor implementation")
         val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
         menthor.runAlgo()

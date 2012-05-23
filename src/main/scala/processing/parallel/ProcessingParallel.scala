@@ -411,6 +411,7 @@ object Test {
     //runTest1()
     //runTest2()
     runTest3()
+    runTest3()
     //runTest0()
   }
 

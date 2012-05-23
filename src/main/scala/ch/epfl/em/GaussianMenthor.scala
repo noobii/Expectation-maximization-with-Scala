@@ -29,6 +29,9 @@ class GaussianMenthor (
     
     val graph = new Graph[VertexValue]
     
+    // Hack ! 
+    Graph.count = 0
+    
     // Build the graph. It is unconnected !
     // Each vertex hold the data associated with one point.
     for(point <- dataIn) {
@@ -125,7 +128,8 @@ class GaussianMenthor (
     // For certain steps operations must only be performed in one vertex
     lazy val justOneVertex = (this == graph.vertices(0))
     
-    def update(superstep: Int, incoming: List[Message[VertexValue]]) = {
+    def update(superstep: Int, incoming: List[Message[VertexValue]]) = {    
+      
       def normalize(v: DenseVector[Double]) = v :/ v.sum
 	    
       // Creates new empty covariances matrices if needed
@@ -159,14 +163,14 @@ class GaussianMenthor (
          // The estimated weights are computed by summing up all expectations
     ) then {
       // The result of the crunch is sent out to all vertices
-      if(justOneVertex) {
+      //if(justOneVertex) {
         // Only one vertex takes the computed weight and stores it
         incoming match {
           // Stores the new estimated weights
           case List(message) => CurrentData.weights = message.value.exp
           case _ => // Will never happen
         }
-      }
+      //}
       List()
     } crunchToOne((x, y) => 
          new VertexValue(estMeans = x.means + y.means)

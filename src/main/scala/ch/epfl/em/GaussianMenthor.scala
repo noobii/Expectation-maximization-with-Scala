@@ -54,7 +54,6 @@ class GaussianMenthor (
     val finalEstimates = new MatricesTupple(CurrentData.weights, CurrentData.means, CurrentData.covariances)
     val finalLoglikelihood = CurrentData.loglikelihood
     val iterations = CurrentData.iteration
-    printTimesLog // TicToc
     (finalEstimates, finalLoglikelihood, iterations)
   }
   

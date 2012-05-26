@@ -40,7 +40,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
     
     var newEstimates = estimates
     
-    
+    tic
     while(!hasConverged && (iterations < maximumIterations)) {
       val exp = expectation(newEstimates)
       newEstimates = maximization(exp)
@@ -50,6 +50,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       
       iterations += 1
     }
+    toc("Algo run")
     
     (newEstimates, newLikelihood, iterations)
   }

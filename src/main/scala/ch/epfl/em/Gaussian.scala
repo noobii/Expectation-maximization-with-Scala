@@ -53,7 +53,7 @@ object Gaussian {
         classic.runAlgo()
         
         printStatus("Parrallel implementation")
-        val parallel = new GaussianClassic(rc.strategy)(rc.data, rc.k)
+        val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
         parallel.runAlgo()
         
         printStatus("Menthor implementation")
@@ -99,14 +99,16 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     
     val initial = initStrategy.init
         
-    GChrono.start
+    //GChrono.start
     val (est, lg, iter) = em(initial, minLikelihoodVar, maximumIterations)
-    GChrono.stop
+    //GChrono.stop
     
     // TODO cleanup
-    printStatus("time: " + GChrono.count/1000.0)
+    //printStatus("time: " + GChrono.count/1000.0)
     
-    GChrono.reset
+    //GChrono.reset
+    
+    printTimesLog()
     
     est
   }

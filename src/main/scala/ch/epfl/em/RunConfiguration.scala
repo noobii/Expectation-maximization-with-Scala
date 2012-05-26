@@ -45,6 +45,5 @@ case class RunConfiguration(
     val data: GenSeq[DenseVector[Double]], 
     val k: Int, 
     val strategy: GaussianInit) {
-  val parData = data.par
   def initStrategy = strategy.init
 }

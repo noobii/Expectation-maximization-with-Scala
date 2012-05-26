@@ -15,6 +15,9 @@ import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 
+class GaussianParallel(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
+    extends GaussianClassic(initStrategy)(dataIn.par, gaussianComponents)
+
 class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) 
     extends Gaussian(initStrategy)(dataIn, gaussianComponents) {
 

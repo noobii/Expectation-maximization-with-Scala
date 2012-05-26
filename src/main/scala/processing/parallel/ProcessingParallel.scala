@@ -64,6 +64,9 @@ class Graph[Data] extends Actor {
   var cond: () => Boolean = () => false
 
   //Debug.level = 3
+  
+  // Otherwise there are bug for some reason...
+  Graph.count = 0
 
   def addVertex(v: Vertex[Data]): Vertex[Data] = {
     v.graph = this
@@ -322,23 +325,6 @@ class Test3Vertex extends Vertex[Double]("v" + Test1.nextcount, 0.0d) {
   
 }
 
-class Test0Vertex extends Vertex[Double]("v", 0.0d) {
-  def update(superstep: Int, incoming: List[Message[Double]]): Substep[Double] = {
-    if(this == graph.vertices(0)) {
-      List(Message(graph.vertices(0), graph.vertices(1), 2.0))
-    } else {
-    List()
-    }
-  } then {
-    incoming match {
-      case List(message) =>
-        value = message.value
-      case _ =>
-    }
-    List()
-  }
-}
-
 object Test {
 
   def runTest1() {
@@ -384,27 +370,10 @@ object Test {
     g.start()
     g.iterate(4)
     g.synchronized {
-      for(v <- g.vertices) {
-        println(v.label + ": " + v.value)
-      }
+    	println(g.vertices.filter(_.value == 1).length)
     }
     g.terminate
-  }
-  
-  def runTest0() {
-    println("running test0...")
-    val g = new Graph[Double]
-    for(i <- 1 to 48) {
-      g.addVertex(new Test0Vertex)
-    }
-    g.start()
-    g.iterate(2)
-    g.synchronized {
-      for(v <- g.vertices) {
-        println(v.label + "; " + v.value)
-      }
-    }
-    g.terminate
+    println("test3 OK")
   }
 
   def main(args: Array[String]) {

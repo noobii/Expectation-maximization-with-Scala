@@ -9,13 +9,6 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
     next = new Substep(() => block, this)
     next
   }
-  
-  // PG
- /* def thenOne(block: => List[Message[Data]]): Substep[Data] = {
-    // TODO ! simple copy paste...
-    next = new Substep(() => block, this)
-    next
-  }*/
 
   // TODO: merge crunch steps
   def crunch(fun: (Data, Data) => Data): Substep[Data] = {
@@ -67,5 +60,5 @@ class Substep[Data](val stepfun: () => List[Message[Data]], val previous: Subste
 
 class CrunchStep[Data](val cruncher: (Data, Data) => Data, previous: Substep[Data]) extends Substep[Data](null, previous)
 
-// PG
+// Special step that indicates that only one vertex will get the result
 class CrunchToOneStep[Data](cruncher: (Data, Data) => Data, previous: Substep[Data]) extends CrunchStep[Data](cruncher, previous)

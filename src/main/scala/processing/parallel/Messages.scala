@@ -8,17 +8,16 @@ case class Message[Data](val source: Vertex[Data], val dest: Vertex[Data], val v
   var step: Int = 0
 }
 
-// @author PG
+
 
 abstract class AbstractCrunch[Data]
 
-abstract class AbstractCrunchResult[Data]
-
 case class Crunch[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch[Data]
 
-case class CrunchResult[Data](res: Data) extends AbstractCrunchResult[Data]
-
-// @author PG
 case class CrunchToOne[Data](cruncher: (Data, Data) => Data, crunchResult: Data) extends AbstractCrunch[Data]
+
+abstract class AbstractCrunchResult[Data]
+
+case class CrunchResult[Data](res: Data) extends AbstractCrunchResult[Data]
 
 case class CrunchToOneResult[Data](res: Data) extends AbstractCrunchResult[Data]

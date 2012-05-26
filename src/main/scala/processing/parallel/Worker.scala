@@ -50,7 +50,6 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
       //println(substep)
       
       if (substep.isInstanceOf[CrunchStep[Data]]) {
-        //println("b")
         val crunchStep = substep.asInstanceOf[CrunchStep[Data]]
         // assume every vertex has crunch step at this point
         if (vertex == partition(0)) {
@@ -101,7 +100,6 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
           //parent ! "DoneOutgoing"
 //      }
     } else
-      // PG
       // We send the crunch result higher up
       parent ! crunch.get
   }
@@ -112,22 +110,19 @@ class Worker[Data](parent: Actor, partition: List[Vertex[Data]], global: Graph[D
         for (v <- partition) { v.initialize() }
 */
         loop {
-          //println(step + "aaaa")
           react {
             
             case "Next" => // TODO: make it a class
               //println(this + ": received Next")
               superstep()
               
-            // PG
             case CrunchToOneResult(res: Data) if(id == 1) =>
               // Only the first worker takes care of sending a message to the first vertex
               // Maybe the first vertex is not in the first worker's partition but I don't think it matters...
-              //println("Crunch to one happened, sending to: " + global.vertices(0).label)
               val msgToOne = Message[Data](null, global.vertices(0), res)
               msgToOne.step = step
               this ! msgToOne
-              //OK println("more")
+
               superstep()
  
             case CrunchResult(res: Data) =>
@@ -163,7 +158,7 @@ class Foreman(parent: Actor, var children: List[Actor]) extends Actor {
       parent ! response.get
     } else {
       react {
-        case c: CrunchToOne[d] => // UGLY COPY / PASTE CODE !!!!!!!!!
+        case c: CrunchToOne[d] => // same code as below !
           val cruncher = c.cruncher
           val crunchResult = c.crunchResult
 //          println(this + ": received " + c + " from " + sender)
@@ -176,7 +171,7 @@ class Foreman(parent: Actor, var children: List[Actor]) extends Actor {
             val newResponse = cruncher(crunchResult, previousCrunchResult)
             waitForRepliesFrom(children.tail, Some(CrunchToOne(cruncher, newResponse)))
           }
-        case c: Crunch[d] => // have to wait for results of all children
+        case c: Crunch[d] => // have to wait for results of all children, same code as above
           val cruncher = c.cruncher
           val crunchResult = c.crunchResult
 //          println(this + ": received " + c + " from " + sender)

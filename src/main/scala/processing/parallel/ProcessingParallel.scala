@@ -181,24 +181,23 @@ class Graph[Data] extends Actor {
             var cruncher: Option[(Data, Data) => Data] = None
             var workerResults: List[Data] = List()
             
-            // UGLY !!!!
+            // Indicates if we are in a crunchToOne step or not
             var toOne = false
 
             for (w <- workers) {
-              //println("Doing something")
               receive {
                 case "Stop" => // stop iterating
                   //println("should stop now (received from " + sender + ")")
                   shouldFinish = true
 
                 case CrunchToOne(fun: ((Data, Data) => Data), workerResult: Data) =>
-                  // OK println("inin")
                   toOne = true
                   if(cruncher.isEmpty) {
                     cruncher = Some(fun)
                   }
                   workerResults ::= workerResult
                 case Crunch(fun: ((Data, Data) => Data), workerResult: Data) =>
+                  toOne = false
                   if (cruncher.isEmpty) {
                     cruncher = Some(fun)
                   }
@@ -215,12 +214,16 @@ class Graph[Data] extends Actor {
             if (!shouldFinish) {
               // are we inside a crunch step?
               if (!cruncher.isEmpty) {
+                
+                // We compute the reduces value coming from all workers
+                val reduceRes = workerResults.reduceLeft(cruncher.get)
+                
                 if(toOne) {
-                  // OK println("in")
-                  crunchResult = Some(CrunchToOneResult(workerResults.reduceLeft(cruncher.get)))
+                  // We are in a crunchToOne step so we make a crunchToOneResult
+                  crunchResult = Some(CrunchToOneResult(reduceRes))
                 }
                 else {
-                  crunchResult = Some(CrunchResult(workerResults.reduceLeft(cruncher.get)))
+                  crunchResult = Some(CrunchResult(reduceRes))
                 }
               } else {
                 crunchResult = None

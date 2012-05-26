@@ -33,10 +33,12 @@ object Gaussian {
     val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
     
     // Informations about the environement
-    val runtime = Runtime.getRuntime()
+    /*val runtime = Runtime.getRuntime()
     println("Available cores: " + runtime.availableProcessors())
     println("Total Memory: " + runtime.totalMemory());
-    println("Max Memory: " + runtime.maxMemory());
+    println("Max Memory: " + runtime.maxMemory());*/
+    
+    println(new java.io.File(".").getCanonicalPath())
     
     // The configurations are run sequentially
     for(rc <- runConfigs) {
@@ -109,6 +111,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     //GChrono.reset
     
     printTimesLog()
+    writeTimesLog("benchmark")
     
     est
   }

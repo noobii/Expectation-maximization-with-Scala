@@ -15,5 +15,6 @@ OUTPUT="benchmark/$DATE-$REVSHORT-$HOST.txt"
 
 for i in {0..15}
 do
+  echo "$i cores"
   taskset -c 0-$i java -jar target/scala-2.9.2/em_2.9.2-0.1-SNAPSHOT-one-jar.jar
 done

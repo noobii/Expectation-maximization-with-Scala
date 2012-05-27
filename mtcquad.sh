@@ -12,6 +12,7 @@ HOST=$(hostname)
 DATE=$(date +"%Y-%m-%d-%H_%M_%S")
 
 OUTPUT="benchmark/$DATE-$REVSHORT-$HOST.txt"
+touch OUTPUT
 
 #will now loop through all configs
 

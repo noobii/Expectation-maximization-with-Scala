@@ -3,9 +3,6 @@
 #gets the latest version from git
 git pull
 
-#builds the latest version
-./sbt one-jar
-
 HOST=$(hostname)
 DATE=$(date +"%Y-%m-%d-%H_%M_%S")
 

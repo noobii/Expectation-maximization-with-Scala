@@ -53,7 +53,7 @@ object Gaussian {
         printStatus("Classic implementation")
         val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
         classic.runAlgo()
-        
+        /*
         printStatus("Parrallel implementation")
         val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
         parallel.runAlgo()
@@ -61,6 +61,7 @@ object Gaussian {
         printStatus("Menthor implementation")
         val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
         menthor.runAlgo()
+        */
       }
     }
   }
@@ -111,7 +112,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     //GChrono.reset
     
     printTimesLog()
-    writeTimesLog("benchmark")
+    writeTimesLog("bechmark/classic.txt")
     
     est
   }

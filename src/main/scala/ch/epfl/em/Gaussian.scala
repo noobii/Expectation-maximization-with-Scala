@@ -25,12 +25,14 @@ object Gaussian {
     
     // Default number of times the algo will be run
     val defaultNumberOfRuns = 5
+    val defaultConfigFile = "src/main/ressources/data/benchmark-run.xml"
     
     // If the parameter is given we use it else we take the default
     val numberOfRuns = if(args.isDefinedAt(0)) args(0).toInt else defaultNumberOfRuns
+    val configFile = if(args.isDefinedAt(1)) args(1) else defaultConfigFile 
     
     // Loads the configuration from file
-    val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
+    val runConfigs = RunConfiguration.load(configFile)
     
     // Informations about the environement
     val runtime = Runtime.getRuntime()
@@ -105,17 +107,10 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     
     val initial = initStrategy.init
         
-    //GChrono.start
     val (est, lg, iter) = em(initial, minLikelihoodVar, maximumIterations)
-    //GChrono.stop
-    
-    // TODO cleanup
-    //printStatus("time: " + GChrono.count/1000.0)
-    
-    //GChrono.reset
     
     printTimesLog()
-    writeTimesLog("bechmark/1.txt")
+    writeTimesLog()
     
     est
   }

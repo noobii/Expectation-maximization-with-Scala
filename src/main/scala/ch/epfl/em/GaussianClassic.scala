@@ -50,7 +50,7 @@ class GaussianClassic(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Dou
       
       iterations += 1
     }
-    toc("Algo run")
+    toc("algo")
     
     (newEstimates, newLikelihood, iterations)
   }

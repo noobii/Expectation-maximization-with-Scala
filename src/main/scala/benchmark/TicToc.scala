@@ -67,6 +67,15 @@ trait TicToc {
     linesToPrint.foreach { l => fw.write(l + "\n"); }
     fw.close()
   }
+  
+  def writeTimesLog() {
+    val folder = "benchmark"
+    val fileName = this.getClass().toString.replace('.', '-') + ".txt"
+    
+    val completePath = folder + File.separator + fileName
+    
+    writeTimesLog(completePath)
+  }
 
   /**
    * Print the logged times.
@@ -81,7 +90,7 @@ trait TicToc {
    */
   def outLines(): List[String] = {
     var list = List[String]()
-    list ::= ("Timings of " + this.getClass().toString())
+    list ::= "Timings of " + this.getClass().toString()
     list ::= "description:" + times.map(x => "\t" + x._1).reduce(_ + _)
     list ::= "times(ms):" + times.map(x => "\t" + x._2).reduce(_ + _)
     list.reverse

@@ -33,7 +33,9 @@ object Gaussian {
     val runConfigs = RunConfiguration.load("src/main/ressources/data/benchmark-run.xml")
     
     // Informations about the environement
-    /*val runtime = Runtime.getRuntime()
+    val runtime = Runtime.getRuntime()
+    
+    /*
     println("Available cores: " + runtime.availableProcessors())
     println("Total Memory: " + runtime.totalMemory());
     println("Max Memory: " + runtime.maxMemory());*/
@@ -50,18 +52,21 @@ object Gaussian {
       for(i <- 1 to numberOfRuns) {
         println("Iteration #" + i + "-----------------------------------------") 
         
+        runtime.gc()
         printStatus("Classic implementation")
         val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
         classic.runAlgo()
-        /*
+
+        runtime.gc()
         printStatus("Parrallel implementation")
         val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
         parallel.runAlgo()
         
+        runtime.gc()
         printStatus("Menthor implementation")
         val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
         menthor.runAlgo()
-        */
+
       }
     }
   }

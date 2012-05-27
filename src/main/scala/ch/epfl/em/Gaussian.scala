@@ -39,9 +39,7 @@ object Gaussian {
     println("Available cores: " + runtime.availableProcessors())
     println("Total Memory: " + runtime.totalMemory());
     println("Max Memory: " + runtime.maxMemory());*/
-    
-    println(new java.io.File(".").getCanonicalPath())
-    
+        
     // The configurations are run sequentially
     for(rc <- runConfigs) {
       printStatus("Runing: " + rc.name) 
@@ -117,7 +115,7 @@ abstract class Gaussian(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[D
     //GChrono.reset
     
     printTimesLog()
-    writeTimesLog("bechmark/classic.txt")
+    writeTimesLog("bechmark/1.txt")
     
     est
   }

@@ -162,14 +162,14 @@ class GaussianMenthor (
          // The estimated weights are computed by summing up all expectations
     ) then {
       // The result of the crunch is sent out to all vertices
-      //if(justOneVertex) {
+      if(justOneVertex) {
         // Only one vertex takes the computed weight and stores it
         incoming match {
           // Stores the new estimated weights
           case List(message) => CurrentData.weights = message.value.exp
           case _ => // Will never happen
         }
-      //}
+      }
       List()
     } crunchToOne((x, y) => 
          new VertexValue(estMeans = x.means + y.means)

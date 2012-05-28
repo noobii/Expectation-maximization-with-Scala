@@ -46,8 +46,8 @@ object Gaussian {
       // Initializes the strategy beforehand so we it is equal for all runs
       rc.initStrategy
       
-      for(allowedCores <- 1 to numberOfCores) {
-    	  scala.collection.parallel.ForkJoinTasks.defaultForkJoinPool.setParallelism(allowedCores)
+      /*for(allowedCores <- 1 to numberOfCores) {
+    	  scala.collection.parallel.ForkJoinTasks.defaultForkJoinPool.setParallelism(allowedCores)*/
       
         for(i <- 1 to numberOfRuns) {
           println("Iteration #" + i + "-----------------------------------------") 
@@ -68,7 +68,7 @@ object Gaussian {
           menthor.runAlgo()
 
         }
-      }
+      //}
     }
   }
   

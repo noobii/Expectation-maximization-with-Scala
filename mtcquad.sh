@@ -16,7 +16,7 @@ touch OUTPUT
 
 #will now loop through all configs
 
-for i in {0..15}
+for i in {0..7}
 do
   echo "$i cores"
   if [ $# -eq 2 ]

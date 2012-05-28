@@ -30,12 +30,14 @@ object Gaussian {
     // If the parameter is given we use it else we take the default
     val numberOfRuns = if(args.isDefinedAt(0)) args(0).toInt else defaultNumberOfRuns
     val configFile = if(args.isDefinedAt(1)) args(1) else defaultConfigFile 
-    
+        
     // Loads the configuration from file
     val runConfigs = RunConfiguration.load(configFile)
     
     // Informations about the environement
     val runtime = Runtime.getRuntime()
+    
+    val numberOfCores = runtime.availableProcessors()
         
     // The configurations are run sequentially
     for(rc <- runConfigs) {
@@ -44,24 +46,28 @@ object Gaussian {
       // Initializes the strategy beforehand so we it is equal for all runs
       rc.initStrategy
       
-      for(i <- 1 to numberOfRuns) {
-        println("Iteration #" + i + "-----------------------------------------") 
+      for(allowedCores <- 1 to numberOfCores) {
+    	  scala.collection.parallel.ForkJoinTasks.defaultForkJoinPool.setParallelism(allowedCores)
+      
+        for(i <- 1 to numberOfRuns) {
+          println("Iteration #" + i + "-----------------------------------------") 
         
-        runtime.gc()
-        printStatus("Classic implementation")
-        val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
-        classic.runAlgo()
+          runtime.gc()
+          printStatus("Classic implementation")
+          val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
+          classic.runAlgo()
 
-        runtime.gc()
-        printStatus("Parrallel implementation")
-        val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
-        parallel.runAlgo()
+          runtime.gc()
+          printStatus("Parrallel implementation")
+          val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
+          parallel.runAlgo()
         
-        runtime.gc()
-        printStatus("Menthor implementation")
-        val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
-        menthor.runAlgo()
+          runtime.gc()
+          printStatus("Menthor implementation")
+          val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
+          menthor.runAlgo()
 
+        }
       }
     }
   }

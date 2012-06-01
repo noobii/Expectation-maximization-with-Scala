@@ -17,6 +17,7 @@ import ch.epfl.em.Conversions._
 import Gaussian.printStatus
 import scala.io.Source
 import benchmark.TicToc
+import scala.compat.Platform
 
 case class MatricesTupple(weights: DenseVector[Double], means: DenseMatrix[Double], covariances: Array[DenseMatrix[Double]])
 
@@ -52,17 +53,17 @@ object Gaussian {
         for(i <- 1 to numberOfRuns) {
           println("Iteration #" + i + "-----------------------------------------") 
         
-          runtime.gc()
+          Platform.collectGarbage()
           printStatus("Classic implementation")
           val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
           classic.runAlgo()
 
-          runtime.gc()
+          Platform.collectGarbage()
           printStatus("Parrallel implementation")
           val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
           parallel.runAlgo()
         
-          runtime.gc()
+          Platform.collectGarbage()
           printStatus("Menthor implementation")
           val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
           menthor.runAlgo()

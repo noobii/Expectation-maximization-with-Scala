@@ -15,6 +15,11 @@ import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 
+/**
+ * The parallel implementation uses exactly the same code as the classic implementation.
+ * The only difference is the input. When creating the object a parallel version of the
+ * input data is used.
+ */
 class GaussianParallel(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
     extends GaussianClassic(initStrategy)(dataIn.par, gaussianComponents)
 

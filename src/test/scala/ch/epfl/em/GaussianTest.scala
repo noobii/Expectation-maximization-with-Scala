@@ -31,7 +31,7 @@ class GaussianTest extends AssertionsForJUnit {
     
     val V = Array(DenseMatrix.eye[Double](2, 2), DenseMatrix.eye[Double](2, 2))
     
-    val gaussian = new GaussianClassic(null)(X, k)
+    val gaussian = new GaussianSequential(null)(X, k)
     
     (gaussian, X, k, MatricesTupple(W, M, V))
   }
@@ -43,7 +43,7 @@ class GaussianTest extends AssertionsForJUnit {
     val strategy = new InitFromMatlab("src/test/ressources/em/50k/")
     
     val gaussianMenthor = new GaussianMenthor(strategy)(X, k)
-    val gaussianClassic = new GaussianClassic(strategy)(X, k)
+    val gaussianClassic = new GaussianSequential(strategy)(X, k)
     
     val classicEstimates = gaussianClassic.runAlgo(maximumIterations = 1)
     val menthorEstimates = gaussianMenthor.runAlgo(maximumIterations = 1)

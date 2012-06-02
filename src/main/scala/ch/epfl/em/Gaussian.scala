@@ -55,7 +55,7 @@ object Gaussian {
         
           Platform.collectGarbage()
           printStatus("Classic implementation")
-          val classic = new GaussianClassic(rc.strategy)(rc.data, rc.k)
+          val classic = new GaussianSequential(rc.strategy)(rc.data, rc.k)
           classic.runAlgo()
 
           Platform.collectGarbage()

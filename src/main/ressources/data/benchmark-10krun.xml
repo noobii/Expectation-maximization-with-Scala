@@ -1,0 +1,10 @@
+<benchmark>
+  <run>
+    <name>10'000 points, easy</name>
+    <data>src/test/ressources/em/10k/X.csv</data>
+    <k>3</k>
+    <init from="matlab">
+      <folder>src/test/ressources/em/10k/</folder>
+    </init>
+  </run>
+</benchmark>

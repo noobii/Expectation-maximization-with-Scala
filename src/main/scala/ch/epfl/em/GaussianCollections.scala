@@ -56,6 +56,7 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
       oldLikelihood = newLikelihood
       newLikelihood = likelihood(newEstimates)
       
+      println(iterations)
       iterations += 1
     }
     toc("algo")

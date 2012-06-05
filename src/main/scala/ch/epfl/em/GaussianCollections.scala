@@ -14,6 +14,7 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
+import scala.collection.parallel.immutable.ParVector
 
 /**
  * The parallel implementation uses exactly the same code as the classic implementation.
@@ -21,7 +22,7 @@ import ch.epfl.em.Conversions._
  * input data is used.
  */
 class GaussianParallel(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
-    extends GaussianCollections(initStrategy)(dataIn.toSeq.par, gaussianComponents)
+    extends GaussianCollections(initStrategy)(dataIn.toParArray, gaussianComponents)
 
 class GaussianSequential(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
     extends GaussianCollections(initStrategy)(dataIn.seq, gaussianComponents)

@@ -22,10 +22,10 @@ import scala.collection.parallel.immutable.ParVector
  * input data is used.
  */
 class GaussianParallel(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
-    extends GaussianCollections(initStrategy)(dataIn.toParArray, gaussianComponents)
+    extends GaussianCollections(initStrategy)(dataIn.toList.par, gaussianComponents)
 
 class GaussianSequential(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
-    extends GaussianCollections(initStrategy)(dataIn.seq, gaussianComponents)
+    extends GaussianCollections(initStrategy)(dataIn.toList.seq, gaussianComponents)
     
 abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) 
     extends Gaussian(initStrategy)(dataIn, gaussianComponents) {

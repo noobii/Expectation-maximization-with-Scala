@@ -59,7 +59,7 @@ class GaussianMenthor (
   
   /**
    * Serves as wrapper for all the data that must be passed around as message in the algo.
-   * VertexValue is in practice only instancieted during the crunch operations later.
+   * VertexValue is in practice only instanciated during the crunch operations later.
    * For the vertices use RealVertexValue
    */
   class VertexValue(
@@ -68,7 +68,7 @@ class GaussianMenthor (
       private val estMeans: DenseMatrix[Double] = null,
       private val estCovariances: Array[DenseMatrix[Double]] = null) {
 
-    // This is the case where the Vertex value is used to hold a computed valud (runing sum)
+    // This is the case where the Vertex value is used to hold a computed value (running sum)
     def means = estMeans
     def covariances = estCovariances
   }

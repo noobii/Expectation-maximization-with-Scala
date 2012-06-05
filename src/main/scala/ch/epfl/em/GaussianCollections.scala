@@ -21,7 +21,7 @@ import ch.epfl.em.Conversions._
  * input data is used.
  */
 class GaussianParallel(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
-    extends GaussianCollections(initStrategy)(dataIn.par, gaussianComponents)
+    extends GaussianCollections(initStrategy)(dataIn.toList.par, gaussianComponents)
 
 class GaussianSequential(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
     extends GaussianCollections(initStrategy)(dataIn.seq, gaussianComponents)

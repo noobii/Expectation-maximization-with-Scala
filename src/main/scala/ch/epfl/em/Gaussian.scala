@@ -39,7 +39,9 @@ object Gaussian {
     val runtime = Runtime.getRuntime()
     
     val numberOfCores = runtime.availableProcessors()
-        
+    
+    scala.collection.parallel.ForkJoinTasks.defaultForkJoinPool.setParallelism(1)
+    
     // The configurations are run sequentially
     for(rc <- runConfigs) {
       printStatus("Runing: " + rc.name) 

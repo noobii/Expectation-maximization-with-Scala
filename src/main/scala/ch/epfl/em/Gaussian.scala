@@ -59,17 +59,17 @@ object Gaussian {
           printStatus("Classic implementation")
           val classic = new GaussianSequential(rc.strategy)(rc.data, rc.k)
           classic.runAlgo()
-*/
+*//*
           //Platform.collectGarbage()
           printStatus("Parrallel implementation")
           val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
           parallel.runAlgo()
-        /*
+        */
           printStatus("Menthor implementation")
           val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
           menthor.runAlgo()
           Platform.collectGarbage()
-          */
+          
 
         }
       //}

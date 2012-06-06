@@ -65,12 +65,12 @@ object Gaussian {
           printStatus("Parrallel implementation")
           val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
           parallel.runAlgo()*/
-        /*
+        
           printStatus("Menthor implementation")
           val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
           menthor.runAlgo()
-          Platform.collectGarbage()
-          */
+          //Platform.collectGarbage()
+          
 
         }
       //}

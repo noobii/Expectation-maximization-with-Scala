@@ -54,11 +54,12 @@ object Gaussian {
       
         for(i <- 1 to numberOfRuns) {
           println("Iteration #" + i + "-----------------------------------------") 
-        
+        /*
           //Platform.collectGarbage()
           printStatus("Classic implementation")
           val classic = new GaussianSequential(rc.strategy)(rc.data, rc.k)
           classic.runAlgo()
+          */
 /*
           //Platform.collectGarbage()
           printStatus("Parrallel implementation")

@@ -50,6 +50,7 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
     
     tic
     while(!hasConverged && (iterations < maximumIterations)) {
+      println(iterations)
       val exp = expectation(newEstimates)
       newEstimates = maximization(exp)
             

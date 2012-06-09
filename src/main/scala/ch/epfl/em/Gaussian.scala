@@ -47,33 +47,24 @@ object Gaussian {
       // Initializes the strategy beforehand so we it is equal for all runs
       rc.initStrategy
       
-      
-      
-      /*for(allowedCores <- 1 to numberOfCores) {
-    	  scala.collection.parallel.ForkJoinTasks.defaultForkJoinPool.setParallelism(allowedCores)*/
-      
-        for(i <- 1 to numberOfRuns) {
-          println("Iteration #" + i + "-----------------------------------------") 
-        /*
-          //Platform.collectGarbage()
-          printStatus("Classic implementation")
-          val classic = new GaussianSequential(rc.strategy)(rc.data, rc.k)
-          classic.runAlgo()
-          */
-/*
-          //Platform.collectGarbage()
-          printStatus("Parrallel implementation")
-          val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
-          parallel.runAlgo()*/
-        
-          printStatus("Menthor crunch implementation")
-          val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
-          menthor.runAlgo()
-          //Platform.collectGarbage()
-          
+      for(i <- 1 to numberOfRuns) {
+        println("Iteration #" + i + "-----------------------------------------") 
 
-        }
-      //}
+        Platform.collectGarbage()
+          
+        printStatus("Classic implementation")
+        val classic = new GaussianSequential(rc.strategy)(rc.data, rc.k)
+        classic.runAlgo()
+
+        printStatus("Parrallel implementation")
+        val parallel = new GaussianParallel(rc.strategy)(rc.data, rc.k)
+        parallel.runAlgo()
+        
+        printStatus("Menthor crunch implementation")
+        val menthor = new GaussianMenthor(rc.strategy)(rc.data, rc.k)
+        menthor.runAlgo()
+
+      }
     }
   }
   

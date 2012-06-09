@@ -16,12 +16,18 @@ import scalala.library.Plotting._
 import scalala.operators.Implicits._
 import scala.collection.GenSeq
 
+/**
+ * Class taking care of the Menthor implementation of the EM GM.
+ */
 class GaussianMenthor (
     initStrategy: GaussianInit)
     (dataIn: GenSeq[DenseVector[Double]], 
      gaussianComponents: Int) 
   extends Gaussian(initStrategy)(dataIn, gaussianComponents) {
 
+  /**
+   * The actual implementation of the EM GM algo.
+   */
   def em(
       estimates: MatricesTupple, 
       minLikelihoodVar: Double, 
@@ -29,11 +35,11 @@ class GaussianMenthor (
     
     val graph = new Graph[VertexValue]
     
-    // Hack ! 
+    // Hack ! Otherwise when re-runing the alog it hangs.
     Graph.count = 0
     
     // Build the graph. It is unconnected !
-    // Each vertex hold the data associated with one point.
+    // Each vertex hold the data associated with one sample.
     for(point <- dataIn) {
       val newVertex = new GaussianVertex(point)
       graph.addVertex(newVertex)
@@ -121,10 +127,14 @@ class GaussianMenthor (
     def tupples = new MatricesTupple(weights, means, covariances)
   }
 
+  /**
+   * The vertex used in the Menthor implementation.
+   * @param point a sample
+   */
   class GaussianVertex(point: DenseVector[Double]) extends 
         Vertex[VertexValue]("point", new RealVertexValue(point)) {
     
-    // For certain steps operations must only be performed in one vertex
+    // For certain steps, operations must only be performed in one vertex
     lazy val justOneVertex = (this == graph.vertices(0))
     
     def update(superstep: Int, incoming: List[Message[VertexValue]]) = {    
@@ -132,14 +142,14 @@ class GaussianMenthor (
       def normalize(v: DenseVector[Double]) = v :/ v.sum
 	    
       // Creates new empty covariances matrices if needed
-	  val estimatedCovariances = CurrentData.covariances map {matrix => 
+	  /*val estimatedCovariances = CurrentData.covariances map {matrix => 
 	    if(matrix forallValues(_ == 0.0)) DenseMatrix.fill[Double](dimensions, dimensions)(Double.MinValue)
 	    else matrix
-	  }
+	  }*/
 	    
 	  // Computes values that are used later in the algo
-	  val S = estimatedCovariances map (matrix => sqrt(det(matrix)))
-	  val invEstC = estimatedCovariances map (matrix => inv(matrix))
+	  val S = CurrentData.covariances map (matrix => sqrt(det(matrix)))
+	  val invEstC = CurrentData.covariances map (matrix => inv(matrix))
 	
 	  val a = pow(2 * Pi, dimensions / 2.0)
 	    

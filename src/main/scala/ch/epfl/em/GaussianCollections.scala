@@ -34,7 +34,7 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
     extends Gaussian(initStrategy)(dataIn, gaussianComponents) {
 
   /**
-   * The implementation of the Expecatation-maximization algorithm
+   * The implementation of the EM GM algorithm using collections
    */
   def em(
       estimates: MatricesTupple, 
@@ -53,8 +53,8 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
     var newEstimates = estimates
     
     tic
+    // This part of the part of the code  (until toc) in benchmarked
     while(!hasConverged && (iterations < maximumIterations)) {
-      println(iterations)
       val exp = expectation(newEstimates)
       newEstimates = maximization(exp)
             

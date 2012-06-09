@@ -16,16 +16,20 @@ import scala.collection.GenSeq
 import ch.epfl.em.Conversions._
 
 /**
- * The parallel implementation uses exactly the same code as the classic implementation.
- * The only difference is the input. When creating the object a parallel version of the
- * input data is used.
+ * The parallel implementation of the GaussianCollection providing a sequential imput.
  */
 class GaussianParallel(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
     extends GaussianCollections(initStrategy)(dataIn.par, gaussianComponents)
 
+/**
+ * The concrete implementation of the GaussianCollection providing a sequential imput.
+ */
 class GaussianSequential(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int)
     extends GaussianCollections(initStrategy)(dataIn.seq, gaussianComponents)
-    
+
+/**
+ * Abstract implementation using generic collections. Should be sub-classed and provide a concrete data input. 
+ */
 abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[DenseVector[Double]], gaussianComponents: Int) 
     extends Gaussian(initStrategy)(dataIn, gaussianComponents) {
 
@@ -57,7 +61,6 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
       oldLikelihood = newLikelihood
       newLikelihood = likelihood(newEstimates)
       
-      //println(iterations)
       iterations += 1
     }
     toc("algo")
@@ -67,7 +70,8 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
 
   /**
    * Expectation part of the algorithm.
-   * Return the expectation of the value
+   * @param estimates the current estimates to be used
+   * @return the current expectation values
    */
   def expectation(estimates: MatricesTupple): GenSeq[DenseVector[Double]] = {
 
@@ -87,7 +91,9 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
 
     val a = pow(2 * Pi, dimensions / 2.0)
 
-    val expec = data map(point => {
+    // Corresponds to the computation of T(j,i)
+    val expect = data map(point => {
+      // Computes the multivariate normal distribution
       val vector = DenseVector.tabulate[Double](gaussianComponents)(j => {
 
         val delta = point.asCol - estimates.means(::, j)
@@ -100,53 +106,32 @@ abstract class GaussianCollections(initStrategy: GaussianInit)(dataIn: GenSeq[De
       normalize(vector)
     })
     
-    expec
+    expect
   }
 
   /**
-   * Maximization part of the algorithm.
-   * Returns Estimated weight, mean and covariance
+   * Maximization part of the algorithm
+   * @param expect the computed value from the expectation step
+   * @return the expected weights, means and covariances
    */
-  def maximization(estimate: GenSeq[DenseVector[Double]]): MatricesTupple = {
+  def maximization(expect: GenSeq[DenseVector[Double]]): MatricesTupple = {
         
-    val estWeight = estimate reduce(_ + _)
+    val estWeight = expect reduce(_ + _)
         
-    // The weights repeated in each line of a (dim, gaussianComp) matrix
+    // The weights repeated in each line of a [dim x gaussianComp] matrix. It is later used for element-wise divisions
     val weightsAsMatrix = DenseVector.ones[Double](dimensions).asCol * estWeight.asRow
     
-    val estMean = ((data zip estimate) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
-        
+    val estMean = ((data zip expect) map {case(point, est) => point.asCol * est.asRow} reduce(_ + _)) :/ weightsAsMatrix
+
     val estCovariance = (0 until gaussianComponents).toArray map(k => {
-      // Hotest point in the algo
       
-      val sumMat = ((data zip estimate) map {case(point, est) =>
+      val sumMat = ((data zip expect) map {case(point, ex) =>
         val delta = point.asCol - estMean(::, k)
-        (delta * delta.t) :* est(k)
+        (delta * delta.t) :* ex(k)
       }) reduce (_ + _)
-      
-      /*
-      def co(point: DenseVector[Double], est: DenseVector[Double]) = {
-        val dXM = point.asCol - estMean(::, k)
-        (dXM * dXM.t) :* est(k)
-      }
-      
-      val sumMat = ((data zip estimate).foldLeft(DenseMatrix.zeros[Double](dimensions, dimensions)){
-          case(runingSum, (point, est)) => runingSum + co(point, est)}
-      )*/
             
       sumMat :/ estWeight(k)
     })
-    
-    /*
-    // This is crazy impossible to understand but was just a test to check if it maybe was runing faster...
-    val estCovariance = ((data zip estimate) map {case(point, est) => 
-        
-        (0 until gaussianComponents).toArray map {k => {
-          val delta = point.asCol - estMean(::, k)
-          (delta * delta.t) :* (est(k) / estWeight(k))
-        }}
-        
-      }) reduce((x, y) => (x zip y) map (z => z._1 + z._2)) */
     
     estWeight := estWeight / measurements
     
